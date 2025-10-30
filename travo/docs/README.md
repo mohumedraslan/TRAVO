@@ -1,6 +1,7 @@
 # TRAVO
 
-A comprehensive travel platform leveraging AI and machine learning to provide personalized travel recommendations, crowd predictions, visual identification of landmarks, and an intelligent travel assistant.
+## Overview
+TRAVO is a comprehensive travel platform that leverages AI and machine learning to provide personalized travel recommendations, crowd predictions, visual identification of landmarks, and an intelligent travel assistant.
 
 ## Project Structure
 
@@ -45,9 +46,8 @@ A comprehensive travel platform leveraging AI and machine learning to provide pe
 
 ## Getting Started
 
-See the detailed documentation in the [docs](./travo/docs) directory.
-
 ### Backend
+The backend is built with FastAPI, SQLAlchemy, and various ML libraries.
 
 ```bash
 # Navigate to the backend directory
@@ -62,22 +62,34 @@ python main.py
 
 ### Frontend
 
+#### Web App
 ```bash
-# Navigate to the frontend directory
-cd travo/frontend
+# Navigate to the web app directory
+cd travo/frontend/web_app
 
 # Install dependencies
 npm install
 
-# Run web app
-npm run dev:web
+# Run the development server
+npm run dev
+```
 
-# Run mobile app
-npm run dev:mobile
+#### Mobile App
+```bash
+# Navigate to the mobile app directory
+cd travo/frontend/mobile_app
+
+# Install dependencies
+npm install
+
+# Run for iOS
+npm run ios
+
+# Run for Android
+npm run android
 ```
 
 ## Features
-
 - Personalized travel recommendations
 - Real-time crowd predictions for popular destinations
 - Visual identification of landmarks and attractions
@@ -85,8 +97,10 @@ npm run dev:mobile
 - Business integration for local services
 
 ## Technologies
-
 - **Backend**: FastAPI, Pydantic, SQLAlchemy
 - **ML/AI**: TensorFlow, PyTorch, OpenCV, scikit-learn
 - **Frontend**: Next.js, React Native
 - **Data**: Various datasets for training ML models
+
+## License
+This project is proprietary and confidential.
