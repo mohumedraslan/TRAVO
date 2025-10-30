@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: TRAVO API
+  description: API for TRAVO travel platform
+  version: 0.1.0
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.travo.com
+    description: Production server
+
+paths:
+  /users:
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: A list of users
+    post:
+      summary: Create a new user
+      responses:
+        '201':
+          description: User created successfully
+
+  /users/{userId}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+
+  /recommendations:
+    get:
+      summary: Get travel recommendations
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+        - name: location
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of recommendations
+
+  /crowd-predictions:
+    get:
+      summary: Get crowd predictions
+      parameters:
+        - name: locationId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Crowd prediction data
+
+  /vision/identify:
+    post:
+      summary: Identify landmark from image
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Identification results
+
+  /assistant/query:
+    post:
+      summary: Query the travel assistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                userId:
+                  type: string
+      responses:
+        '200':
+          description: Assistant response
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        preferences:
+          type: object
+
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type: object
+        rating:
+          type: number
+
+    CrowdPrediction:
+      type: object
+      properties:
+        locationId:
+          type: string
+        date:
+          type: string
+          format: date
+        hourlyPredictions:
+          type: array
+          items:
+            type: object
+            properties:
+              hour:
+                type: integer
+              crowdLevel:
+                type: string
+              confidence:
+                type: number

@@ -1,0 +1,28 @@
+{
+  "name": "travo-frontend",
+  "version": "0.1.0",
+  "description": "Frontend applications for TRAVO platform",
+  "private": true,
+  "workspaces": [
+    "web_app",
+    "mobile_app",
+    "shared"
+  ],
+  "scripts": {
+    "dev:web": "cd web_app && npm run dev",
+    "dev:mobile": "cd mobile_app && npm run start",
+    "build:web": "cd web_app && npm run build",
+    "build:mobile": "cd mobile_app && npm run build",
+    "test": "npm run test:web && npm run test:mobile",
+    "test:web": "cd web_app && npm test",
+    "test:mobile": "cd mobile_app && npm test",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.7"
+  }
+}
