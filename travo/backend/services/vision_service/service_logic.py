@@ -1,14 +1,16 @@
 import uuid
 import random
+import json
+import os
 from datetime import datetime
 from typing import List, Dict, Any, Optional, Tuple, ByteString
 
 # In a real implementation, these would be imports for computer vision libraries
-# import cv2
-# import numpy as np
+import cv2
+import numpy as np
 # import tensorflow as tf
 # from PIL import Image
-# import io
+import io
 
 # Mock database of monuments
 MONUMENTS_DB = [
@@ -151,3 +153,53 @@ async def get_monument_info(monument_id: str) -> Optional[Dict]:
             return monument
     
     return None
+
+
+def identify_monument(image_path: str) -> Dict:
+    """Identify a monument in an image using OpenCV for preprocessing
+    
+    Args:
+        image_path: Path to the image file
+        
+    Returns:
+        Dictionary with identified monument name and confidence score
+    """
+    # Load the labels.json file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    labels_path = os.path.join(current_dir, 'labels.json')
+    
+    with open(labels_path, 'r') as f:
+        labels_data = json.load(f)
+    
+    # In a real implementation, we would:
+    # 1. Load the image using OpenCV
+    image = cv2.imread(image_path)
+    
+    # 2. Preprocess the image (resize, normalize, etc.)
+    if image is not None:
+        # Resize to a standard size
+        image = cv2.resize(image, (224, 224))
+        
+        # Convert to grayscale for simpler processing
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        # Apply some basic preprocessing
+        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+        edges = cv2.Canny(blurred, 50, 150)
+    
+    # 3. For now, just return a random monument from the labels.json file
+    monuments = labels_data.get('monuments', [])
+    if monuments:
+        selected_monument = random.choice(monuments)
+        # Generate a random confidence score between 0.7 and 0.99
+        confidence = round(random.uniform(0.7, 0.99), 2)
+        
+        return {
+            "identified_monument": selected_monument["name"],
+            "confidence": confidence
+        }
+    else:
+        return {
+            "identified_monument": "Unknown",
+            "confidence": 0.0
+        }

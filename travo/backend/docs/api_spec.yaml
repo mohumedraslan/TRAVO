@@ -1,0 +1,450 @@
+openapi: 3.0.0
+info:
+  title: TRAVO API
+  description: |
+    API for the TRAVO travel application, providing services for monument identification,
+    travel recommendations, crowd prediction, and AI assistant features.
+  version: 1.0.0
+  contact:
+    name: TRAVO Team
+    email: support@travo.example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.travo.example.com
+    description: Production server
+
+tags:
+  - name: authentication
+    description: Authentication endpoints
+  - name: vision
+    description: Computer vision and monument identification
+  - name: recommendations
+    description: Travel recommendations and itineraries
+  - name: crowd
+    description: Crowd prediction and analytics
+  - name: assistant
+    description: AI travel assistant
+  - name: business
+    description: Business listings and partnerships
+
+paths:
+  /login:
+    post:
+      tags:
+        - authentication
+      summary: User login
+      description: Authenticate a user and return a JWT token
+      operationId: userLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: password123
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  token_type:
+                    type: string
+                    example: bearer
+                  user_id:
+                    type: string
+                    example: user-123
+                  expires_in:
+                    type: integer
+                    example: 3600
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid email or password  /vision/identify:
+    post:
+      tags:
+        - vision
+      summary: Identify monument in image
+      description: Upload an image and identify the monument present in it
+      operationId: identifyMonument
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Image file to analyze
+      responses:
+        '200':
+          description: Successful identification
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  identified_monument:
+                    type: string
+                    example: Temple of Luxor
+                  confidence:
+                    type: number
+                    format: float
+                    minimum: 0
+                    maximum: 1
+                    example: 0.92
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid file format. Please upload a valid image file.
+        '500':
+          description: Processing error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Error processing image
+
+  /recommendations/recommend:
+    post:
+      tags:
+        - recommendations
+      summary: Get personalized itinerary recommendations
+      description: Generate a personalized itinerary based on user interests and available time
+      operationId: recommendItinerary
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - interests
+              properties:
+                interests:
+                  type: array
+                  items:
+                    type: string
+                    enum: [history, culture, nature, adventure, relaxation]
+                  example: [history, culture]
+                days:
+                  type: integer
+                  minimum: 1
+                  maximum: 14
+                  default: 2
+                  example: 2
+      responses:
+        '200':
+          description: Successful recommendation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  itinerary_id:
+                    type: string
+                    example: itin-1234
+                  destination:
+                    type: string
+                    example: Egypt
+                  duration_days:
+                    type: integer
+                    example: 2
+                  total_attractions:
+                    type: integer
+                    example: 5
+                  interests:
+                    type: array
+                    items:
+                      type: string
+                    example: [history, culture]
+                  daily_plan:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        day:
+                          type: integer
+                          example: 1
+                        attractions:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Pyramids of Giza
+                              description:
+                                type: string
+                                example: Ancient Egyptian pyramids built as tombs for the pharaohs
+                              duration_hours:
+                                type: number
+                                example: 3
+                        total_hours:
+                          type: number
+                          example: 7.5
+                  estimated_cost:
+                    type: number
+                    example: 350
+                  currency:
+                    type: string
+                    example: USD
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: 2023-05-15T14:30:00Z
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: At least one interest must be provided  /crowd/predict:
+    post:
+      tags:
+        - crowd
+      summary: Predict crowd levels
+      description: Predict crowd levels at a specific location and time
+      operationId: predictCrowd
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - location_id
+                - date
+              properties:
+                location_id:
+                  type: string
+                  example: loc-123
+                date:
+                  type: string
+                  format: date
+                  example: 2023-06-15
+                time_slot:
+                  type: string
+                  enum: [morning, afternoon, evening]
+                  example: morning
+      responses:
+        '200':
+          description: Successful prediction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  location_id:
+                    type: string
+                    example: loc-123
+                  location_name:
+                    type: string
+                    example: Pyramids of Giza
+                  date:
+                    type: string
+                    format: date
+                    example: 2023-06-15
+                  time_slot:
+                    type: string
+                    example: morning
+                  crowd_level:
+                    type: string
+                    enum: [low, moderate, high, very_high]
+                    example: high
+                  wait_time_minutes:
+                    type: integer
+                    example: 45
+                  confidence:
+                    type: number
+                    format: float
+                    minimum: 0
+                    maximum: 1
+                    example: 0.85
+                  recommendations:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Visit early in the morning", "Use the east entrance"]
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid location ID
+        '404':
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Location not found
+
+  /assistant/ask:
+    post:
+      tags:
+        - assistant
+      summary: Ask the AI travel assistant
+      description: Ask a question to the AI travel assistant
+      operationId: askAssistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - question
+              properties:
+                question:
+                  type: string
+                  example: What is the best time to visit the Pyramids?
+                context:
+                  type: object
+                  properties:
+                    location:
+                      type: string
+                      example: Egypt
+                    current_topic:
+                      type: string
+                      example: historical sites
+                    conversation_history:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          role:
+                            type: string
+                            enum: [user, assistant]
+                          content:
+                            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer:
+                    type: string
+                    example: The best time to visit the Pyramids is early morning (before 8 AM) or late afternoon (after 4 PM) to avoid the midday heat and crowds. Winter months (November to February) offer the most comfortable temperatures.
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: Egypt Tourism Guide
+                        url:
+                          type: string
+                          format: uri
+                          example: https://example.com/egypt-guide
+                  related_questions:
+                    type: array
+                    items:
+                      type: string
+                    example: ["What should I wear when visiting the Pyramids?", "How much time should I spend at the Pyramids?"]
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Question is requiredcomponents:
+  schemas:
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          example: Error message details
+    
+    MonumentIdentificationResponse:
+      type: object
+      properties:
+        identified_monument:
+          type: string
+          example: Temple of Luxor
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          example: 0.92
+    
+    RecommendationBody:
+      type: object
+      required:
+        - interests
+      properties:
+        interests:
+          type: array
+          items:
+            type: string
+            enum: [history, culture, nature, adventure, relaxation]
+          example: [history, culture]
+        days:
+          type: integer
+          minimum: 1
+          maximum: 14
+          default: 2
+          example: 2
+
+security:
+  - bearerAuth: []
+
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT

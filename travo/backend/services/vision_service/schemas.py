@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field, HttpUrl, confloat
 from typing import List, Optional, Dict
 from datetime import datetime
 
@@ -42,3 +42,8 @@ class MonumentInfo(BaseModel):
     image_urls: List[HttpUrl] = Field(default=[])
     wikipedia_url: Optional[HttpUrl] = None
     last_updated: datetime
+
+
+class MonumentIdentificationResponse(BaseModel):
+    identified_monument: str
+    confidence: confloat(ge=0.0, le=1.0) = Field(..., description="Confidence score between 0 and 1")
