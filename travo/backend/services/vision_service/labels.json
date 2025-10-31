@@ -1,0 +1,54 @@
+{
+  "monuments": [
+    {
+      "id": "mon001",
+      "name": "Temple of Luxor",
+      "country": "Egypt"
+    },
+    {
+      "id": "mon002",
+      "name": "Pyramids of Giza",
+      "country": "Egypt"
+    },
+    {
+      "id": "mon003",
+      "name": "Parthenon",
+      "country": "Greece"
+    },
+    {
+      "id": "mon004",
+      "name": "Colosseum",
+      "country": "Italy"
+    },
+    {
+      "id": "mon005",
+      "name": "Taj Mahal",
+      "country": "India"
+    },
+    {
+      "id": "mon006",
+      "name": "Great Wall of China",
+      "country": "China"
+    },
+    {
+      "id": "mon007",
+      "name": "Machu Picchu",
+      "country": "Peru"
+    },
+    {
+      "id": "mon008",
+      "name": "Stonehenge",
+      "country": "United Kingdom"
+    },
+    {
+      "id": "mon009",
+      "name": "Angkor Wat",
+      "country": "Cambodia"
+    },
+    {
+      "id": "mon010",
+      "name": "Statue of Liberty",
+      "country": "United States"
+    }
+  ]
+}

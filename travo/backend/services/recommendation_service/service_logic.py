@@ -15,6 +15,45 @@ from .utils import (
     calculate_personalization_score
 )
 
+# Rule-based recommendation mappings
+INTEREST_TO_ATTRACTIONS = {
+    "history": [
+        {"name": "Pyramids of Giza", "description": "Ancient Egyptian pyramids and the Great Sphinx", "duration_hours": 4},
+        {"name": "Egyptian Museum", "description": "Home to the world's largest collection of Pharaonic antiquities", "duration_hours": 3},
+        {"name": "Valley of the Kings", "description": "Burial site of pharaohs including Tutankhamun", "duration_hours": 5},
+        {"name": "Karnak Temple", "description": "Ancient Egyptian temple complex", "duration_hours": 3},
+        {"name": "Abu Simbel", "description": "Ancient temple complex built by Ramesses II", "duration_hours": 4}
+    ],
+    "culture": [
+        {"name": "Khan el-Khalili Bazaar", "description": "Historic shopping district in Cairo", "duration_hours": 3},
+        {"name": "Old Cairo", "description": "Historic area with Coptic churches and Roman ruins", "duration_hours": 4},
+        {"name": "Al-Azhar Mosque", "description": "One of the oldest universities in the world", "duration_hours": 2},
+        {"name": "Nubian Village", "description": "Experience traditional Nubian culture and hospitality", "duration_hours": 3},
+        {"name": "Sound and Light Show at Giza", "description": "Evening entertainment at the pyramids", "duration_hours": 2}
+    ],
+    "nature": [
+        {"name": "Nile River Cruise", "description": "Multi-day cruise between Luxor and Aswan", "duration_hours": 8},
+        {"name": "White Desert", "description": "Unique chalk rock formations in the desert", "duration_hours": 6},
+        {"name": "Red Sea Diving", "description": "World-class coral reefs and marine life", "duration_hours": 5},
+        {"name": "Siwa Oasis", "description": "Remote desert oasis with freshwater springs", "duration_hours": 6},
+        {"name": "Mount Sinai", "description": "Historic mountain with stunning sunrise views", "duration_hours": 8}
+    ],
+    "adventure": [
+        {"name": "Desert Safari", "description": "Jeep or camel tours in the Sahara Desert", "duration_hours": 6},
+        {"name": "Scuba Diving in Sharm El Sheikh", "description": "Explore vibrant coral reefs", "duration_hours": 4},
+        {"name": "Hot Air Balloon over Luxor", "description": "Aerial views of ancient temples and the Nile", "duration_hours": 3},
+        {"name": "Sandboarding in Hurghada", "description": "Slide down desert dunes on a board", "duration_hours": 4},
+        {"name": "Quad Biking in the Desert", "description": "Off-road adventure through desert terrain", "duration_hours": 3}
+    ],
+    "relaxation": [
+        {"name": "Hurghada Beach Resort", "description": "All-inclusive resorts on the Red Sea", "duration_hours": 8},
+        {"name": "Aswan Botanical Gardens", "description": "Peaceful island garden on the Nile", "duration_hours": 2},
+        {"name": "Traditional Egyptian Hammam", "description": "Relaxing spa treatment", "duration_hours": 2},
+        {"name": "Felucca Sailing on the Nile", "description": "Peaceful traditional sailboat ride", "duration_hours": 3},
+        {"name": "El Gouna Lagoons", "description": "Serene man-made lagoons and beaches", "duration_hours": 6}
+    ]
+}
+
 # Mock data for destinations
 mock_destinations = [
     {
@@ -508,3 +547,94 @@ async def get_personalized_recommendations(
     )
     
     return response
+
+
+async def create_rule_based_recommendation(interests: List[str], days: int) -> Dict:
+    """Create a rule-based recommendation based on user interests and available time.
+    
+    Args:
+        interests: List of user interests (e.g., "history", "culture", "nature")
+        days: Number of days available for the trip
+    
+    Returns:
+        Dictionary with recommended itinerary
+    """
+    # Validate interests
+    valid_interests = [interest for interest in interests if interest in INTEREST_TO_ATTRACTIONS]
+    
+    if not valid_interests:
+        valid_interests = list(INTEREST_TO_ATTRACTIONS.keys())[:2]  # Default to first two interests
+    
+    # Calculate how many attractions we can fit based on available days
+    # Assuming 8 hours of sightseeing per day
+    available_hours = days * 8
+    
+    # Collect attractions based on interests
+    selected_attractions = []
+    remaining_hours = available_hours
+    
+    # Distribute attractions evenly across interests
+    while remaining_hours > 0 and valid_interests:
+        for interest in valid_interests.copy():
+            # Get attractions for this interest that we haven't selected yet
+            available_attractions = [a for a in INTEREST_TO_ATTRACTIONS[interest] 
+                                   if a not in selected_attractions]
+            
+            if not available_attractions:
+                valid_interests.remove(interest)
+                continue
+                
+            # Select a random attraction
+            attraction = random.choice(available_attractions)
+            
+            # Check if we have enough time
+            if attraction["duration_hours"] <= remaining_hours:
+                selected_attractions.append(attraction)
+                remaining_hours -= attraction["duration_hours"]
+            
+            # If we've run out of time, break
+            if remaining_hours <= 0 or len(selected_attractions) >= days * 5:  # Max 5 attractions per day
+                break
+        
+        # If we've gone through all interests or reached our limit, break
+        if not valid_interests or len(selected_attractions) >= days * 5:
+            break
+    
+    # Organize attractions by day
+    daily_itinerary = []
+    current_day = []
+    current_day_hours = 0
+    max_hours_per_day = 8
+    
+    for attraction in selected_attractions:
+        # If adding this attraction would exceed the day's hours, start a new day
+        if current_day_hours + attraction["duration_hours"] > max_hours_per_day and current_day:
+            daily_itinerary.append(current_day)
+            current_day = []
+            current_day_hours = 0
+        
+        current_day.append(attraction)
+        current_day_hours += attraction["duration_hours"]
+    
+    # Add the last day if it has attractions
+    if current_day:
+        daily_itinerary.append(current_day)
+    
+    # Create the response
+    return {
+        "itinerary_id": f"itin-{random.randint(1000, 9999)}",
+        "destination": "Egypt",  # Hardcoded for this example
+        "duration_days": days,
+        "total_attractions": len(selected_attractions),
+        "interests": valid_interests,
+        "daily_plan": [
+            {
+                "day": i + 1,
+                "attractions": day,
+                "total_hours": sum(a["duration_hours"] for a in day)
+            } for i, day in enumerate(daily_itinerary)
+        ],
+        "estimated_cost": random.randint(100, 300) * days,  # Simple cost estimation
+        "currency": "USD",
+        "created_at": datetime.utcnow().isoformat()
+    }

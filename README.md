@@ -1,195 +1,157 @@
-# TRAVO - AI-Powered Travel Companion
+# TRAVO - Travel Assistant Application
 
-![TRAVO Logo](https://via.placeholder.com/150x150.png?text=TRAVO)
+## Overview
 
-## Project Overview
+TRAVO is an intelligent travel assistant application that helps users identify monuments, get personalized travel recommendations, and plan their trips efficiently. The application uses computer vision for monument identification and a rule-based recommendation engine to suggest personalized itineraries.
 
-TRAVO is an innovative travel platform that leverages artificial intelligence and machine learning to enhance the travel experience. It provides personalized recommendations, crowd predictions, visual identification of landmarks, and an intelligent travel assistant to help users discover and navigate destinations with ease.
+## Features
 
-The platform combines cutting-edge AI technologies with user-friendly interfaces across web and mobile applications to deliver a seamless travel planning and exploration experience.
+- **Monument Identification**: Upload images to identify famous monuments and landmarks
+- **Personalized Recommendations**: Get travel recommendations based on interests and preferences
+- **Rule-based Itineraries**: Generate day-by-day itineraries for destinations
+- **API Documentation**: Comprehensive API documentation with OpenAPI specification
 
-## Core Features
-
-- **Personalized Travel Recommendations**: AI-driven suggestions based on user preferences, travel history, and interests
-- **Real-time Crowd Predictions**: Machine learning models to forecast crowd levels at popular destinations
-- **Visual Landmark Identification**: AR-powered recognition of monuments, buildings, and attractions
-- **AI Travel Assistant**: Intelligent conversational agent for travel queries and cultural information
-- **Smart Itinerary Planning**: Automated creation of optimized travel schedules
-- **Business Integration**: Seamless connection with local services, restaurants, and accommodations
-
-## Architecture Overview
-
-TRAVO follows a modern, scalable architecture:
-
-- **Frontend Layer**: React-based web application and React Native mobile apps sharing core components
-- **API Layer**: FastAPI-powered RESTful services with comprehensive documentation
-- **Service Layer**: Modular microservices for specific functionality domains
-- **ML Layer**: Specialized machine learning models for recommendations, vision, and NLP
-- **Data Layer**: Structured datasets and ETL pipelines for model training and inference
-
-![Architecture Diagram](./travo/docs/architecture_diagram.svg)
-
-## Folder Structure
+## Project Structure
 
 ```
-/travo
-│
-├── backend/                 # Backend services and API
-│   ├── services/            # Modular service components
-│   │   ├── user_service/    # User authentication and profiles
-│   │   ├── recommendation_service/  # Travel recommendations
-│   │   ├── crowd_service/   # Crowd prediction
-│   │   ├── vision_service/  # Visual identification
-│   │   ├── assistant_service/  # AI assistant
-│   │   └── business_service/  # Business integrations
-│   ├── models/              # Database models
-│   ├── utils/               # Shared utilities
-│   ├── api/                 # API routing and documentation
-│   └── main.py              # Application entry point
-│
-├── frontend/               # Frontend applications
-│   ├── mobile_app/         # React Native mobile application
-│   ├── web_app/            # Next.js web application
-│   └── shared/             # Shared components and utilities
-│
-├── data/                   # Data management
-│   ├── datasets/           # Training and validation datasets
-│   ├── pipelines/          # ETL and preprocessing pipelines
-│   └── docs/               # Data documentation
-│
-├── ml_models/              # Machine learning models
-│   ├── recommendation/     # Recommendation algorithms
-│   ├── crowd_prediction/   # Crowd forecasting models
-│   ├── vision_identification/  # Computer vision models
-│   └── nlp_assistant/      # Natural language processing
-│
-└── docs/                   # Project documentation
-    ├── api_spec.yaml       # API specifications
-    └── version_roadmap.md  # Development roadmap
+TRAVO/
+├── travo/
+│   ├── backend/
+│   │   ├── docs/
+│   │   │   └── api_spec.yaml
+│   │   ├── services/
+│   │   │   ├── vision_service/
+│   │   │   └── recommendation_service/
+│   │   ├── tests/
+│   │   ├── config.py
+│   │   ├── main.py
+│   │   └── run_tests.py
+│   └── docs/
+│       └── version_roadmap.md
+└── trovaweb/
+    ├── src/
+    │   ├── app/
+    │   └── components/
+    ├── public/
+    └── package.json
 ```
 
-## Technology Stack
-
-### Backend
-- **Framework**: FastAPI
-- **Data Validation**: Pydantic
-- **Database ORM**: SQLAlchemy
-- **Authentication**: JWT, OAuth2
-
-### Frontend
-- **Web**: Next.js, React
-- **Mobile**: React Native, Expo
-- **State Management**: Redux/Context API
-- **UI Components**: Material-UI, React Native Paper
-
-### Machine Learning
-- **Computer Vision**: TensorFlow, OpenCV
-- **NLP**: PyTorch, Transformers
-- **Recommendation Systems**: scikit-learn, LightGBM
-
-### DevOps
-- **Containerization**: Docker
-- **CI/CD**: GitHub Actions
-- **Deployment**: AWS/GCP
-
-## Installation
+## Development Environment Setup
 
 ### Prerequisites
-- Python 3.9+
-- Node.js 16+
+
+- Python 3.8 or higher
+- Node.js 14 or higher
 - npm or yarn
 - Git
 
 ### Backend Setup
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/travo.git
-cd travo
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/TRAVO.git
+   cd TRAVO
+   ```
 
-# Set up Python virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+2. Create and activate a virtual environment:
+   ```bash
+   # For Windows
+   python -m venv venv
+   .\venv\Scripts\activate
+   
+   # For macOS/Linux
+   python -m venv venv
+   source venv/bin/activate
+   ```
 
-# Install backend dependencies
-cd backend
-pip install -r requirements.txt
+3. Install backend dependencies:
+   ```bash
+   cd travo/backend
+   pip install -r requirements.txt
+   ```
 
-# Run the backend server
-python main.py
-```
+4. Create a `.env` file in the backend directory with the following variables:
+   ```
+   SECRET_KEY=your_secret_key
+   DATABASE_URL=sqlite:///./travo.db
+   VISION_API_KEY=your_vision_api_key
+   WEATHER_API_KEY=your_weather_api_key
+   ```
+
+5. Run the backend server:
+   ```bash
+   uvicorn main:app --reload
+   ```
 
 ### Frontend Setup
 
+1. Navigate to the frontend directory:
+   ```bash
+   cd trovaweb
+   ```
+
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open your browser and navigate to `http://localhost:3000`
+
+## Testing
+
+### Running Backend Tests
+
+Use the provided test script to run the backend tests:
+
 ```bash
-# Install frontend dependencies
-cd ../frontend
-npm install
-
-# Run web application
-cd web_app
-npm run dev
-
-# Run mobile application (in a separate terminal)
-cd ../mobile_app
-npm start
+cd travo/backend
+python run_tests.py
 ```
 
-## Development Roadmap
+Options:
+- `--service [all|vision|recommendation]`: Specify which service tests to run
+- `--verbose` or `-v`: Enable verbose output
+- `--coverage`: Generate coverage report
 
-### Version 1.0 - MVP
-- Basic AI recommendation engine
-- Core backend services and API
-- Functional web application
-- Initial mobile app release
-- User authentication and profiles
+Example:
+```bash
+python run_tests.py --service vision --coverage
+```
 
-### Version 2.0 - Visual Recognition
-- AR camera integration
-- Real-time object and landmark recognition
-- Historical information for identified landmarks
-- Enhanced recommendation algorithms
-- Offline mode for basic functionality
+### Running Frontend Tests
 
-### Version 3.0 - Smart Assistant
-- AI-powered travel assistant (voice and text)
-- Cultural and historical information
-- Smart itinerary generation and optimization
-- Multi-language support
-- Advanced personalization
+```bash
+cd trovaweb
+npm test
+# or
+yarn test
+```
 
-### Version 4.0 - Business Ecosystem
-- Integration with local businesses
-- Restaurant and accommodation bookings
-- Tour guide connections
-- Special offers and promotions
-- User reviews and ratings
+## API Documentation
 
-### Version 5.0 - Immersive Experiences
-- VR exploration of destinations
-- Metaverse travel experiences
-- Social travel planning
-- Advanced AR navigation
-- Predictive travel suggestions
+The API documentation is available in OpenAPI format at `travo/backend/docs/api_spec.yaml`. When the backend server is running, you can access the interactive API documentation at `http://localhost:8000/docs`.
 
-For detailed roadmap information, see [version_roadmap.md](./travo/docs/version_roadmap.md).
+## Version Roadmap
+
+See the [Version Roadmap](travo/docs/version_roadmap.md) for information about planned features and release stages.
 
 ## Contributing
 
-We welcome contributions to TRAVO! Please follow these steps to contribute:
-
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-Please ensure your code follows our coding standards and includes appropriate tests.
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a pull request
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
-
----
-
-© 2023 TRAVO. All rights reserved.
+This project is licensed under the MIT License - see the LICENSE file for details.

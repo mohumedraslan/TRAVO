@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
 from datetime import datetime
+from pydantic import BaseModel, Field
 
 from .schemas import (
     DestinationRecommendationResponse, AttractionRecommendationResponse,
@@ -10,7 +11,7 @@ from .schemas import (
 from .service_logic import (
     get_destination_recommendations, get_trending_destinations,
     get_similar_destinations, get_attraction_recommendations,
-    get_personalized_recommendations
+    get_personalized_recommendations, create_rule_based_recommendation
 )
 
 router = APIRouter(prefix="/recommendations", tags=["recommendations"])
@@ -108,3 +109,31 @@ async def get_personalized(
         )
     
     return recommendations
+
+
+class RecommendationBody(BaseModel):
+    interests: List[str]
+    days: int = Field(2, ge=1, le=14)
+
+
+@router.post("/recommend")
+async def recommend_itinerary(
+    request: RecommendationBody
+):
+    """Create a rule-based recommendation based on user interests and available time.
+    
+    Args:
+        interests: List of user interests (e.g., "history", "culture", "nature")
+        days: Number of days available for the trip (default: 2)
+        
+    Returns:
+        JSON with recommended itinerary
+    """
+    if not request.interests:
+        raise HTTPException(status_code=400, detail="At least one interest must be provided")
+        
+    if request.days < 1:
+        raise HTTPException(status_code=400, detail="Days must be at least 1")
+        
+    itinerary = await create_rule_based_recommendation(request.interests, request.days)
+    return itinerary
