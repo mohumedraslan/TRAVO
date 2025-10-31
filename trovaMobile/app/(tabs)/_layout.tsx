@@ -38,6 +38,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="ar-guide"
+        options={{
+          title: 'AR Guide',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="viewfinder" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="itinerary"
         options={{
           title: 'Itinerary',

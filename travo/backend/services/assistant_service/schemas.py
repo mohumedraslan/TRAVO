@@ -1,56 +1,48 @@
-from pydantic import BaseModel, Field, HttpUrl
-from typing import List, Optional, Dict, Any
-from datetime import datetime
+from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any
 from enum import Enum
 
-class MessageRole(str, Enum):
-    USER = "user"
-    ASSISTANT = "assistant"
-    SYSTEM = "system"
 
-class MessageType(str, Enum):
+class QueryType(str, Enum):
+    """Type of query input."""
     TEXT = "text"
     VOICE = "voice"
 
-class LocationInfo(BaseModel):
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
-    place_name: Optional[str] = None
 
-class TextQueryRequest(BaseModel):
-    query: str
-    user_id: Optional[str] = None
-    conversation_id: Optional[str] = None
-    language: Optional[str] = "en"
-    location: Optional[LocationInfo] = None
+class AssistantQuery(BaseModel):
+    """Model for assistant query."""
+    query: str = Field(..., description="The user's question or query")
+    location: Optional[str] = Field(None, description="Optional location context for the query")
+    query_type: QueryType = Field(default=QueryType.TEXT, description="Type of query input")
 
-class Message(BaseModel):
-    role: MessageRole
-    content: str
-    message_type: MessageType
-    timestamp: datetime
 
-class TextQueryResponse(BaseModel):
-    response_text: str
-    conversation_id: str
-    message_id: str
-    sources: List[Dict[str, Any]] = Field(default=[])
-    related_attractions: List[Dict[str, Any]] = Field(default=[])
-    timestamp: datetime
+class AssistantResponse(BaseModel):
+    """Model for assistant response."""
+    answer: str = Field(..., description="The assistant's answer to the query")
+    related_monuments: List[str] = Field(default=[], description="Related monuments to the query")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Confidence score of the answer")
 
-class VoiceQueryResponse(BaseModel):
-    response_text: str
-    audio_url: Optional[HttpUrl] = None
-    conversation_id: str
-    message_id: str
-    transcription: str
-    sources: List[Dict[str, Any]] = Field(default=[])
-    related_attractions: List[Dict[str, Any]] = Field(default=[])
-    timestamp: datetime
 
-class ConversationHistory(BaseModel):
-    conversation_id: str
-    user_id: Optional[str] = None
-    messages: List[Message]
-    created_at: datetime
-    updated_at: datetime
+class VoiceToTextRequest(BaseModel):
+    """Model for voice-to-text conversion request."""
+    audio_data: str = Field(..., description="Base64 encoded audio data")
+    language: str = Field(default="en-US", description="Language code for speech recognition")
+
+
+class VoiceToTextResponse(BaseModel):
+    """Model for voice-to-text conversion response."""
+    text: str = Field(..., description="Transcribed text from voice input")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Confidence score of transcription")
+
+
+class TextToVoiceRequest(BaseModel):
+    """Model for text-to-voice conversion request."""
+    text: str = Field(..., description="Text to convert to speech")
+    language: str = Field(default="en", description="Language code for text-to-speech")
+    voice: Optional[str] = Field(None, description="Voice ID or name for text-to-speech")
+
+
+class TextToVoiceResponse(BaseModel):
+    """Model for text-to-voice conversion response."""
+    audio_data: str = Field(..., description="Base64 encoded audio data")
+    format: str = Field(default="mp3", description="Audio format")

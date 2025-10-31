@@ -48,6 +48,8 @@ This document outlines the planned development stages and feature releases for t
 - Personalized itineraries based on user behavior
 - Augmented reality monument information overlay
 - Multi-language support
+- "Discover Egypt" dashboard with interactive map and crowd heatmaps
+- Smart filtering system for destination discovery
 
 ### Technical Advancements
 - Integration with computer vision API for accurate monument identification
@@ -55,6 +57,28 @@ This document outlines the planned development stages and feature releases for t
 - Natural language processing for the AI assistant
 - AR capabilities in the mobile app
 - Enhanced security and privacy features
+
+### TRAVO V2 Milestones
+
+#### Phase 1: AI Integration (Q1 2024)
+- Complete integration of vision service for monument identification
+- Deploy first version of assistant service with basic query capabilities
+- Implement recommendation service with personalization algorithms
+- Develop crowd prediction models and API endpoints
+
+#### Phase 2: Enhanced User Experience (Q2 2024)
+- Launch "Discover Egypt" dashboard with interactive maps
+- Implement crowd prediction heatmaps for popular destinations
+- Add smart filtering and search capabilities
+- Deploy augmented reality features in mobile application
+- Optimize performance for real-time data processing
+
+#### Phase 3: Platform Refinement (Q2-Q3 2024)
+- Conduct comprehensive user testing and gather feedback
+- Implement improvements based on user data
+- Optimize AI models for better accuracy
+- Enhance cross-platform compatibility
+- Prepare for Version 3.0 feature development
 
 ## Version 3.0 - Ecosystem Expansion
 

@@ -10,7 +10,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run TRAVO backend tests")
     parser.add_argument(
         "--service", 
-        choices=["all", "vision", "recommendation"], 
+        choices=["all", "vision", "recommendation", "assistant", "crowd", "user", "auth"], 
         default="all",
         help="Specify which service tests to run"
     )
@@ -43,6 +43,14 @@ def main():
         pytest_args.append("tests/test_vision_service.py")
     elif args.service == "recommendation":
         pytest_args.append("tests/test_recommendation_service.py")
+    elif args.service == "assistant":
+        pytest_args.append("tests/test_assistant_service.py")
+    elif args.service == "crowd":
+        pytest_args.append("tests/test_crowd_service.py")
+    elif args.service == "user":
+        pytest_args.append("tests/test_user_service.py")
+    elif args.service == "auth":
+        pytest_args.append("tests/test_auth.py")
     else:  # all
         pytest_args.append("tests/")
     

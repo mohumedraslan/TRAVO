@@ -48,9 +48,27 @@ paths:
           in: query
           schema:
             type: string
+        - name: categories
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          description: Categories of interest (e.g., Pyramids, Museums)
+        - name: city
+          in: query
+          schema:
+            type: string
+          description: City filter (e.g., Cairo, Alexandria)
       responses:
         '200':
           description: List of recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recommendation'
 
   /crowd-predictions:
     get:
@@ -69,6 +87,36 @@ paths:
       responses:
         '200':
           description: Crowd prediction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrowdPrediction'
+                
+  /crowd-heatmap:
+    get:
+      summary: Get crowd heatmap data for multiple locations
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: time
+          in: query
+          required: true
+          schema:
+            type: string
+            format: time
+      responses:
+        '200':
+          description: Crowd heatmap data for multiple locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HeatmapDataPoint'
 
   /vision/identify:
     post:
@@ -130,8 +178,24 @@ components:
           type: string
         location:
           type: object
+          properties:
+            city:
+              type: string
+            coordinates:
+              type: object
+              properties:
+                latitude:
+                  type: number
+                longitude:
+                  type: number
         rating:
           type: number
+        image_url:
+          type: string
+        categories:
+          type: array
+          items:
+            type: string
 
     CrowdPrediction:
       type: object
@@ -152,3 +216,24 @@ components:
                 type: string
               confidence:
                 type: number
+                
+    HeatmapDataPoint:
+      type: object
+      properties:
+        locationId:
+          type: string
+        name:
+          type: string
+        coordinates:
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
+        crowdLevel:
+          type: string
+          enum: [low, medium, high, very_high]
+        intensity:
+          type: number
+          description: Normalized crowd intensity value (0-1)
