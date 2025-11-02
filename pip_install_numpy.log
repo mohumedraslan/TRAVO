@@ -1,0 +1,8 @@
+Collecting numpy
+  Using cached numpy-2.3.4-cp313-cp313-win_amd64.whl.metadata (60 kB)
+Using cached numpy-2.3.4-cp313-cp313-win_amd64.whl (12.8 MB)
+Installing collected packages: numpy
+Successfully installed numpy-2.3.4
+
+[notice] A new release of pip is available: 25.2 -> 25.3
+[notice] To update, run: C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\TraeAI-6\Scripts\python.exe -m pip install --upgrade pip
