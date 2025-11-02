@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, FlatList } from 'react-native';
-import axios from 'axios';
+import client from '../api/client';
 
 interface ItineraryDay {
   date: string;
@@ -16,7 +16,7 @@ const ItineraryScreen: React.FC<any> = ({ route }) => {
     const fetchItinerary = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:8000/api/itineraries/${itineraryId}`);
+        const res = await client.get(`/itineraries/${itineraryId}`);
         setDays(res.data?.days || []);
       } catch (err) {
         console.error(err);

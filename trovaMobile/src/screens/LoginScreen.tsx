@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import axios from 'axios';
+import client from '../api/client';
 
 interface Props {
   navigation: any;
@@ -13,7 +13,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const handleLogin = async () => {
     try {
       // TODO: replace with real backend endpoint
-      const res = await axios.post('http://localhost:8000/api/auth/login', {
+      const res = await client.post('/auth/login', {
         email,
         password,
       });

@@ -12,9 +12,12 @@ import {
 } from 'react-native';
 import { askAssistant, voiceToText, textToVoice } from '@/src/api/assistantService';
 import { Audio } from 'expo-av';
-import * as FileSystem from 'react-native-fs';
+import * as FileSystem from 'expo-file-system';
 import io from 'socket.io-client';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import Constants from 'expo-constants';
+
+const API_BASE_URL = (Constants?.expoConfig?.extra as any)?.API_URL?.replace('/api', '') || 'http://127.0.0.1:8000';
 
 interface Message {
   id: string;
@@ -42,7 +45,7 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
   // Initialize socket connection
   useEffect(() => {
     // Connect to socket server
-    socketRef.current = io('http://localhost:8000', {
+    socketRef.current = io(API_BASE_URL, {
       transports: ['websocket'],
     });
 
@@ -57,6 +60,7 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
         isUser: false,
         timestamp: new Date(),
       });
+      setIsLoading(false);
     });
 
     socketRef.current.on('disconnect', () => {
@@ -122,11 +126,18 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
     };
 
     addMessage(userMessage);
+    const messageToSend = inputText;
     setInputText('');
     setIsLoading(true);
 
     try {
-      const response = await askAssistant(inputText, 'TEXT', initialLocation);
+      // Prefer Socket.IO if connected, fallback to REST
+      if (socketRef.current && socketRef.current.connected) {
+        socketRef.current.emit('assistant_query', { query: messageToSend, location: initialLocation });
+        return; // Response will arrive via 'assistant_response'
+      }
+
+      const response = await askAssistant(messageToSend, 'TEXT', initialLocation);
 
       if (response.answer) {
         addMessage({
@@ -139,16 +150,14 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
         // Optional: Convert response to speech
         if (response.answer) {
           try {
-            const speechResponse = await textToVoice(response.answer);
-
-            const audioPath = `${FileSystem.CachesDirectoryPath}/response_${Date.now()}.mp3`;
-            await FileSystem.writeFile(audioPath, Buffer.from(speechResponse).toString('base64'), 'base64');
-
-            const { sound } = await Audio.Sound.createAsync({ uri: audioPath });
-            setSound(sound);
-            await sound.playAsync();
+            const speechResponse = await textToVoice(response.answer)
+            const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+            await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
+            const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
+            setSound(newSound)
+            await newSound.playAsync()
           } catch (error) {
-            console.error('Error converting text to speech:', error);
+            console.error('Error converting text to speech:', error)
           }
         }
       }
@@ -213,7 +222,7 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
       addMessage(userMessage);
 
       // Convert audio to base64
-      const base64Audio = await FileSystem.readFile(uri, 'base64');
+      const base64Audio = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 })
 
       // Send to voice-to-text API
       const voiceToTextResponse = await voiceToText(base64Audio);
@@ -230,7 +239,13 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
           )
         );
 
-        // Send transcribed text to assistant
+        // Prefer Socket.IO if connected, fallback to REST
+        if (socketRef.current && socketRef.current.connected) {
+          socketRef.current.emit('assistant_query', { query: transcribedText, location: initialLocation });
+          return; // Response will arrive via 'assistant_response'
+        }
+
+        // Send transcribed text to assistant via REST
         const assistantResponse = await askAssistant(transcribedText, 'TEXT', initialLocation);
 
         if (assistantResponse.answer) {
@@ -243,16 +258,14 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
 
           // Convert response to speech
           try {
-            const speechResponse = await textToVoice(assistantResponse.answer);
-
-            const audioPath = `${FileSystem.CachesDirectoryPath}/response_${Date.now()}.mp3`;
-            await FileSystem.writeFile(audioPath, Buffer.from(speechResponse).toString('base64'), 'base64');
-
-            const { sound } = await Audio.Sound.createAsync({ uri: audioPath });
-            setSound(sound);
-            await sound.playAsync();
+            const speechResponse = await textToVoice(assistantResponse.answer)
+            const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+            await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
+            const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
+            setSound(newSound)
+            await newSound.playAsync()
           } catch (error) {
-            console.error('Error converting text to speech:', error);
+            console.error('Error converting text to speech:', error)
           }
         }
       }
@@ -272,10 +285,12 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
   // Play audio message
   const playAudioMessage = async (uri: string) => {
     try {
+      // Unload previous sound if exists
       if (sound) {
         await sound.unloadAsync();
       }
 
+      // Create and play the new sound
       const { sound: newSound } = await Audio.Sound.createAsync({ uri });
       setSound(newSound);
       await newSound.playAsync();
