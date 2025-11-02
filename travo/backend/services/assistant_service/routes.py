@@ -19,7 +19,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create router
-router = APIRouter(prefix="/assistant", tags=["assistant"])
+# router = APIRouter(prefix="/assistant", tags=["assistant"])
+router = APIRouter(tags=["assistant"])
 
 
 @router.post("/ask", response_model=AssistantResponse)
