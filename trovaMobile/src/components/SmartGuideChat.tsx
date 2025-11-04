@@ -18,6 +18,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import Constants from 'expo-constants';
 
 const API_BASE_URL = (Constants?.expoConfig?.extra as any)?.API_URL?.replace('/api', '') || 'http://127.0.0.1:8000';
+const IS_WEB = Platform.OS === 'web';
 
 interface Message {
   id: string;
@@ -46,20 +47,40 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
   useEffect(() => {
     // Connect to socket server
     socketRef.current = io(API_BASE_URL, {
-      transports: ['websocket'],
+      transports: ['websocket', 'polling'],
+      path: '/socket.io',
     });
 
     socketRef.current.on('connect', () => {
       console.log('Connected to socket server');
     });
 
-    socketRef.current.on('assistant_response', (data: any) => {
+    socketRef.current.on('assistant_response', async (data: any) => {
       addMessage({
         id: Date.now().toString(),
         text: data.answer,
         isUser: false,
         timestamp: new Date(),
       });
+
+      // TTS playback for web/native
+      try {
+        const speechResponse = await textToVoice(data.answer)
+        if (IS_WEB) {
+          const audioSrc = `data:audio/${speechResponse.format || 'mp3'};base64,${speechResponse.audio_data}`
+          const webAudio = new Audio(audioSrc)
+          await webAudio.play()
+        } else {
+          const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+          await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
+          const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
+          setSound(newSound)
+          await newSound.playAsync()
+        }
+      } catch (error) {
+        console.error('Error converting socket response to speech:', error)
+      }
+
       setIsLoading(false);
     });
 
@@ -92,14 +113,18 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
     };
   }, [initialLocation]);
 
-  // Request audio recording permissions
+  // Request audio recording permissions (native only)
   useEffect(() => {
-    (async () => {
-      const { status } = await Audio.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Audio recording permission not granted');
-      }
-    })();
+    if (!IS_WEB) {
+      (async () => {
+        const { status } = await Audio.requestPermissionsAsync();
+        if (status !== 'granted') {
+          console.error('Audio recording permission not granted');
+        }
+      })();
+    } else {
+      console.warn('Audio recording is not supported on web preview');
+    }
   }, []);
 
   // Scroll to bottom when messages change
@@ -151,11 +176,17 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
         if (response.answer) {
           try {
             const speechResponse = await textToVoice(response.answer)
-            const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
-            await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
-            const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
-            setSound(newSound)
-            await newSound.playAsync()
+            if (IS_WEB) {
+              const audioSrc = `data:audio/${speechResponse.format || 'mp3'};base64,${speechResponse.audio_data}`
+              const webAudio = new Audio(audioSrc)
+              await webAudio.play()
+            } else {
+              const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+              await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
+              const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
+              setSound(newSound)
+              await newSound.playAsync()
+            }
           } catch (error) {
             console.error('Error converting text to speech:', error)
           }
@@ -176,6 +207,10 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
 
   // Start recording audio
   const startRecording = async () => {
+    if (IS_WEB) {
+      console.warn('Voice recording is not supported on web preview.');
+      return;
+    }
     try {
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
@@ -259,11 +294,17 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
           // Convert response to speech
           try {
             const speechResponse = await textToVoice(assistantResponse.answer)
-            const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
-            await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
-            const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
-            setSound(newSound)
-            await newSound.playAsync()
+            if (IS_WEB) {
+              const audioSrc = `data:audio/${speechResponse.format || 'mp3'};base64,${speechResponse.audio_data}`
+              const webAudio = new Audio(audioSrc)
+              await webAudio.play()
+            } else {
+              const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+              await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
+              const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
+              setSound(newSound)
+              await newSound.playAsync()
+            }
           } catch (error) {
             console.error('Error converting text to speech:', error)
           }

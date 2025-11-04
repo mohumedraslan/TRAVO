@@ -8,11 +8,16 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 // Only import VisionCamera on native platforms
 let Camera: any;
 let useCameraDevices: any;
+let visionCameraAvailable = false;
 if (Platform.OS !== 'web') {
-  // Dynamic import for native platforms only
-  const VisionCamera = require('react-native-vision-camera');
-  Camera = VisionCamera.Camera;
-  useCameraDevices = VisionCamera.useCameraDevices;
+  try {
+    const VisionCamera = require('react-native-vision-camera');
+    Camera = VisionCamera.Camera;
+    useCameraDevices = VisionCamera.useCameraDevices;
+    visionCameraAvailable = true;
+  } catch (e) {
+    console.warn('VisionCamera not available, falling back to ImagePicker');
+  }
 }
 
 interface MonumentInfo {
@@ -29,7 +34,7 @@ const CameraScreen: React.FC<any> = () => {
   // For native camera
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const cameraRef = useRef<any>(null);
-  const devices = Platform.OS !== 'web' ? useCameraDevices() : null;
+  const devices = Platform.OS !== 'web' && visionCameraAvailable ? useCameraDevices() : null;
   const device = devices?.back;
 
   const pickImage = async () => {
@@ -53,8 +58,13 @@ const CameraScreen: React.FC<any> = () => {
   useEffect(() => {
     if (Platform.OS !== 'web') {
       (async () => {
-        const cameraPermission = await Camera.requestCameraPermission();
-        setHasPermission(cameraPermission === 'granted');
+        if (visionCameraAvailable) {
+          const cameraPermission = await Camera.requestCameraPermission();
+          setHasPermission(cameraPermission === 'granted');
+        } else {
+          const perm = await ImagePicker.requestCameraPermissionsAsync();
+          setHasPermission(perm.granted);
+        }
       })();
     }
   }, []);
@@ -76,14 +86,13 @@ const CameraScreen: React.FC<any> = () => {
         await identify(result.assets[0].uri);
       }
     } else {
-      // Use VisionCamera on native platforms
-      if (cameraRef.current && hasPermission) {
+      // Native: prefer VisionCamera, fallback to ImagePicker
+      if (visionCameraAvailable && cameraRef.current && hasPermission) {
         try {
           const photo = await cameraRef.current.takePhoto({
             qualityPrioritization: 'speed',
             flash: 'off',
           });
-          
           const uri = `file://${photo.path}`;
           setImageUri(uri);
           await identify(uri);
@@ -92,7 +101,19 @@ const CameraScreen: React.FC<any> = () => {
           Alert.alert('Error', 'Failed to take photo. Please try again.');
         }
       } else {
-        Alert.alert('Camera not ready', 'Please wait for camera to initialize or check permissions.');
+        const perm = await ImagePicker.requestCameraPermissionsAsync();
+        if (!perm.granted) {
+          Alert.alert('Permission required', 'Please grant camera access.');
+          return;
+        }
+        const result = await ImagePicker.launchCameraAsync({
+          quality: 0.8,
+          base64: false,
+        });
+        if (!result.canceled && result.assets?.[0]?.uri) {
+          setImageUri(result.assets[0].uri);
+          await identify(result.assets[0].uri);
+        }
       }
     }
   };
@@ -118,6 +139,23 @@ const CameraScreen: React.FC<any> = () => {
         <View style={styles.webFallback}>
           <Text style={styles.webNote}>Camera not supported on web preview, please run on Expo Go app.</Text>
           <View style={styles.actionsRow}>
+            <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]} onPress={pickImage}>
+              <IconSymbol name="photo.fill" size={24} color="#fff" />
+              <Text style={styles.actionButtonText}>Pick from Gallery</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else if (!visionCameraAvailable) {
+      // Native fallback UI when VisionCamera is unavailable
+      return (
+        <View style={styles.webFallback}>
+          <Text style={styles.webNote}>VisionCamera unavailable (Expo Go). Use the fallback below.</Text>
+          <View style={styles.actionsRow}>
+            <TouchableOpacity style={styles.actionButton} onPress={takePhoto}>
+              <IconSymbol name="camera.fill" size={24} color="#fff" />
+              <Text style={styles.actionButtonText}>Open Camera</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]} onPress={pickImage}>
               <IconSymbol name="photo.fill" size={24} color="#fff" />
               <Text style={styles.actionButtonText}>Pick from Gallery</Text>

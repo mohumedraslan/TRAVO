@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import client from '@/api/client';
 
@@ -13,10 +14,31 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const res = await client.get('/analytics/summary');
-        setSummary(res.data);
+        // Fetch destinations to compute count
+        const destinationsRes = await client.get('/recommendations/destinations?limit=50');
+        const destinations = Array.isArray(destinationsRes.data) ? destinationsRes.data : [];
+        const destinationsCount = destinations.length;
+
+        // Fetch attractions for the first destination (if available) to compute count
+        let attractionsCount = 0;
+        if (destinations.length > 0 && destinations[0]?.id) {
+          const destinationId = destinations[0].id as string;
+          try {
+            const attractionsRes = await client.get(`/recommendations/destinations/${destinationId}/attractions?limit=50`);
+            const attractions = Array.isArray(attractionsRes.data) ? attractionsRes.data : [];
+            attractionsCount = attractions.length;
+          } catch (innerErr) {
+            console.error('Failed to fetch attractions for destination', destinationId, innerErr);
+          }
+        }
+
+        // Users count placeholder until endpoint exists
+        const usersCount = 0;
+
+        setSummary({ destinationsCount, attractionsCount, usersCount });
       } catch (err) {
-        console.error(err);
+        console.error('Failed to fetch dashboard summary', err);
+        setSummary({ destinationsCount: 0, attractionsCount: 0, usersCount: 0 });
       }
     };
     fetchSummary();
