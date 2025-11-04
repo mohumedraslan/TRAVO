@@ -12,15 +12,18 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      // TODO: replace with real backend endpoint
-      const res = await client.post('/auth/login', {
-        email,
-        password,
+      // Use correct backend endpoint with OAuth2PasswordRequestForm fields
+      const form = new URLSearchParams();
+      form.append('username', email);
+      form.append('password', password);
+      const res = await client.post('/user/login', form.toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
       Alert.alert('Logged in', `Welcome ${res.data?.user?.name || email}`);
       navigation.replace('Explore');
     } catch (err: any) {
-      Alert.alert('Login failed', err?.response?.data?.message || 'Please try again');
+      const msg = err?.response?.data?.detail || err?.message || 'Please try again';
+      Alert.alert('Login failed', msg);
     }
   };
 

@@ -7,7 +7,8 @@ export interface IdentifyResponse {
 
 export const identifyMonument = async (imageUri: string): Promise<IdentifyResponse> => {
   const formData = new FormData();
-  formData.append('file', {
+  // Backend expects field name 'image' per FastAPI route
+  formData.append('image', {
     uri: imageUri,
     type: 'image/jpeg',
     name: 'monument.jpg',

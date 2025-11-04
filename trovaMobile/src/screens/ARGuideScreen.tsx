@@ -1,9 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
+// VisionCamera is only available on native; dynamically require to avoid web bundling issues
+let Camera: any;
+let useCameraDevices: any;
+let visionCameraAvailable = false;
+if (Platform.OS !== 'web') {
+  try {
+    const VisionCamera = require('react-native-vision-camera');
+    Camera = VisionCamera.Camera;
+    useCameraDevices = VisionCamera.useCameraDevices;
+    visionCameraAvailable = true;
+  } catch (e) {
+    console.warn('VisionCamera not available, will use ImagePicker fallback');
+  }
+}
 import { identifyMonument } from '@/src/api/visionService';
 import * as tf from '@tensorflow/tfjs';
-import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
+// bundleResourceIO removed for web compatibility
+// import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import { router } from 'expo-router';
 
 interface MonumentInfo {
@@ -16,59 +30,82 @@ const ARGuideScreen: React.FC = () => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [monumentInfo, setMonumentInfo] = useState<MonumentInfo | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const cameraRef = useRef<Camera>(null);
-  const devices = useCameraDevices();
-  const device = devices.back;
+  const cameraRef = useRef<any>(null);
+  const devices = Platform.OS !== 'web' && visionCameraAvailable ? useCameraDevices?.() : null;
+  const device = devices?.back;
 
   // Request camera permissions
   useEffect(() => {
     (async () => {
-      const cameraPermission = await Camera.requestCameraPermission();
-      setHasPermission(cameraPermission === 'granted');
-      
-      // Initialize TensorFlow.js
-      await tf.ready();
-      console.log('TensorFlow.js is ready');
+      if (Platform.OS !== 'web') {
+        if (visionCameraAvailable) {
+          const cameraPermission = await Camera.requestCameraPermission();
+          setHasPermission(cameraPermission === 'granted');
+        } else {
+          const perm = await (await import('expo-image-picker')).requestCameraPermissionsAsync();
+          setHasPermission(perm.granted);
+        }
+        try {
+          await import('@tensorflow/tfjs-react-native');
+        } catch (e) {
+          console.warn('tfjs-react-native not available on this platform', e);
+        }
+        await tf.ready();
+        console.log('TensorFlow.js is ready');
+      } else {
+        // Web does not support VisionCamera; set permission to false and show fallback UI
+        setHasPermission(false);
+      }
     })();
   }, []);
 
   // Function to capture frame and send to backend
   const captureAndIdentify = async () => {
-    if (cameraRef.current && !isProcessing) {
-      try {
-        setIsProcessing(true);
-        
-        // Capture photo
+    if (Platform.OS === 'web') {
+      Alert.alert('Not supported on web', 'AR camera capture is only available on mobile (Expo Go).');
+      return;
+    }
+    if (isProcessing) return;
+    try {
+      setIsProcessing(true);
+      if (visionCameraAvailable && cameraRef.current) {
         const photo = await cameraRef.current.takePhoto({
           qualityPrioritization: 'speed',
           flash: 'off',
         });
-        
-        // Create form data for API request
-        const formData = new FormData();
-        formData.append('file', {
-          uri: `file://${photo.path}`,
-          type: 'image/jpeg',
-          name: 'monument.jpg',
-        } as any);
-        
-        // Send to backend
-        const response = await identifyMonument(`file://${photo.path}`);
-        
-        // Update state with monument info
+        const uri = `file://${photo.path}`;
+        const response = await identifyMonument(uri);
         if (response && response.identified_monument) {
           setMonumentInfo({
             name: response.identified_monument,
-            description: response.description || 'No description available',
+            description: 'No description available',
             confidence: response.confidence || 0,
           });
         }
-      } catch (error) {
-        console.error('Error identifying monument:', error);
-        Alert.alert('Error', 'Failed to identify monument. Please try again.');
-      } finally {
-        setIsProcessing(false);
+      } else {
+        const ImagePicker = await import('expo-image-picker');
+        const perm = await ImagePicker.requestCameraPermissionsAsync();
+        if (!perm.granted) {
+          Alert.alert('Permission required', 'Please grant camera access.');
+          return;
+        }
+        const result = await ImagePicker.launchCameraAsync({ quality: 0.8, base64: false });
+        if (!result.canceled && result.assets?.[0]?.uri) {
+          const response = await identifyMonument(result.assets[0].uri);
+          if (response && response.identified_monument) {
+            setMonumentInfo({
+              name: response.identified_monument,
+              description: 'No description available',
+              confidence: response.confidence || 0,
+            });
+          }
+        }
       }
+    } catch (error) {
+      console.error('Error identifying monument:', error);
+      Alert.alert('Error', 'Failed to identify monument. Please try again.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -88,6 +125,15 @@ const ARGuideScreen: React.FC = () => {
   }
 
   if (hasPermission === false) {
+    if (Platform.OS === 'web') {
+      return (
+        <View style={styles.container}>
+          <View style={styles.webFallback}>
+            <Text style={styles.webNote}>AR Guide camera is not supported on web. Please run on Expo Go (Android/iOS).</Text>
+          </View>
+        </View>
+      );
+    }
     return <View style={styles.container}><Text>No access to camera</Text></View>;
   }
 
@@ -210,6 +256,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  // Web fallback styles
+  webFallback: { width: '100%', height: 200, backgroundColor: '#222', borderRadius: 10, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  webNote: { fontSize: 16, color: '#ddd', textAlign: 'center' },
 });
 
 export default ARGuideScreen;
