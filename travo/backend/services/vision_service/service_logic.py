@@ -10,6 +10,8 @@ import cv2
 import numpy as np
 from PIL import Image
 import io
+import torch
+from .train_model import MonumentClassifier, device
 
 # Mock database of monuments
 MONUMENTS_DB = [
@@ -93,6 +95,44 @@ MONUMENTS_DB = [
     }
 ]
 
+IDENTIFICATION_MODEL = None
+DETECTION_MODEL = None
+LABELS = []
+
+def load_detection_model():
+    global DETECTION_MODEL, LABELS
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(current_dir, 'model.pth')
+    labels_path = os.path.join(current_dir, 'labels.json')
+
+    with open(labels_path, 'r') as f:
+        labels_data = json.load(f)
+
+    LABELS = labels_data.get('monuments', [])
+    num_classes = len(LABELS)
+
+    DETECTION_MODEL = MonumentClassifier(num_classes)
+    DETECTION_MODEL.load_state_dict(torch.load(model_path, map_location=device))
+    DETECTION_MODEL.to(device)
+    DETECTION_MODEL.eval()
+
+def load_identification_model():
+    global IDENTIFICATION_MODEL, LABELS
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(current_dir, 'model.pth')
+    labels_path = os.path.join(current_dir, 'labels.json')
+
+    with open(labels_path, 'r') as f:
+        labels_data = json.load(f)
+
+    LABELS = labels_data.get('monuments', [])
+    num_classes = len(LABELS)
+
+    IDENTIFICATION_MODEL = MonumentClassifier(num_classes)
+    IDENTIFICATION_MODEL.load_state_dict(torch.load(model_path, map_location=device))
+    IDENTIFICATION_MODEL.to(device)
+    IDENTIFICATION_MODEL.eval()
+
 async def detect_monuments(image_content: ByteString, confidence_threshold: float = 0.5) -> Dict:
     """Function for monument detection in images using PyTorch model
     
@@ -132,25 +172,13 @@ async def detect_monuments(image_content: ByteString, confidence_threshold: floa
         detected_monuments = []
         processing_start = datetime.now()
         
-        # Get model path and labels
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        model_path = os.path.join(current_dir, 'model.pth')
-        labels_path = os.path.join(current_dir, 'labels.json')
-        
-        with open(labels_path, 'r') as f:
-            labels_data = json.load(f)
-        
-        monuments = labels_data.get('monuments', [])
-        monument_names = [monument["name"] for monument in monuments]
-        num_classes = len(monument_names)
-        
         # Create mapping from labels to monument IDs
-        label_to_monument_id = {monument["name"]: monument["id"] for monument in monuments}
+        monument_names = [monument["name"] for monument in LABELS]
+        label_to_monument_id = {monument["name"]: monument["id"] for monument in LABELS}
         
-        # Try to load the model and process contours
-        model = load_model(num_classes, model_path)
-        model.eval()
-        
+        if DETECTION_MODEL is None:
+            raise RuntimeError("Detection model is not loaded.")
+
         for contour in large_contours[:3]:  # Limit to top 3 contours
             # Get the bounding box
             x, y, w, h = cv2.boundingRect(contour)
@@ -259,75 +287,52 @@ async def get_monument_info(monument_id: str) -> Optional[Dict]:
     return None
 
 
-def identify_monument(image_path: str) -> Dict:
-    """Identify a monument in an image using a simplified approach without PyTorch
+async def identify_monument(image_content: bytes) -> Dict:
+    """Identify a monument in an image using the trained PyTorch model.
     
     Args:
-        image_path: Path to the image file
+        image_content: The byte content of the image file.
         
     Returns:
-        Dictionary with identified monument name and confidence score
+        Dictionary with identified monument name and confidence score.
     """
-    # Load the labels.json file
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    labels_path = os.path.join(current_dir, 'labels.json')
-    
-    with open(labels_path, 'r') as f:
-        labels_data = json.load(f)
-    
-    monuments = labels_data.get('monuments', [])
-    
+    if IDENTIFICATION_MODEL is None:
+        raise RuntimeError("Identification model is not loaded.")
+
     try:
-        # Use OpenCV for basic preprocessing
-        image = cv2.imread(image_path)
-        
         # Preprocess the image
-        if image is not None:
-            # Resize to a standard size
-            image = cv2.resize(image, (224, 224))
+        nparr = np.frombuffer(image_content, np.uint8)
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        if image is None:
+            raise ValueError("Could not decode image.")
+
+        # Resize, convert to RGB, and create a PIL Image
+        image_resized = cv2.resize(image, (224, 224))
+        image_pil = Image.fromarray(cv2.cvtColor(image_resized, cv2.COLOR_BGR2RGB))
+
+        # Convert to tensor and normalize
+        image_tensor = torch.from_numpy(np.array(image_pil).transpose((2, 0, 1))).float() / 255.0
+        image_tensor = image_tensor.unsqueeze(0)  # Add batch dimension
+        image_tensor = image_tensor.to(device)
+
+        # Make prediction
+        with torch.no_grad():
+            outputs = IDENTIFICATION_MODEL(image_tensor)
+            probabilities = torch.nn.functional.softmax(outputs, dim=1)
+            confidence, predicted_idx = torch.max(probabilities, 1)
+            confidence_score = confidence.item()
             
-            # Convert to grayscale for simpler processing
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            
-            # Apply some basic preprocessing
-            blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-            edges = cv2.Canny(blurred, 50, 150)
-            
-            # For demo purposes, we'll use a simple heuristic based on the image
-            # In a real app, this would be replaced with actual ML model inference
-            edge_density = np.sum(edges > 0) / (edges.shape[0] * edges.shape[1])
-            
-            # Use edge density to influence monument selection (just for demo)
-            if edge_density > 0.1:
-                # More complex structures might have more edges
-                monument_types = [m for m in monuments if "tower" in m["name"].lower() 
-                                 or "castle" in m["name"].lower() 
-                                 or "cathedral" in m["name"].lower()]
-            else:
-                # Simpler structures
-                monument_types = [m for m in monuments if "statue" in m["name"].lower() 
-                                 or "memorial" in m["name"].lower() 
-                                 or "monument" in m["name"].lower()]
-            
-            # If our filtering returned no results, use all monuments
-            if not monument_types:
-                monument_types = monuments
-    except Exception as cv_error:
-        print(f"OpenCV processing error: {cv_error}")
-        monument_types = monuments
-    
-    # Return a monument from our filtered or full list
-    if monuments:
-        selected_monument = random.choice(monuments if not 'monument_types' in locals() else monument_types)
-        # Generate a random confidence score between 0.7 and 0.99
-        confidence = round(random.uniform(0.7, 0.99), 2)
+        # Get the predicted monument
+        predicted_monument = LABELS[predicted_idx.item()]
         
         return {
-            "identified_monument": selected_monument["name"],
-            "confidence": confidence,
-            "monument_id": selected_monument["id"]
+            "identified_monument": predicted_monument["name"],
+            "confidence": round(confidence_score, 2),
+            "monument_id": predicted_monument["id"]
         }
-    else:
+
+    except Exception as e:
+        print(f"Error during monument identification: {e}")
         return {
             "identified_monument": "Unknown",
             "confidence": 0.0,

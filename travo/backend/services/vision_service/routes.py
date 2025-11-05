@@ -61,22 +61,14 @@ async def identify_monument_in_image(image: UploadFile = File(...)):
             detail="File must be an image"
         )
     
-    # Create a temporary file to store the uploaded image
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp_file:
-        # Copy the uploaded file to the temporary file
-        shutil.copyfileobj(image.file, temp_file)
-        temp_file_path = temp_file.name
-    
     try:
+        # Read image content into memory
+        image_content = await image.read()
         # Call the identify_monument function
-        result = identify_monument(temp_file_path)
+        result = await identify_monument(image_content)
         return result
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error identifying monument: {str(e)}"
         )
-    finally:
-        # Clean up the temporary file
-        if os.path.exists(temp_file_path):
-            os.unlink(temp_file_path)

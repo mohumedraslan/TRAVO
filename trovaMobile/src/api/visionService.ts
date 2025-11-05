@@ -5,7 +5,7 @@ export interface IdentifyResponse {
   confidence: number;
 }
 
-export const identifyMonument = async (imageUri: string): Promise<IdentifyResponse> => {
+export const identifyMonument = async (imageUri: string): Promise<IdentifyResponse | null> => {
   const formData = new FormData();
   // Backend expects field name 'image' per FastAPI route
   formData.append('image', {
