@@ -71,3 +71,7 @@ data/datasets/*
 .env.development.local
 .env.test.local
 .env.production.local
+
+
+
+.pth

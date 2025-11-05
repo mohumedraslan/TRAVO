@@ -47,6 +47,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       <Button title="Login" onPress={handleLogin} />
       <View style={{ height: 16 }} />
       <Button title="Go to Explore" onPress={() => navigation.navigate('Explore')} />
+      <View style={styles.signupContainer}>
+        <Text>Don't have an account? </Text>
+        <Text style={styles.link} onPress={() => navigation.navigate('Signup')}>
+          Sign Up
+        </Text>
+      </View>
     </View>
   );
 };
@@ -55,6 +61,15 @@ const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 24 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 24, textAlign: 'center' },
   input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 },
+  signupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 24,
+  },
+  link: {
+    color: '#007AFF',
+    fontWeight: '600',
+  },
 });
 
 export default LoginScreen;

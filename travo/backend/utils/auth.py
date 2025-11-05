@@ -7,9 +7,9 @@ from typing import Optional, Annotated
 import os
 
 # Import User model and database session
-from travo.backend.services.user_service.database import get_db
-from travo.backend.services.user_service.service_logic import get_user_by_email
-from travo.backend.services.user_service.schemas import UserResponse
+from services.user_service.database import get_db
+from services.user_service.service_logic import get_user_by_email
+from services.user_service.schemas import UserResponse
 
 # JWT settings
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your-secret-key-for-development-only")
