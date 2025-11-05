@@ -1,9 +1,12 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
 from typing import List, Optional
+import os
+import tempfile
+import shutil
 
 # Import schemas and service logic
-from .schemas import MonumentDetectionResponse, MonumentInfo
-from .service_logic import detect_monuments, get_monument_info
+from .schemas import MonumentDetectionResponse, MonumentInfo, MonumentIdentificationResponse
+from .service_logic import detect_monuments, get_monument_info, identify_monument
 
 # Create router
 router = APIRouter()
@@ -46,3 +49,34 @@ async def get_monument_details(monument_id: str):
         )
     
     return monument
+
+
+# Identify monument in an uploaded image
+@router.post("/identify", response_model=MonumentIdentificationResponse)
+async def identify_monument_in_image(image: UploadFile = File(...)):
+    # Validate file type
+    if not image.content_type.startswith('image/'):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File must be an image"
+        )
+    
+    # Create a temporary file to store the uploaded image
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp_file:
+        # Copy the uploaded file to the temporary file
+        shutil.copyfileobj(image.file, temp_file)
+        temp_file_path = temp_file.name
+    
+    try:
+        # Call the identify_monument function
+        result = identify_monument(temp_file_path)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error identifying monument: {str(e)}"
+        )
+    finally:
+        # Clean up the temporary file
+        if os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)

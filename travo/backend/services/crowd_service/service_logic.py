@@ -1,256 +1,241 @@
-from typing import List, Optional, Tuple, Dict
-from datetime import date, datetime, timedelta
+import numpy as np
+import pandas as pd
+from datetime import datetime, time
+import pickle
+import os
 import random
+from typing import Dict, List, Tuple, Optional
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import OneHotEncoder
+from .schemas import CrowdLevel, CrowdPredictionRequest, CrowdPredictionResponse
 
-# Crowd level probabilities for different scenarios
-WEEKDAY_PROBS = {"low": 0.4, "moderate": 0.3, "high": 0.2, "very_high": 0.1}
-WEEKEND_PROBS = {"low": 0.1, "moderate": 0.3, "high": 0.4, "very_high": 0.2}
-HOLIDAY_PROBS = {"low": 0.05, "moderate": 0.15, "high": 0.3, "very_high": 0.5}
+# Constants
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "crowd_model.pkl")
+MONUMENT_PEAK_HOURS = {
+    "pyr_giza": [(10, 14), (15, 17)],  # 10AM-2PM and 3PM-5PM are peak hours
+    "sphinx": [(9, 12), (14, 16)],
+    "luxor": [(11, 15)],
+    "karnak": [(10, 13), (16, 18)],
+    "abu_simbel": [(8, 11), (14, 16)],
+    "valley_kings": [(9, 14)],
+    "philae": [(10, 15)],
+    "hatshepsut": [(9, 12), (15, 17)],
+}
 
-# Mock popular locations
-POPULAR_LOCATIONS = [
-    "Eiffel Tower", "Louvre Museum", "Colosseum", "Statue of Liberty",
-    "Great Wall of China", "Taj Mahal", "Machu Picchu", "Pyramids of Giza"
-]
+# Seasonal factors (higher values = more crowded)
+MONTH_FACTORS = {
+    1: 0.6,   # January
+    2: 0.7,   # February
+    3: 0.8,   # March
+    4: 0.9,   # April
+    5: 0.7,   # May
+    6: 0.6,   # June
+    7: 0.8,   # July
+    8: 0.9,   # August
+    9: 0.8,   # September
+    10: 1.0,  # October - peak season
+    11: 0.9,  # November
+    12: 0.8,  # December
+}
 
-async def get_crowd_prediction(
-    location: str,
-    date: Optional[date] = None,
-    time_range: Optional[Tuple[int, int]] = None
-) -> Dict:
-    """Generate a simulated crowd prediction for a location
+# Day factors (weekends are more crowded)
+DAY_FACTORS = {
+    0: 0.9,  # Monday
+    1: 0.8,  # Tuesday
+    2: 0.8,  # Wednesday
+    3: 0.9,  # Thursday
+    4: 1.0,  # Friday
+    5: 1.0,  # Saturday
+    6: 1.0,  # Sunday
+}
+
+
+def generate_synthetic_data(n_samples: int = 1000) -> pd.DataFrame:
+    """Generate synthetic data for training the crowd prediction model.
     
-    This is a placeholder for a real ML-based crowd prediction model.
-    In a production system, this would use historical data, current events,
-    weather forecasts, and other factors to predict crowd levels.
+    Args:
+        n_samples: Number of samples to generate
+        
+    Returns:
+        DataFrame with synthetic training data
     """
-    # Use current date if not provided
-    if date is None:
-        date = datetime.now().date()
+    data = []
+    monument_ids = list(MONUMENT_PEAK_HOURS.keys())
     
-    # Default to full day if time range not provided
-    if time_range is None:
-        time_range = (8, 20)  # 8 AM to 8 PM
-    
-    # Determine if it's a weekend
-    is_weekend = date.weekday() >= 5  # 5 = Saturday, 6 = Sunday
-    
-    # Determine if it's a holiday (simplified mock implementation)
-    is_holiday = (date.month == 12 and date.day == 25) or \
-                (date.month == 1 and date.day == 1) or \
-                (date.month == 7 and date.day == 4)
-    
-    # Select probability distribution based on day type
-    if is_holiday:
-        probs = HOLIDAY_PROBS
-    elif is_weekend:
-        probs = WEEKEND_PROBS
-    else:
-        probs = WEEKDAY_PROBS
-    
-    # Adjust probabilities based on location popularity
-    if location in POPULAR_LOCATIONS:
-        # Shift probabilities toward higher crowd levels for popular locations
-        probs = {
-            "low": max(0.05, probs["low"] - 0.2),
-            "moderate": probs["moderate"],
-            "high": probs["high"] + 0.1,
-            "very_high": probs["very_high"] + 0.1
-        }
-    
-    # Generate hourly predictions
-    hourly_predictions = []
-    for hour in range(time_range[0], time_range[1] + 1):
-        # Morning and evening tend to be less crowded
-        time_factor = 1.0
-        if hour < 10 or hour > 18:
-            time_factor = 0.7
-        elif 12 <= hour <= 14:  # Lunch time peak
-            time_factor = 1.3
+    for _ in range(n_samples):
+        monument_id = random.choice(monument_ids)
+        month = random.randint(1, 12)
+        day = random.randint(1, 28)  # Simplified to avoid month length issues
+        hour = random.randint(8, 19)  # Opening hours 8AM to 7PM
+        minute = random.choice([0, 15, 30, 45])
         
-        # Adjust probabilities based on time of day
-        hour_probs = {
-            k: min(1.0, v * time_factor) for k, v in probs.items()
-        }
+        # Calculate base crowd factor
+        crowd_factor = 0.0
         
-        # Normalize probabilities
-        total = sum(hour_probs.values())
-        hour_probs = {k: v / total for k, v in hour_probs.items()}
+        # Add time-based factor
+        time_factor = 0.0
+        for peak_start, peak_end in MONUMENT_PEAK_HOURS.get(monument_id, [(10, 15)]):
+            if peak_start <= hour < peak_end:
+                time_factor = 0.7
+                break
         
-        # Weighted random selection of crowd level
-        crowd_level = random.choices(
-            population=list(hour_probs.keys()),
-            weights=list(hour_probs.values()),
-            k=1
-        )[0]
+        # Add seasonal factor
+        season_factor = MONTH_FACTORS.get(month, 0.7)
         
-        # Estimate wait time based on crowd level
-        wait_times = {
-            "low": random.randint(5, 15),
-            "moderate": random.randint(15, 30),
-            "high": random.randint(30, 60),
-            "very_high": random.randint(60, 120)
-        }
+        # Add day of week factor (simplified)
+        day_of_week = (day % 7)  # Simplified calculation
+        day_factor = DAY_FACTORS.get(day_of_week, 0.8)
         
-        hourly_predictions.append({
-            "hour": hour,
-            "crowd_level": crowd_level,
-            "wait_time_minutes": wait_times[crowd_level]
-        })
-    
-    # Determine overall crowd level (mode of hourly predictions)
-    crowd_counts = {"low": 0, "moderate": 0, "high": 0, "very_high": 0}
-    for pred in hourly_predictions:
-        crowd_counts[pred["crowd_level"]] += 1
-    
-    overall_crowd_level = max(crowd_counts.items(), key=lambda x: x[1])[0]
-    
-    # Generate prediction factors
-    factors = []
-    if is_weekend:
-        factors.append({
-            "name": "Weekend",
-            "impact": 0.7,
-            "description": "Weekend days typically see higher visitor numbers"
-        })
-    if is_holiday:
-        factors.append({
-            "name": "Holiday",
-            "impact": 0.9,
-            "description": "Public holiday significantly increases crowd levels"
-        })
-    if location in POPULAR_LOCATIONS:
-        factors.append({
-            "name": "Popular Attraction",
-            "impact": 0.8,
-            "description": "This is one of the most visited attractions in the area"
-        })
-    
-    # Add some random factors for variety
-    possible_factors = [
-        {
-            "name": "Local Event",
-            "impact": 0.6,
-            "description": "A local event is taking place nearby"
-        },
-        {
-            "name": "Good Weather",
-            "impact": 0.5,
-            "description": "Pleasant weather conditions attract more visitors"
-        },
-        {
-            "name": "School Break",
-            "impact": 0.7,
-            "description": "School holidays increase family visits"
-        },
-        {
-            "name": "Off-Season",
-            "impact": -0.6,
-            "description": "Current travel season has fewer tourists"
-        }
-    ]
-    
-    # Add 1-2 random factors
-    for _ in range(random.randint(1, 2)):
-        if possible_factors:
-            factor = random.choice(possible_factors)
-            factors.append(factor)
-            possible_factors.remove(factor)
-    
-    return {
-        "location": location,
-        "date": date,
-        "overall_crowd_level": overall_crowd_level,
-        "hourly_predictions": hourly_predictions,
-        "factors": factors,
-        "last_updated": datetime.now()
-    }
-
-async def get_crowd_history(
-    location: str,
-    from_date: date,
-    to_date: date
-) -> Dict:
-    """Generate simulated historical crowd data
-    
-    This is a placeholder for actual historical data that would be
-    retrieved from a database in a production system.
-    """
-    # Validate date range
-    if from_date > to_date:
-        from_date, to_date = to_date, from_date
-    
-    # Limit to 90 days of history to avoid excessive data
-    days_diff = (to_date - from_date).days
-    if days_diff > 90:
-        from_date = date.fromordinal(to_date.toordinal() - 90)
-    
-    # Generate data points for each day in the range
-    data_points = []
-    current_date = from_date
-    
-    while current_date <= to_date:
-        # Determine if it's a weekend
-        is_weekend = current_date.weekday() >= 5
+        # Combine factors with some randomness
+        crowd_factor = (0.3 * time_factor + 0.4 * season_factor + 0.3 * day_factor) 
+        crowd_factor += random.uniform(-0.2, 0.2)  # Add noise
         
-        # Select appropriate probability distribution
-        if is_weekend:
-            probs = WEEKEND_PROBS
+        # Determine crowd level
+        if crowd_factor < 0.4:
+            crowd_level = CrowdLevel.LOW
+        elif crowd_factor < 0.7:
+            crowd_level = CrowdLevel.MEDIUM
         else:
-            probs = WEEKDAY_PROBS
+            crowd_level = CrowdLevel.HIGH
         
-        # Weighted random selection of crowd level
-        crowd_level = random.choices(
-            population=list(probs.keys()),
-            weights=list(probs.values()),
-            k=1
-        )[0]
-        
-        # Generate random peak hours (2-4 hours)
-        num_peak_hours = random.randint(2, 4)
-        peak_hours = sorted(random.sample(range(10, 19), num_peak_hours))  # 10 AM to 7 PM
-        
-        # Estimate total visitors based on crowd level
-        visitors_base = {
-            "low": random.randint(500, 1000),
-            "moderate": random.randint(1000, 2500),
-            "high": random.randint(2500, 5000),
-            "very_high": random.randint(5000, 10000)
-        }
-        
-        # Add some randomness to visitor numbers
-        total_visitors = int(visitors_base[crowd_level] * random.uniform(0.8, 1.2))
-        
-        data_points.append({
-            "date": current_date,
-            "average_crowd_level": crowd_level,
-            "peak_hours": peak_hours,
-            "total_visitors": total_visitors
+        # Create data point
+        data.append({
+            "monument_id": monument_id,
+            "month": month,
+            "day": day,
+            "hour": hour,
+            "minute": minute,
+            "crowd_level": crowd_level
         })
+    
+    return pd.DataFrame(data)
+
+
+def train_model() -> Tuple[RandomForestClassifier, OneHotEncoder]:
+    """Train a machine learning model for crowd prediction.
+    
+    Returns:
+        Tuple of (trained model, encoder)
+    """
+    # Generate synthetic data
+    df = generate_synthetic_data(2000)
+    
+    # Prepare features and target
+    X = df[['monument_id', 'month', 'day', 'hour', 'minute']]
+    y = df['crowd_level']
+    
+    # Encode categorical features
+    encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+    X_encoded = encoder.fit_transform(X[['monument_id']])
+    
+    # Combine with numerical features
+    X_numeric = X[['month', 'day', 'hour', 'minute']].values
+    X_combined = np.hstack([X_encoded, X_numeric])
+    
+    # Train model
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_combined, y)
+    
+    return model, encoder
+
+
+def save_model(model: RandomForestClassifier, encoder: OneHotEncoder) -> None:
+    """Save the trained model and encoder to disk.
+    
+    Args:
+        model: Trained RandomForestClassifier
+        encoder: Fitted OneHotEncoder
+    """
+    with open(MODEL_PATH, 'wb') as f:
+        pickle.dump((model, encoder), f)
+
+
+def load_model() -> Tuple[RandomForestClassifier, OneHotEncoder]:
+    """Load the trained model and encoder from disk.
+    
+    Returns:
+        Tuple of (trained model, encoder)
+    """
+    try:
+        with open(MODEL_PATH, 'rb') as f:
+            return pickle.load(f)
+    except (FileNotFoundError, EOFError):
+        # Train a new model if not found
+        model, encoder = train_model()
+        save_model(model, encoder)
+        return model, encoder
+
+
+def predict_crowd_level(request: CrowdPredictionRequest) -> CrowdPredictionResponse:
+    """Predict crowd level for a monument at a specific time.
+    
+    Args:
+        request: CrowdPredictionRequest with monument_id, month, day, and time
         
-        # Move to next day
-        current_date = date.fromordinal(current_date.toordinal() + 1)
+    Returns:
+        CrowdPredictionResponse with the prediction
+    """
+    # Parse time string
+    hour, minute = map(int, request.time.split(':'))
     
-    # Calculate trends
-    weekday_crowds = [p for p in data_points if p["date"].weekday() < 5]
-    weekend_crowds = [p for p in data_points if p["date"].weekday() >= 5]
+    # Load or train model
+    model, encoder = load_model()
     
-    # Convert crowd levels to numeric values for averaging
-    crowd_values = {"low": 0.25, "moderate": 0.5, "high": 0.75, "very_high": 1.0}
+    # Prepare input features
+    input_data = pd.DataFrame([
+        {
+            'monument_id': request.monument_id,
+            'month': request.month,
+            'day': request.day,
+            'hour': hour,
+            'minute': minute
+        }
+    ])
     
-    weekday_avg = sum(crowd_values[p["average_crowd_level"]] for p in weekday_crowds) / len(weekday_crowds) if weekday_crowds else 0
-    weekend_avg = sum(crowd_values[p["average_crowd_level"]] for p in weekend_crowds) / len(weekend_crowds) if weekend_crowds else 0
+    # Encode categorical features
+    X_encoded = encoder.transform(input_data[['monument_id']])
     
-    trends = {
-        "weekday_avg": round(weekday_avg, 2),
-        "weekend_avg": round(weekend_avg, 2),
-        "busiest_day": max(data_points, key=lambda x: crowd_values[x["average_crowd_level"]])["date"].strftime("%Y-%m-%d") if data_points else None
-    }
+    # Combine with numerical features
+    X_numeric = input_data[['month', 'day', 'hour', 'minute']].values
+    X_combined = np.hstack([X_encoded, X_numeric])
     
-    return {
-        "location": location,
-        "from_date": from_date,
-        "to_date": to_date,
-        "data_points": data_points,
-        "trends": trends
-    }
+    # Make prediction
+    prediction = model.predict(X_combined)[0]
+    confidence = max(model.predict_proba(X_combined)[0])
+    
+    # Calculate wait time based on crowd level
+    wait_time = None
+    if prediction == CrowdLevel.LOW:
+        wait_time = random.randint(5, 15)
+    elif prediction == CrowdLevel.MEDIUM:
+        wait_time = random.randint(15, 30)
+    elif prediction == CrowdLevel.HIGH:
+        wait_time = random.randint(30, 60)
+    
+    # Create response
+    prediction_time = datetime.now()
+    response = CrowdPredictionResponse(
+        monument_id=request.monument_id,
+        prediction_time=prediction_time,
+        crowd_level=prediction,
+        confidence=float(confidence),
+        wait_time_minutes=wait_time
+    )
+    
+    return response
+
+
+# Initialize model on module load
+def initialize_model():
+    """Initialize the model when the module is loaded."""
+    try:
+        load_model()
+    except Exception as e:
+        print(f"Error initializing crowd prediction model: {e}")
+        # Train a new model
+        model, encoder = train_model()
+        save_model(model, encoder)
+
+
+# Call initialization function
+initialize_model()

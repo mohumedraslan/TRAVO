@@ -1,0 +1,20 @@
+Collecting pandas
+  Using cached pandas-2.3.3-cp313-cp313-win_amd64.whl.metadata (19 kB)
+Requirement already satisfied: numpy>=1.26.0 in c:\users\moras\documents\github\travo\travo\backend\traeai-6\lib\site-packages (from pandas) (2.3.4)
+Collecting python-dateutil>=2.8.2 (from pandas)
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting pytz>=2020.1 (from pandas)
+  Using cached pytz-2025.2-py2.py3-none-any.whl.metadata (22 kB)
+Collecting tzdata>=2022.7 (from pandas)
+  Using cached tzdata-2025.2-py2.py3-none-any.whl.metadata (1.4 kB)
+Requirement already satisfied: six>=1.5 in c:\users\moras\documents\github\travo\travo\backend\traeai-6\lib\site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+Using cached pandas-2.3.3-cp313-cp313-win_amd64.whl (11.0 MB)
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Using cached pytz-2025.2-py2.py3-none-any.whl (509 kB)
+Using cached tzdata-2025.2-py2.py3-none-any.whl (347 kB)
+Installing collected packages: pytz, tzdata, python-dateutil, pandas
+
+Successfully installed pandas-2.3.3 python-dateutil-2.9.0.post0 pytz-2025.2 tzdata-2025.2
+
+[notice] A new release of pip is available: 25.2 -> 25.3
+[notice] To update, run: C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\TraeAI-6\Scripts\python.exe -m pip install --upgrade pip

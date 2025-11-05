@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import client from '../api/client';
 
 interface Attraction {
   id: string;
@@ -18,8 +18,8 @@ const ExploreScreen: React.FC<any> = ({ navigation }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const destRes = await axios.get('http://localhost:8000/api/recommendations/destinations');
-        const attrRes = await axios.get('http://localhost:8000/api/recommendations/destinations/1/attractions');
+        const destRes = await client.get('/recommendations/destinations');
+        const attrRes = await client.get('/recommendations/destinations/1/attractions');
         setAttractions(attrRes.data?.items || []);
         setRecommended(destRes.data?.items || []);
       } catch (err) {
