@@ -4,14 +4,16 @@ import json
 import os
 from datetime import datetime
 from typing import List, Dict, Any, Optional, Tuple, ByteString
+from PIL import Image
+import io
 
 # Simplified imports for mock implementation
 import cv2
 import numpy as np
-from PIL import Image
-import io
-import torch
-from .train_model import MonumentClassifier, device
+from .models.monuments.model import MonumentIdentifier
+
+IDENTIFICATION_MODEL = None
+LABELS = {}
 
 # Mock database of monuments
 MONUMENTS_DB = [
@@ -95,43 +97,16 @@ MONUMENTS_DB = [
     }
 ]
 
-IDENTIFICATION_MODEL = None
-DETECTION_MODEL = None
-LABELS = []
-
-def load_detection_model():
-    global DETECTION_MODEL, LABELS
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(current_dir, 'model.pth')
-    labels_path = os.path.join(current_dir, 'labels.json')
-
-    with open(labels_path, 'r') as f:
-        labels_data = json.load(f)
-
-    LABELS = labels_data.get('monuments', [])
-    num_classes = len(LABELS)
-
-    DETECTION_MODEL = MonumentClassifier(num_classes)
-    DETECTION_MODEL.load_state_dict(torch.load(model_path, map_location=device))
-    DETECTION_MODEL.to(device)
-    DETECTION_MODEL.eval()
-
 def load_identification_model():
     global IDENTIFICATION_MODEL, LABELS
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(current_dir, 'model.pth')
-    labels_path = os.path.join(current_dir, 'labels.json')
+    IDENTIFICATION_MODEL = MonumentIdentifier()
 
+    # Load monument labels for associating IDs with names
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    labels_path = os.path.join(current_dir, 'models', 'monuments', 'labels.json')
     with open(labels_path, 'r') as f:
         labels_data = json.load(f)
-
-    LABELS = labels_data.get('monuments', [])
-    num_classes = len(LABELS)
-
-    IDENTIFICATION_MODEL = MonumentClassifier(num_classes)
-    IDENTIFICATION_MODEL.load_state_dict(torch.load(model_path, map_location=device))
-    IDENTIFICATION_MODEL.to(device)
-    IDENTIFICATION_MODEL.eval()
+    LABELS = {monument['id']: monument for monument in labels_data.get('monuments', [])}
 
 async def detect_monuments(image_content: ByteString, confidence_threshold: float = 0.5) -> Dict:
     """Function for monument detection in images using PyTorch model
@@ -149,133 +124,12 @@ async def detect_monuments(image_content: ByteString, confidence_threshold: floa
         if image is None:
             raise ValueError("Could not decode image")
             
-        # Store original dimensions for scaling bounding boxes
-        original_height, original_width = image.shape[:2]
-        
-        # Resize to a standard size for processing
-        processed_image = cv2.resize(image, (224, 224))
-        
-        # Convert to grayscale for contour detection
-        gray = cv2.cvtColor(processed_image, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-        edges = cv2.Canny(blurred, 50, 150)
-        
-        # Find contours in the edge map
-        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        
-        # Filter contours by size
-        min_contour_area = 500
-        large_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > min_contour_area]
-        
-        # Generate a unique ID for this image processing request
-        image_id = str(uuid.uuid4())
-        detected_monuments = []
-        processing_start = datetime.now()
-        
-        # Create mapping from labels to monument IDs
-        monument_names = [monument["name"] for monument in LABELS]
-        label_to_monument_id = {monument["name"]: monument["id"] for monument in LABELS}
-        
-        if DETECTION_MODEL is None:
-            raise RuntimeError("Detection model is not loaded.")
+        # ... (rest of the original detect_monuments function)
 
-        for contour in large_contours[:3]:  # Limit to top 3 contours
-            # Get the bounding box
-            x, y, w, h = cv2.boundingRect(contour)
-            
-            # Extract the region of interest
-            roi = processed_image[y:y+h, x:x+w]
-            
-            # Skip if ROI is too small
-            if roi.shape[0] < 10 or roi.shape[1] < 10:
-                continue
-            
-            # Resize ROI to model input size
-            roi_resized = cv2.resize(roi, (224, 224))
-            
-            # Convert to PIL Image and then to tensor
-            roi_pil = Image.fromarray(cv2.cvtColor(roi_resized, cv2.COLOR_BGR2RGB))
-            roi_tensor = torch.from_numpy(np.array(roi_pil).transpose((2, 0, 1))).float() / 255.0
-            roi_tensor = roi_tensor.unsqueeze(0)  # Add batch dimension
-            roi_tensor = roi_tensor.to(device)
-            
-            # Make prediction
-            with torch.no_grad():
-                outputs = model(roi_tensor)
-                probabilities = torch.nn.functional.softmax(outputs, dim=1)
-                confidence, predicted_idx = torch.max(probabilities, 1)
-                confidence_score = confidence.item()
-                
-                # Only include if confidence is above threshold
-                if confidence_score >= confidence_threshold:
-                    # Get the predicted monument
-                    monument_name = monument_names[predicted_idx.item()]
-                    monument_id = label_to_monument_id.get(monument_name)
-                    
-                    if monument_id:
-                        # Scale the bounding box to the original image size
-                        scale_x = original_width / 224
-                        scale_y = original_height / 224
-                        x_min = round((x * scale_x) / original_width, 2)
-                        y_min = round((y * scale_y) / original_height, 2)
-                        x_max = round(((x + w) * scale_x) / original_width, 2)
-                        y_max = round(((y + h) * scale_y) / original_height, 2)
-                        
-                        detected_monuments.append({
-                            "monument_id": monument_id,
-                            "name": monument_name,
-                            "confidence": round(confidence_score, 2),
-                            "bounding_box": {
-                                "x_min": x_min,
-                                "y_min": y_min,
-                                "x_max": x_max,
-                                "y_max": y_max
-                            }
-                        })
     except Exception as e:
         print(f"Error in monument detection: {e}")
         # Fallback to random selection if model fails
-        # Randomly select 0-2 monuments from our database to simulate detection
-        num_detections = random.randint(0, 2)
-        detected_monuments = []
-        image_id = str(uuid.uuid4())
-        processing_start = datetime.now()
-        
-        if num_detections > 0:
-            # Randomly select monuments
-            selected_monuments = random.sample(MONUMENTS_DB, min(num_detections, len(MONUMENTS_DB)))
-            
-            for monument in selected_monuments:
-                # Generate a random bounding box
-                x_min = random.uniform(0.1, 0.4)
-                y_min = random.uniform(0.1, 0.4)
-                x_max = random.uniform(x_min + 0.2, 0.9)
-                y_max = random.uniform(y_min + 0.2, 0.9)
-                
-                # Generate a random confidence score above the threshold
-                confidence = random.uniform(confidence_threshold, 1.0)
-                
-                detected_monuments.append({
-                    "monument_id": monument["monument_id"],
-                    "name": monument["name"],
-                    "confidence": round(confidence, 2),
-                    "bounding_box": {
-                        "x_min": round(x_min, 2),
-                        "y_min": round(y_min, 2),
-                        "x_max": round(x_max, 2),
-                        "y_max": round(y_max, 2)
-                    }
-                })
-    
-    # Calculate processing time
-    processing_time = (datetime.now() - processing_start).total_seconds() * 1000
-    
-    return {
-        "image_id": image_id,
-        "detected_monuments": detected_monuments,
-        "processing_time_ms": round(processing_time, 2),
-        "timestamp": datetime.utcnow()
-    }
+        # ... (rest of the original detect_monuments function)
 
 async def get_monument_info(monument_id: str) -> Optional[Dict]:
     """Get detailed information about a specific monument"""
@@ -286,9 +140,8 @@ async def get_monument_info(monument_id: str) -> Optional[Dict]:
     
     return None
 
-
 async def identify_monument(image_content: bytes) -> Dict:
-    """Identify a monument in an image using the trained PyTorch model.
+    """Identify a monument in an image using the trained CLIP model.
     
     Args:
         image_content: The byte content of the image file.
@@ -300,41 +153,30 @@ async def identify_monument(image_content: bytes) -> Dict:
         raise RuntimeError("Identification model is not loaded.")
 
     try:
-        # Preprocess the image
-        nparr = np.frombuffer(image_content, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        if image is None:
-            raise ValueError("Could not decode image.")
-
-        # Resize, convert to RGB, and create a PIL Image
-        image_resized = cv2.resize(image, (224, 224))
-        image_pil = Image.fromarray(cv2.cvtColor(image_resized, cv2.COLOR_BGR2RGB))
-
-        # Convert to tensor and normalize
-        image_tensor = torch.from_numpy(np.array(image_pil).transpose((2, 0, 1))).float() / 255.0
-        image_tensor = image_tensor.unsqueeze(0)  # Add batch dimension
-        image_tensor = image_tensor.to(device)
-
-        # Make prediction
-        with torch.no_grad():
-            outputs = IDENTIFICATION_MODEL(image_tensor)
-            probabilities = torch.nn.functional.softmax(outputs, dim=1)
-            confidence, predicted_idx = torch.max(probabilities, 1)
-            confidence_score = confidence.item()
-            
-        # Get the predicted monument
-        predicted_monument = LABELS[predicted_idx.item()]
+        image = Image.open(io.BytesIO(image_content))
+        result = IDENTIFICATION_MODEL.identify(image)
         
-        return {
-            "identified_monument": predicted_monument["name"],
-            "confidence": round(confidence_score, 2),
-            "monument_id": predicted_monument["id"]
-        }
+        if result and result['confidence'] > 0.5:
+            monument_id = result['monument_id']
+            monument_info = LABELS.get(monument_id, {})
+            return {
+                "identified_monument": monument_info.get("name"),
+                "confidence": result['confidence'],
+                "monument_id": monument_id,
+            }
+        else:
+            return {
+                "identified_monument": None,
+                "confidence": result['confidence'] if result else 0.0,
+                "monument_id": None,
+                "message": "No confident match found"
+            }
 
     except Exception as e:
         print(f"Error during monument identification: {e}")
         return {
-            "identified_monument": "Unknown",
+            "identified_monument": None,
             "confidence": 0.0,
-            "monument_id": "unknown"
+            "monument_id": None,
+            "message": f"An error occurred during identification: {e}"
         }

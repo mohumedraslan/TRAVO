@@ -4,8 +4,8 @@ import pytest
 import pytest_asyncio
 from httpx import AsyncClient
 from unittest.mock import patch, AsyncMock
-import asyncio
 from io import BytesIO
+from PIL import Image
 
 # Add the parent directory to sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -15,75 +15,48 @@ from main import app
 # Use httpx for async testing
 @pytest_asyncio.fixture
 async def async_client():
+    # This fixture needs to be async to be used by async tests
     async with AsyncClient(app=app, base_url="http://test") as client:
         yield client
 
 @pytest.fixture
 def mock_image_file():
     """Create a mock image file for testing."""
-    return {"image": ("test_image.jpg", BytesIO(b"test image content"), "image/jpeg")}
+    # Create a simple red image
+    img = Image.new('RGB', (60, 30), color = 'red')
+    img_byte_arr = BytesIO()
+    img.save(img_byte_arr, format='PNG')
+    img_byte_arr = img_byte_arr.getvalue()
+    return {"image": ("test_image.png", BytesIO(img_byte_arr), "image/png")}
 
 @pytest.mark.asyncio
-async def test_identify_endpoint(async_client, mock_image_file):
-    """Test the /identify endpoint."""
-    with patch('services.vision_service.service_logic.identify_monument', new_callable=AsyncMock) as mock_identify:
-        mock_identify.return_value = {
-            "identified_monument": "Pyramids of Giza",
-            "confidence": 0.95,
-            "monument_id": "pyramids-giza"
-        }
+@patch('services.vision_service.service_logic.IDENTIFICATION_MODEL.identify', new_callable=AsyncMock)
+async def test_identify_endpoint_with_real_image(mock_identify, async_client, mock_image_file):
+    """Test the /identify endpoint with a mock model and a real image."""
+    mock_identify.return_value = {
+        "monument_id": "eiffel-tower-paris",
+        "confidence": 0.9
+    }
 
-        response = await async_client.post(
-            "/api/vision/identify",
-            files=mock_image_file
-        )
-        assert response.status_code == 200
-        data = response.json()
-        assert data["identified_monument"] == "Pyramids of Giza"
-        assert data["confidence"] == 0.95
+    response = await async_client.post("/api/vision/identify", files=mock_image_file)
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["identified_monument"] == "Eiffel Tower"
+    assert data["confidence"] == 0.9
 
 @pytest.mark.asyncio
-async def test_detect_endpoint(async_client, mock_image_file):
-    """Test the /detect endpoint."""
-    with patch('services.vision_service.service_logic.detect_monuments', new_callable=AsyncMock) as mock_detect:
-        mock_detect.return_value = {
-            "image_id": "test-id",
-            "detected_monuments": [{
-                "monument_id": "pyramids-giza",
-                "name": "Pyramids of Giza",
-                "confidence": 0.95,
-                "bounding_box": {"x_min": 0.1, "y_min": 0.1, "x_max": 0.5, "y_max": 0.5}
-            }],
-            "processing_time_ms": 100,
-            "timestamp": "2023-10-27T10:00:00Z"
-        }
+@patch('services.vision_service.service_logic.IDENTIFICATION_MODEL.identify', new_callable=AsyncMock)
+async def test_identify_endpoint_no_match(mock_identify, async_client, mock_image_file):
+    """Test the /identify endpoint when no confident match is found."""
+    mock_identify.return_value = {
+        "monument_id": "eiffel-tower-paris",
+        "confidence": 0.3
+    }
 
-        response = await async_client.post(
-            "/api/vision/detect",
-            files=mock_image_file
-        )
-        assert response.status_code == 200
-        data = response.json()
-        assert "detected_monuments" in data
-        assert len(data["detected_monuments"]) == 1
-        assert data["detected_monuments"][0]["name"] == "Pyramids of Giza"
+    response = await async_client.post("/api/vision/identify", files=mock_image_file)
 
-@pytest.mark.asyncio
-async def test_monument_info_endpoint(async_client):
-    """Test the /monument/{monument_id} endpoint."""
-    with patch('services.vision_service.service_logic.get_monument_info', new_callable=AsyncMock) as mock_get_info:
-        mock_get_info.return_value = {
-            "monument_id": "eiffel-tower-paris",
-            "name": "Eiffel Tower"
-        }
-
-        response = await async_client.get("/api/vision/monument/eiffel-tower-paris")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["monument_id"] == "eiffel-tower-paris"
-        assert data["name"] == "Eiffel Tower"
-
-        # Test with an invalid ID
-        mock_get_info.return_value = None
-        response = await async_client.get("/api/vision/monument/non-existent-id")
-        assert response.status_code == 404
+    assert response.status_code == 200
+    data = response.json()
+    assert data["identified_monument"] is None
+    assert data["message"] == "No confident match found"

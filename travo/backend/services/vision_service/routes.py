@@ -51,6 +51,8 @@ async def get_monument_details(monument_id: str):
     return monument
 
 
+from fastapi.responses import JSONResponse
+
 # Identify monument in an uploaded image
 @router.post("/identify", response_model=MonumentIdentificationResponse)
 async def identify_monument_in_image(image: UploadFile = File(...)):
@@ -66,7 +68,11 @@ async def identify_monument_in_image(image: UploadFile = File(...)):
         image_content = await image.read()
         # Call the identify_monument function
         result = await identify_monument(image_content)
-        return result
+
+        if result.get("monument_id"):
+            return JSONResponse(status_code=200, content=result)
+        else:
+            return JSONResponse(status_code=200, content=result)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
