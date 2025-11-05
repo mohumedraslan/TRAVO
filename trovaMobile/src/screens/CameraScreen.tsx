@@ -101,6 +101,7 @@ const CameraScreen: React.FC<any> = () => {
           Alert.alert('Error', 'Failed to take photo. Please try again.');
         }
       } else {
+        // Fallback to Expo ImagePicker when VisionCamera is unavailable
         const perm = await ImagePicker.requestCameraPermissionsAsync();
         if (!perm.granted) {
           Alert.alert('Permission required', 'Please grant camera access.');

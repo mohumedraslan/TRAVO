@@ -144,6 +144,9 @@ async def detect_monuments(image_content: ByteString, confidence_threshold: floa
         monument_names = [monument["name"] for monument in monuments]
         num_classes = len(monument_names)
         
+        # Create mapping from labels to monument IDs
+        label_to_monument_id = {monument["name"]: monument["id"] for monument in monuments}
+        
         # Try to load the model and process contours
         model = load_model(num_classes, model_path)
         model.eval()
@@ -179,7 +182,7 @@ async def detect_monuments(image_content: ByteString, confidence_threshold: floa
                 if confidence_score >= confidence_threshold:
                     # Get the predicted monument
                     monument_name = monument_names[predicted_idx.item()]
-                    monument_id = next((m["monument_id"] for m in MONUMENTS_DB if m["name"] == monument_name), None)
+                    monument_id = label_to_monument_id.get(monument_name)
                     
                     if monument_id:
                         # Scale the bounding box to the original image size
@@ -321,10 +324,12 @@ def identify_monument(image_path: str) -> Dict:
         
         return {
             "identified_monument": selected_monument["name"],
-            "confidence": confidence
+            "confidence": confidence,
+            "monument_id": selected_monument["id"]
         }
     else:
         return {
             "identified_monument": "Unknown",
-            "confidence": 0.0
+            "confidence": 0.0,
+            "monument_id": "unknown"
         }

@@ -19,7 +19,7 @@ from .service_logic import (
 from .database import get_db
 
 # Import JWT utilities
-from travo.backend.utils.auth import create_access_token, get_current_user
+from utils.auth import create_access_token, get_current_user
 
 # Create router
 router = APIRouter(prefix="/user", tags=["user"])

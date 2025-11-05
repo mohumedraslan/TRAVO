@@ -10,7 +10,7 @@ export default function DemoPage() {
   const [result, setResult] = useState<any>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const BACKEND_BASE = 'http://127.0.0.1:8000';
+  const BACKEND_BASE = 'http://127.0.0.1:8000/api';
   const IDENTIFY_PATH = '/vision/identify';
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

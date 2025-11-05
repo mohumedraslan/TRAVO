@@ -6,11 +6,11 @@ import uvicorn
 import os
 
 # Import the main API router
-from travo.backend.api.router import api_router
+from api.router import api_router
 
 # Socket.IO for real-time communication
 import socketio
-from travo.backend.services.assistant_service.service_logic import get_ai_response
+from services.assistant_service.service_logic import get_ai_response
 
 # Create FastAPI app
 app = FastAPI(
