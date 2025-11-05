@@ -24,9 +24,9 @@ pandas>=2.0.0
 joblib>=1.2.0  # For model serialization
 
 # Voice Processing
-speech-recognition>=3.10.0
+# speech-recognition>=3.10.0
 gTTS>=2.3.2  # Google Text-to-Speech
-TTS>=0.17.0  # Coqui TTS
+# TTS>=0.17.0  # Coqui TTS
 
 # Realtime Communication
 python-socketio>=5.11.0

@@ -1,23 +1,29 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
-import { Platform } from 'react-native';
 
-const extra = (Constants?.expoConfig?.extra as any) || {};
-let API_BASE: string = extra.API_URL || 'http://127.0.0.1:8000/api';
+// Function to get the API base URL from environment variables
+const getApiBaseUrl = (): string => {
+  // Access environment variables via expo-constants
+  const env = Constants.expoConfig?.extra;
 
-// Fix localhost resolution for Android emulator and common cases
-if (Platform.OS === 'android') {
-  if (API_BASE.includes('127.0.0.1')) {
-    API_BASE = API_BASE.replace('127.0.0.1', '10.0.2.2');
+  // Check for a specific API URL in the environment config
+  if (env?.API_URL) {
+    return env.API_URL;
   }
-  if (API_BASE.includes('localhost')) {
-    API_BASE = API_BASE.replace('localhost', '10.0.2.2');
-  }
-}
+
+  // Fallback for development environments
+  // Note: For Android emulators, you may need to use 'http://10.0.2.2:8000/api'
+  // For physical devices, you'll need to use your machine's local network IP.
+  return process.env.NODE_ENV === 'production'
+    ? 'https://your-production-api-domain.com/api' // Replace with your actual production URL
+    : 'http://localhost:8000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const client = axios.create({
-  baseURL: API_BASE,
-  timeout: 10000,
+  baseURL: API_BASE_URL,
+  timeout: 10000, // 10 seconds timeout
 });
 
 export default client;

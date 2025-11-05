@@ -4,9 +4,11 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 import os
+from config import settings
 
 # Import the main API router
 from api.router import api_router
+from services.vision_service.service_logic import load_identification_model, load_detection_model
 
 # Socket.IO for real-time communication
 import socketio
@@ -20,13 +22,27 @@ app = FastAPI(
 )
 
 # Configure CORS
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:8081",
+    # Add your production frontend URL here
+    # "https://your-frontend-domain.com",
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_event():
+    print("Loading ML models...")
+    load_identification_model()
+    load_detection_model()
+    print("ML models loaded successfully.")
 
 # Include the main API router
 app.include_router(api_router, prefix="/api")
@@ -70,7 +86,8 @@ async def assistant_query(sid, data):
         }
         await sio.emit("assistant_response", payload, to=sid)
     except Exception as e:
-        await sio.emit("assistant_response", {"answer": f"Error: {str(e)}"}, to=sid)
+        print(f"Error in assistant_query: {e}") # Log the full error for debugging
+        await sio.emit("assistant_response", {"answer": "An unexpected error occurred."}, to=sid)
 
 # API Spec endpoint
 @app.get("/api_spec.yaml")
@@ -88,4 +105,4 @@ async def root():
     }
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=settings.API_PORT, reload=True)
