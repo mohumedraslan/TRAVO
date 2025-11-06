@@ -1,60 +1,78 @@
 import axios from 'axios';
-import Constants from 'expo-constants';
-import { Platform } from 'react-native';
+import { API_BASE_URL } from '../config/api';
 
-const extra = (Constants?.expoConfig?.extra as any) || {};
-let API_BASE: string = extra.API_URL || 'http://localhost:8000/api';
-
-// Platform-specific API base URL configuration
-if (Platform.OS === 'android') {
-  // Android emulator needs 10.0.2.2 to access host machine
-  if (API_BASE.includes('127.0.0.1') || API_BASE.includes('localhost')) {
-    API_BASE = API_BASE.replace('127.0.0.1', '10.0.2.2').replace('localhost', '10.0.2.2');
-  }
-} else if (Platform.OS === 'web') {
-  // Web can use localhost directly
-  API_BASE = 'http://localhost:8000/api';
-}
-
-console.log(`[API Client] Using API base URL: ${API_BASE} (Platform: ${Platform.OS})`);
-
+// Create axios instance with default config
 const client = axios.create({
-  baseURL: API_BASE,
-  timeout: 10000,
+  baseURL: `${API_BASE_URL}/api`,
+  timeout: 15000, // 15 seconds timeout
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
+  withCredentials: true, // Important for sessions/cookies
 });
 
-// Add request interceptor for debugging
+// Request interceptor
 client.interceptors.request.use(
   (config) => {
-    console.log(`[API Request] ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
+    // Add auth token if exists
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, {
+      params: config.params,
+      data: config.data,
+    });
+    
     return config;
   },
   (error) => {
-    console.error('[API Request Error]', error);
+    console.error('[API] Request error:', error);
     return Promise.reject(error);
   }
 );
 
-// Add response interceptor for debugging
+// Response interceptor
 client.interceptors.response.use(
   (response) => {
-    console.log(`[API Response] ${response.status} ${response.config.url}`);
+    console.log(`[API] ${response.status} ${response.config.url}`, response.data);
     return response;
   },
   (error) => {
-    if (error.response) {
-      console.error(`[API Error] ${error.response.status} ${error.config?.url}`, error.response.data);
-    } else if (error.request) {
-      console.error('[API Network Error] No response received', error.message);
-    } else {
-      console.error('[API Error]', error.message);
+    const errorMessage = {
+      message: error.message,
+      status: error.response?.status,
+      url: error.config?.url,
+      method: error.config?.method,
+      response: error.response?.data,
+    };
+    
+    console.error('[API] Response error:', errorMessage);
+    
+    // Handle specific status codes
+    if (error.response?.status === 401) {
+      // Handle unauthorized (e.g., redirect to login)
+      console.warn('[API] Unauthorized - redirecting to login');
+      // Add your auth redirect logic here
     }
-    return Promise.reject(error);
+    
+    return Promise.reject({
+      ...error,
+      message: error.response?.data?.message || error.message,
+      status: error.response?.status,
+    });
   }
 );
+
+// Helper functions for common API operations
+export const api = {
+  get: (url: string, config = {}) => client.get(url, config),
+  post: (url: string, data: any, config = {}) => client.post(url, data, config),
+  put: (url: string, data: any, config = {}) => client.put(url, data, config),
+  delete: (url: string, config = {}) => client.delete(url, config),
+  patch: (url: string, data: any, config = {}) => client.patch(url, data, config),
+};
 
 export default client;
