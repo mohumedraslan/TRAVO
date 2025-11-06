@@ -6,9 +6,9 @@ import '@tensorflow/tfjs-react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { detectMonument } from '../services/monumentService';
 import SmartGuideChat from '../components/SmartGuideChat';
-// @ts-ignore - We'll implement this later
-const IconSymbol = ({ name, size, color }: { name: string; size: number; color: string }) => (
-  <span style={{ fontSize: size, color }}>{name}</span>
+// Simple icon component using Text
+const IconSymbol = ({ name, size, color, style }: { name: string; size: number; color: string; style?: any }) => (
+  <Text style={[{ fontSize: size, color }, style]}>{name}</Text>
 );
 
 // Only import VisionCamera on native platforms
