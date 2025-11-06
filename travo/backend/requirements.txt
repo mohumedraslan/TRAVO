@@ -23,10 +23,15 @@ numpy>=1.24.0
 pandas>=2.0.0
 joblib>=1.2.0  # For model serialization
 
+# CLIP for monument identification
+transformers>=4.30.0
+ftfy>=6.1.0
+clip @ git+https://github.com/openai/CLIP.git
+
 # Voice Processing
-speech-recognition>=3.10.0
+SpeechRecognition>=3.10.0
 gTTS>=2.3.2  # Google Text-to-Speech
-TTS>=0.17.0  # Coqui TTS
+coqui-tts
 
 # Realtime Communication
 python-socketio>=5.11.0

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, Image, TouchableOpacity, Modal, Platform } from 'react-native';
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { identifyMonument } from '@/src/api/visionService';
 import SmartGuideChat from '@/src/components/SmartGuideChat';
@@ -36,6 +38,21 @@ const CameraScreen: React.FC<any> = () => {
   const cameraRef = useRef<any>(null);
   const devices = Platform.OS !== 'web' && visionCameraAvailable ? useCameraDevices() : null;
   const device = devices?.back;
+  
+  // Initialize TensorFlow.js
+  const initTF = async () => {
+    try {
+      // Wait for TensorFlow to be ready
+      await tf.ready();
+      console.log('TensorFlow.js is ready');
+      
+      // Set backend to CPU for better compatibility
+      await tf.setBackend('cpu');
+      console.log('TensorFlow.js backend set to:', tf.getBackend());
+    } catch (error) {
+      console.error('Error initializing TensorFlow:', error);
+    }
+  };
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -44,7 +61,7 @@ const CameraScreen: React.FC<any> = () => {
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: 'images' as any, // Using string to avoid deprecated MediaTypeOptions
       quality: 0.8,
       base64: false,
     });
@@ -56,14 +73,28 @@ const CameraScreen: React.FC<any> = () => {
 
   // Request camera permissions for native platforms
   useEffect(() => {
+    // Initialize TensorFlow on component mount
+    initTF();
+    
+    // Request camera permissions for native platforms
     if (Platform.OS !== 'web') {
       (async () => {
         if (visionCameraAvailable) {
-          const cameraPermission = await Camera.requestCameraPermission();
-          setHasPermission(cameraPermission === 'granted');
+          try {
+            const cameraPermission = await Camera.requestCameraPermission();
+            setHasPermission(cameraPermission === 'granted');
+          } catch (error) {
+            console.error('Error requesting camera permission:', error);
+            setHasPermission(false);
+          }
         } else {
-          const perm = await ImagePicker.requestCameraPermissionsAsync();
-          setHasPermission(perm.granted);
+          try {
+            const perm = await ImagePicker.requestCameraPermissionsAsync();
+            setHasPermission(perm.granted);
+          } catch (error) {
+            console.error('Error requesting camera permission:', error);
+            setHasPermission(false);
+          }
         }
       })();
     }
@@ -122,11 +153,33 @@ const CameraScreen: React.FC<any> = () => {
   const identify = async (uri: string) => {
     try {
       setLoading(true);
-      const res = await identifyMonument(uri);
-      setMonument({ name: res.identified_monument, confidence: res.confidence });
-    } catch (err: any) {
-      console.error(err);
-      Alert.alert('Identification failed', err?.response?.data?.detail || 'Please try again.');
+      
+      // Make sure TensorFlow is ready
+      await tf.ready();
+      
+      // Convert image to tensor
+      const response = await fetch(uri);
+      const imageData = await response.blob();
+      const imageBitmap = await createImageBitmap(imageData);
+      const tensor = tf.browser.fromPixels(imageBitmap);
+      
+      // Process the tensor as needed for your model
+      // ... (your model processing code here)
+      
+      // Call the API
+      const result = await identifyMonument(uri);
+      if (result) {
+        setMonument({
+          name: result.monumentName,
+          confidence: result.confidence,
+        });
+      }
+      
+      // Clean up
+      tensor.dispose();
+    } catch (error) {
+      console.error('Error identifying monument:', error);
+      Alert.alert('Error', 'Failed to identify monument. Please try again.');
     } finally {
       setLoading(false);
     }

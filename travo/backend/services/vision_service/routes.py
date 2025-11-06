@@ -1,82 +1,69 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
+from fastapi.responses import JSONResponse
 from typing import List, Optional
 import os
 import tempfile
 import shutil
+import logging
 
-# Import schemas and service logic
-from .schemas import MonumentDetectionResponse, MonumentInfo, MonumentIdentificationResponse
-from .service_logic import detect_monuments, get_monument_info, identify_monument
+# Import schemas and new service logic
+from .schemas import MonumentIdentificationResponse
+from .new_service_logic import monument_service
 
 # Create router
 router = APIRouter()
+
+logger = logging.getLogger(__name__)
 
 # Test route
 @router.get("/test")
 async def test_vision_service():
     return {"status": "ok", "service": "vision_service"}
 
-# Upload image and detect monuments
-@router.post("/detect", response_model=MonumentDetectionResponse)
-async def detect_monuments_in_image(
-    image: UploadFile = File(...),
-    confidence_threshold: Optional[float] = 0.5
-):
-    # Validate file type
-    if not image.content_type.startswith('image/'):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="File must be an image"
-        )
-    
-    # Read image content
-    image_content = await image.read()
-    
-    # Call monument detection function
-    detection_result = await detect_monuments(image_content, confidence_threshold)
-    
-    return detection_result
-
-# Get information about a specific monument
-@router.get("/monument/{monument_id}", response_model=MonumentInfo)
-async def get_monument_details(monument_id: str):
-    monument = await get_monument_info(monument_id)
-    
-    if not monument:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Monument not found"
-        )
-    
-    return monument
-
-
 # Identify monument in an uploaded image
 @router.post("/identify", response_model=MonumentIdentificationResponse)
 async def identify_monument_in_image(image: UploadFile = File(...)):
-    # Validate file type
-    if not image.content_type.startswith('image/'):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="File must be an image"
-        )
-    
-    # Create a temporary file to store the uploaded image
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp_file:
-        # Copy the uploaded file to the temporary file
-        shutil.copyfileobj(image.file, temp_file)
-        temp_file_path = temp_file.name
-    
+    logger.info(f"Received request to identify monument in image: {image.filename}")
     try:
-        # Call the identify_monument function
-        result = identify_monument(temp_file_path)
-        return result
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error identifying monument: {str(e)}"
+        if not image.content_type.startswith("image/"):
+            logger.warning(f"Invalid file type uploaded: {image.content_type}")
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "identified_monument": None,
+                    "confidence": 0.0,
+                    "monument_id": None,
+                    "message": "Invalid file type. Please upload an image."
+                }
+            )
+
+        # Read image data
+        image_bytes = await image.read()
+        
+        # Identify the monument
+        result = monument_service.identify_monument(image_bytes)
+        logger.info(f"identify_monument returned: {result}")
+
+        # Check if we have a valid identification
+        if result.get("identified_monument") is None:
+            return JSONResponse(
+                status_code=404,
+                content=result
+            )
+
+        return JSONResponse(
+            status_code=200,
+            content=result
         )
-    finally:
-        # Clean up the temporary file
-        if os.path.exists(temp_file_path):
-            os.unlink(temp_file_path)
+
+    except Exception as e:
+        logger.error(f"An unexpected error occurred in identify_monument_in_image: {e}", exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={
+                "identified_monument": None,
+                "confidence": 0.0,
+                "monument_id": None,
+                "message": "Internal server error occurred"
+            }
+        )

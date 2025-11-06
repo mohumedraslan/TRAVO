@@ -1,0 +1,164 @@
+{
+  "monuments": [
+    {
+      "id": "1",
+      "name": "Eiffel Tower",
+      "description": "iconic iron tower in Paris, France",
+      "location": "Paris, France",
+      "category": "Tower",
+      "tags": ["landmark", "tower", "iron", "paris", "france", "tourist attraction"]
+    },
+    {
+      "id": "2",
+      "name": "Statue of Liberty",
+      "description": "famous statue in New York, USA",
+      "location": "New York, USA",
+      "category": "Statue",
+      "tags": ["statue", "liberty", "new york", "usa", "monument", "freedom"]
+    },
+    {
+      "id": "3",
+      "name": "Colosseum",
+      "description": "ancient amphitheater in Rome, Italy",
+      "location": "Rome, Italy",
+      "category": "Amphitheater",
+      "tags": ["colosseum", "rome", "italy", "ancient", "amphitheater", "gladiator"]
+    },
+    {
+      "id": "4",
+      "name": "Great Wall of China",
+      "description": "ancient fortification in China",
+      "location": "China",
+      "category": "Wall",
+      "tags": ["great wall", "china", "fortification", "ancient", "wall", "defense"]
+    },
+    {
+      "id": "5",
+      "name": "Machu Picchu",
+      "description": "ancient Incan city in Peru",
+      "location": "Cusco, Peru",
+      "category": "Archaeological Site",
+      "tags": ["machu picchu", "peru", "incan", "ancient", "city", "mountain"]
+    },
+    {
+      "id": "6",
+      "name": "Christ the Redeemer",
+      "description": "famous statue in Rio de Janeiro, Brazil",
+      "location": "Rio de Janeiro, Brazil",
+      "category": "Statue",
+      "tags": ["christ", "redeemer", "rio", "brazil", "statue", "jesus"]
+    },
+    {
+      "id": "7",
+      "name": "Taj Mahal",
+      "description": "beautiful mausoleum in Agra, India",
+      "location": "Agra, India",
+      "category": "Mausoleum",
+      "tags": ["taj mahal", "agra", "india", "mausoleum", "marble", "love"]
+    },
+    {
+      "id": "8",
+      "name": "Pyramids of Giza",
+      "description": "ancient pyramids in Egypt",
+      "location": "Giza, Egypt",
+      "category": "Pyramid",
+      "tags": ["pyramids", "giza", "egypt", "ancient", "pharaoh", "tomb"]
+    },
+    {
+      "id": "9",
+      "name": "Big Ben",
+      "description": "famous clock tower in London, UK",
+      "location": "London, UK",
+      "category": "Clock Tower",
+      "tags": ["big ben", "london", "uk", "clock", "tower", "parliament"]
+    },
+    {
+      "id": "10",
+      "name": "Sydney Opera House",
+      "description": "iconic opera house in Sydney, Australia",
+      "location": "Sydney, Australia",
+      "category": "Opera House",
+      "tags": ["sydney", "opera", "australia", "shell", "harbor", "performing arts"]
+    },
+    {
+      "id": "11",
+      "name": "Golden Gate Bridge",
+      "description": "suspension bridge in San Francisco, USA",
+      "location": "San Francisco, USA",
+      "category": "Bridge",
+      "tags": ["golden gate", "san francisco", "bridge", "suspension", "usa", "orange"]
+    },
+    {
+      "id": "12",
+      "name": "Stonehenge",
+      "description": "prehistoric monument in England",
+      "location": "Wiltshire, England",
+      "category": "Stone Circle",
+      "tags": ["stonehenge", "england", "prehistoric", "stones", "druid", "ancient"]
+    },
+    {
+      "id": "13",
+      "name": "Mount Rushmore",
+      "description": "mountain with presidential faces in South Dakota, USA",
+      "location": "South Dakota, USA",
+      "category": "Mountain Carving",
+      "tags": ["mount rushmore", "presidents", "usa", "mountain", "carving", "faces"]
+    },
+    {
+      "id": "14",
+      "name": "Petra",
+      "description": "ancient city carved into rock in Jordan",
+      "location": "Jordan",
+      "category": "Archaeological Site",
+      "tags": ["petra", "jordan", "ancient", "rock", "carved", "rose red city"]
+    },
+    {
+      "id": "15",
+      "name": "Chichen Itza",
+      "description": "ancient Mayan city in Mexico",
+      "location": "Yucatan, Mexico",
+      "category": "Archaeological Site",
+      "tags": ["chichen itza", "mexico", "mayan", "pyramid", "ancient", "civilization"]
+    },
+    {
+      "id": "16",
+      "name": "Notre Dame Cathedral",
+      "description": "famous cathedral in Paris, France",
+      "location": "Paris, France",
+      "category": "Cathedral",
+      "tags": ["notre dame", "paris", "france", "cathedral", "gothic", "church"]
+    },
+    {
+      "id": "17",
+      "name": "Sagrada Familia",
+      "description": "famous basilica in Barcelona, Spain",
+      "location": "Barcelona, Spain",
+      "category": "Basilica",
+      "tags": ["sagrada familia", "barcelona", "spain", "gaudi", "basilica", "architecture"]
+    },
+    {
+      "id": "18",
+      "name": "Leaning Tower of Pisa",
+      "description": "famous tilted tower in Pisa, Italy",
+      "location": "Pisa, Italy",
+      "category": "Tower",
+      "tags": ["leaning tower", "pisa", "italy", "tilted", "tower", "campanile"]
+    },
+    {
+      "id": "19",
+      "name": "Hagia Sophia",
+      "description": "historic mosque and museum in Istanbul, Turkey",
+      "location": "Istanbul, Turkey",
+      "category": "Mosque",
+      "tags": ["hagia sophia", "istanbul", "turkey", "mosque", "museum", "byzantine"]
+    },
+    {
+      "id": "20",
+      "name": "Angkor Wat",
+      "description": "ancient temple complex in Cambodia",
+      "location": "Siem Reap, Cambodia",
+      "category": "Temple",
+      "tags": ["angkor wat", "cambodia", "temple", "ancient", "khmer", "complex"]
+    }
+  ]
+}

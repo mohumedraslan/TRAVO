@@ -17,7 +17,7 @@ import io from 'socket.io-client';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import Constants from 'expo-constants';
 
-const API_BASE_URL = (Constants?.expoConfig?.extra as any)?.API_URL?.replace('/api', '') || 'http://127.0.0.1:8000';
+const API_BASE_URL = (Constants?.expoConfig?.extra as any)?.API_URL?.replace('/api', '') || 'http://192.168.182.1:3000';
 const IS_WEB = Platform.OS === 'web';
 
 interface Message {

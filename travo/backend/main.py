@@ -1,9 +1,33 @@
+import sys
+if sys.platform == 'win32':
+    # This is a workaround for a known issue with torchaudio on Windows
+    # where it fails to find the FFmpeg DLLs.
+    # See: https://github.com/pytorch/audio/issues/3789
+    try:
+        from torchaudio._extension.utils import _init_dll_path
+        _init_dll_path()
+    except ImportError:
+        # torchaudio is optional, skip if not installed
+        pass
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 import os
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("travo_backend.log"),
+        logging.StreamHandler()
+    ]
+)
+logging.getLogger('numba').setLevel(logging.WARNING)
 
 # Import the main API router
 from api.router import api_router
@@ -43,11 +67,11 @@ app.mount("/socket.io", socketio.ASGIApp(sio))
 @sio.event
 async def connect(sid, environ, auth):
     # Simple connect log, could be extended with auth
-    print(f"Socket connected: {sid}")
+    logging.info(f"Socket connected: {sid}")
 
 @sio.event
 async def disconnect(sid):
-    print(f"Socket disconnected: {sid}")
+    logging.info(f"Socket disconnected: {sid}")
 
 @sio.event
 async def assistant_query(sid, data):
@@ -70,6 +94,7 @@ async def assistant_query(sid, data):
         }
         await sio.emit("assistant_response", payload, to=sid)
     except Exception as e:
+        logging.error(f"Error in assistant_query: {e}", exc_info=True)
         await sio.emit("assistant_response", {"answer": f"Error: {str(e)}"}, to=sid)
 
 # API Spec endpoint
@@ -88,4 +113,4 @@ async def root():
     }
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
