@@ -33,6 +33,23 @@ from .utils import (
 # Mock data for itineraries
 MOCK_ITINERARIES = [
     {
+        "id": "mock-itinerary-1",
+        "user_id": "u1",
+        "title": "Cairo Historical Tour",
+        "description": "Explore the ancient wonders of Cairo including the Pyramids and Egyptian Museum",
+        "destination": "Cairo, Egypt",
+        "start_date": datetime.utcnow() + timedelta(days=7),
+        "end_date": datetime.utcnow() + timedelta(days=10),
+        "budget_level": BudgetLevel.MODERATE,
+        "tags": ["historical", "cultural", "adventure"],
+        "cover_image_url": "https://example.com/images/cairo.jpg",
+        "created_at": datetime.utcnow() - timedelta(days=5),
+        "updated_at": datetime.utcnow() - timedelta(days=2),
+        "total_activities": 8,
+        "total_cost": 650.00,
+        "currency": "USD"
+    },
+    {
         "id": "itin_1",
         "user_id": "u1",
         "title": "Weekend in Paris",

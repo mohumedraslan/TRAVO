@@ -22,8 +22,7 @@ from .database import get_db
 from utils.auth import create_access_token, get_current_user
 
 # Create router
-router = APIRouter(prefix="/user", tags=["user"])
-
+router = APIRouter(prefix="", tags=["user"])
 # OAuth2 scheme for token authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 

@@ -1,75 +1,73 @@
-// import * as FileSystem from 'expo-file-system';
-// import * as ImageManipulator from 'expo-image-manipulator';
-// import { api } from '../api/client';
+import * as FileSystem from 'expo-file-system/legacy';
+import { api } from '../api/client';
+import client from '../api/client';
 
 export interface MonumentDetectionResult {
   monumentName: string;
   confidence: number;
   description?: string;
   location?: string;
+  top3?: Array<{
+    monumentName: string;
+    confidence: number;
+  }>;
 }
 
 export const detectMonument = async (imageUri: string): Promise<MonumentDetectionResult> => {
   try {
     console.log(`[MonumentService] Starting monument detection for image: ${imageUri}`);
+    console.log(`[MonumentService] API Base URL: ${client.defaults.baseURL}`);
     
-    // For demo purposes, we'll use a mock response
-    // In a real app, you would send the image to your backend
-    const mockMonuments: MonumentDetectionResult[] = [
-      { 
-        monumentName: 'The Great Pyramid of Giza', 
-        confidence: 0.95, 
-        description: 'The last remaining wonder of the ancient world', 
-        location: 'Giza, Egypt' 
-      },
-      { 
-        monumentName: 'The Sphinx', 
-        confidence: 0.92, 
-        description: 'A limestone statue of a reclining sphinx', 
-        location: 'Giza, Egypt' 
-      },
-      { 
-        monumentName: 'Karnak Temple', 
-        confidence: 0.88, 
-        description: 'Vast temple complex in Luxor', 
-        location: 'Luxor, Egypt' 
-      },
-    ];
-    
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Return a random monument for demo
-    const randomIndex = Math.floor(Math.random() * mockMonuments.length);
-    return mockMonuments[randomIndex];
-    
-    // Uncomment this in production to use the real API
-    /*
-    // Prepare the image for upload
-    const resizedImage = await ImageManipulator.manipulateAsync(
-      imageUri,
-      [{ resize: { width: 800 } }],
-      { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG, base64: true }
-    );
-
-    const formData = new FormData();
-    formData.append('image', {
-      uri: imageUri,
-      name: 'monument.jpg',
-      type: 'image/jpeg',
-      data: resizedImage.base64,
-    } as any);
-
-    const response = await api.post('/vision/identify', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    // Read the image file as base64
+    const base64 = await FileSystem.readAsStringAsync(imageUri, {
+      encoding: 'base64',
     });
-
-    return response.data;
-    */
-  } catch (error) {
+    
+    console.log(`[MonumentService] Image converted to base64, length: ${base64.length}`);
+    
+    // Send to backend for detection
+    const response = await api.post('/vision/identify', {
+      image: base64,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 30000, // 30 seconds for model inference
+    });
+    
+    console.log(`[MonumentService] Detection result:`, JSON.stringify(response.data, null, 2));
+    
+    // Parse the new backend response format
+    const data = response.data;
+    const candidates = data.candidates || [];
+    
+    // Return the detection result with top-3 predictions
+    return {
+      monumentName: data.identified_monument || 'Unknown',
+      confidence: data.confidence || 0,
+      description: data.description,
+      location: data.location,
+      top3: candidates.map((c: any) => ({
+        monumentName: c.monument_name,
+        confidence: c.confidence
+      })),
+    };
+  } catch (error: any) {
     console.error('[MonumentService] Error detecting monument:', error);
+    console.error('[MonumentService] Error response:', error.response?.data);
+    console.error('[MonumentService] Error status:', error.response?.status);
+    
+    // Provide more specific error messages
+    if (error.response?.status === 404) {
+      throw new Error('Monument detection endpoint not found. Please check your backend configuration.');
+    } else if (error.response?.status === 500) {
+      throw new Error('Server error during monument detection. Please try again.');
+    } else if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      throw new Error('Detection timed out. Please try with a smaller image.');
+    } else if (error.code === 'ERR_NETWORK') {
+      throw new Error('Cannot connect to server. Please check your network connection.');
+    }
+    
     throw new Error('Failed to detect monument. Please try again.');
   }
 };

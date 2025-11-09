@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Body
+from fastapi.responses import JSONResponse
 from typing import Optional
+from pydantic import BaseModel
 import base64
 import logging
 
@@ -13,6 +15,11 @@ from .schemas import (
     QueryType
 )
 from .service_logic import get_ai_response, voice_to_text, text_to_voice
+from services.ai_integration import (
+    ask_simple_question,
+    ask_complex_question,
+    detect_landmark_from_base64
+)
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -23,43 +30,131 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["assistant"])
 
 
-@router.post("/ask", response_model=AssistantResponse)
-async def ask_assistant(query: AssistantQuery):
-    """Process a text query to the AI assistant.
+# New request model that handles optional params
+class NewAssistantQuery(BaseModel):
+    query: str
+    location: Optional[str] = None
+    query_type: str = "TEXT"
+    image: Optional[str] = None  # Base64 encoded image for IMAGE queries
+
+
+@router.post("/ask")
+async def ask_assistant(request: NewAssistantQuery):
+    """Process a text or image query to the AI assistant.
     
-    This endpoint accepts a text query and optional location context,
-    and returns a conversational response about monuments, their history,
-    or visiting tips.
+    Accepts:
+    - TEXT queries: Uses DeepSeek API for conversational responses
+    - IMAGE queries: Uses Google Vision for landmark detection, then DeepSeek for details
+    
+    Request body:
+    {
+        "query": "Your question",
+        "location": "Optional location context",
+        "query_type": "TEXT" or "IMAGE",
+        "image": "Base64 encoded image (required for IMAGE type)"
+    }
     """
     try:
-        # Log the incoming query
-        logger.info(f"Received query: {query.query} (type: {query.query_type}, location: {query.location})")
+        logger.info(f"Received query: {request.query} (type: {request.query_type}, location: {request.location})")
         
-        # Process the query based on its type
-        if query.query_type == QueryType.TEXT:
-            # Get AI response for text query
-            response_data = get_ai_response(query.query, query.location)
+        if request.query_type.upper() == "TEXT":
+            # Handle text query with DeepSeek
+            context = f"Location: {request.location}" if request.location else None
             
-            # Create response object
-            response = AssistantResponse(
-                answer=response_data["answer"],
-                related_monuments=response_data["related_monuments"],
-                confidence=response_data["confidence"]
+            # Use simple model for straightforward questions
+            response_text = ask_simple_question(request.query, context)
+            
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "type": "TEXT",
+                    "original_query": request.query,
+                    "deepseek_response": response_text,
+                    "location": request.location
+                }
             )
             
-            return response
+        elif request.query_type.upper() == "IMAGE":
+            # Handle image query with Google Vision + DeepSeek
+            if not request.image:
+                return JSONResponse(
+                    status_code=400,
+                    content={
+                        "error": "Image data required for IMAGE query type"
+                    }
+                )
+            
+            # Detect landmark using Google Vision
+            logger.info("Detecting landmark with Google Vision...")
+            vision_result = detect_landmark_from_base64(request.image)
+            
+            if not vision_result["success"]:
+                return JSONResponse(
+                    status_code=500,
+                    content={
+                        "type": "IMAGE",
+                        "original_query": request.query,
+                        "error": vision_result.get("error", "Landmark detection failed")
+                    }
+                )
+            
+            # Build context for DeepSeek
+            if vision_result.get("landmark_detected"):
+                landmark_name = vision_result["name"]
+                confidence = vision_result["confidence"]
+                
+                # Ask DeepSeek for details about the landmark
+                deepseek_query = f"Tell me about {landmark_name}. {request.query}"
+                context = f"Landmark detected: {landmark_name} (confidence: {confidence:.2f})"
+                if request.location:
+                    context += f"\nLocation: {request.location}"
+                
+                response_text = ask_complex_question(deepseek_query, context)
+                
+                return JSONResponse(
+                    status_code=200,
+                    content={
+                        "type": "IMAGE",
+                        "original_query": request.query,
+                        "landmark_detected": landmark_name,
+                        "confidence": confidence,
+                        "deepseek_response": response_text,
+                        "location": request.location
+                    }
+                )
+            else:
+                # No landmark detected, use labels
+                description = vision_result.get("description", "Unknown object")
+                
+                deepseek_query = f"I see {description} in an image. {request.query}"
+                response_text = ask_simple_question(deepseek_query)
+                
+                return JSONResponse(
+                    status_code=200,
+                    content={
+                        "type": "IMAGE",
+                        "original_query": request.query,
+                        "landmark_detected": None,
+                        "description": description,
+                        "deepseek_response": response_text,
+                        "location": request.location
+                    }
+                )
         else:
-            # Voice queries should be sent to the voice_to_text endpoint first
-            raise HTTPException(
+            return JSONResponse(
                 status_code=400,
-                detail="Voice queries should be sent to the /voice_to_text endpoint first"
+                content={
+                    "error": f"Invalid query_type: {request.query_type}. Must be TEXT or IMAGE"
+                }
             )
     
     except Exception as e:
-        logger.error(f"Error processing assistant query: {e}")
-        raise HTTPException(
+        logger.error(f"Error processing assistant query: {e}", exc_info=True)
+        return JSONResponse(
             status_code=500,
-            detail=f"Error processing query: {str(e)}"
+            content={
+                "error": f"Error processing query: {str(e)}"
+            }
         )
 
 

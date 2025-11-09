@@ -45023,3 +45023,1495 @@ AttributeError: 'list' object has no attribute 'get'
 2025-11-06 08:39:43,394 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
 2025-11-06 08:39:43,394 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
 2025-11-06 08:39:43,402 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-06 21:48:45,786 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-06 21:48:45,789 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-06 21:48:45,793 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-06 21:48:45,807 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-06 21:49:05,456 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-06 21:49:06,419 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-06 21:49:06,419 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-06 21:49:06,419 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-06 21:49:06,419 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-06 21:49:11,137 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-06 21:49:11,146 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-06 21:49:11,147 - matplotlib - DEBUG - interactive is False
+2025-11-06 21:49:11,151 - matplotlib - DEBUG - platform is win32
+2025-11-06 21:49:11,221 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-06 21:49:11,226 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-06 21:49:12,696 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-06 21:49:12,696 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-06 21:49:12,704 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-06 21:49:13,493 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-06 21:49:13,525 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-06 21:49:13,687 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-06 21:49:13,708 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-06 21:49:13,874 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-06 21:49:13,878 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-06 21:49:14,482 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-06 21:49:14,655 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-06 21:49:14,887 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-06 21:49:14,900 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-06 21:49:14,921 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-06 21:49:15,065 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-06 21:49:15,221 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-06 21:49:15,340 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-06 21:49:15,361 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-06 21:49:15,375 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-06 21:49:15,531 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-06 21:49:15,848 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-06 21:49:16,026 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-06 21:49:16,191 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-06 21:49:16,360 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-06 21:49:16,519 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-06 21:49:16,657 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-06 21:49:16,659 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-06 21:49:16,660 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-06 21:49:16,661 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-06 21:49:16,661 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-06 21:50:01,925 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-06 22:27:31,637 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-06 22:27:31,637 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-06 22:27:31,637 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-06 22:27:31,644 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-06 22:27:39,168 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-06 22:27:39,604 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-06 22:27:39,604 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-06 22:27:39,604 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-06 22:27:39,604 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-06 22:27:40,937 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-06 22:27:40,942 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-06 22:27:40,943 - matplotlib - DEBUG - interactive is False
+2025-11-06 22:27:40,946 - matplotlib - DEBUG - platform is win32
+2025-11-06 22:27:40,976 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-06 22:27:40,978 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-06 22:27:41,563 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-06 22:27:41,564 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-06 22:27:41,569 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-06 22:27:42,108 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-06 22:27:42,130 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-06 22:27:42,289 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-06 22:27:42,315 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-06 22:27:42,479 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-06 22:27:42,484 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-06 22:27:42,931 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-06 22:27:43,102 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-06 22:27:43,260 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-06 22:27:43,277 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-06 22:27:43,287 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-06 22:27:43,443 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-06 22:27:43,461 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-06 22:27:43,465 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-06 22:27:43,619 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-06 22:27:43,622 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-06 22:27:43,779 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-06 22:27:43,868 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-06 22:27:44,038 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-06 22:27:44,199 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-06 22:27:44,360 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-06 22:27:44,517 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-06 22:27:44,606 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-06 22:27:44,608 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-06 22:27:44,608 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-06 22:27:44,610 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-06 22:27:44,610 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-06 22:27:58,124 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 01:26:01,953 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 01:26:01,954 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 01:26:01,955 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 01:26:01,963 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 01:26:15,089 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 01:26:15,753 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 01:26:15,753 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 01:26:15,753 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 01:26:15,754 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 01:26:18,675 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 01:26:18,686 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 01:26:18,688 - matplotlib - DEBUG - interactive is False
+2025-11-07 01:26:18,695 - matplotlib - DEBUG - platform is win32
+2025-11-07 01:26:18,809 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 01:26:18,829 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 01:26:22,368 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 01:26:22,368 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 01:26:22,438 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 01:26:24,520 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 01:26:24,579 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 01:26:24,747 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 01:26:24,812 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 01:26:25,016 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 01:26:25,048 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 01:26:26,548 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 01:26:26,740 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 01:26:26,922 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 01:26:27,122 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 01:26:27,291 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 01:26:27,467 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 01:26:27,526 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 01:26:27,583 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 01:26:27,766 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 01:26:27,830 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 01:26:28,001 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 01:26:28,812 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 01:26:28,975 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 01:26:29,140 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 01:26:29,306 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 01:26:29,470 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 01:26:29,861 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 01:26:29,863 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 01:26:29,864 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 01:26:29,865 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 01:26:29,866 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 01:26:56,049 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 01:31:37,371 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 01:31:37,371 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 01:31:37,372 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 01:31:37,377 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 01:31:45,556 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 01:31:45,972 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 01:31:45,972 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 01:31:45,973 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 01:31:45,973 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 01:31:47,431 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 01:31:47,437 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 01:31:47,438 - matplotlib - DEBUG - interactive is False
+2025-11-07 01:31:47,442 - matplotlib - DEBUG - platform is win32
+2025-11-07 01:31:47,472 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 01:31:47,475 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 01:31:48,110 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 01:31:48,110 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 01:31:48,115 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 01:31:48,710 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 01:31:48,765 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 01:31:48,934 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 01:31:48,988 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 01:31:49,155 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 01:31:49,158 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 01:31:49,710 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 01:31:49,903 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 01:31:49,973 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 01:31:50,030 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 01:31:50,082 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 01:31:50,193 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 01:31:50,249 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 01:31:50,286 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 01:31:50,410 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 01:31:50,522 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 01:31:50,685 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 01:31:50,688 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 01:31:50,849 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 01:31:51,013 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 01:31:51,190 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 01:31:51,349 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 01:31:51,454 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 01:31:51,455 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 01:31:51,456 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 01:31:51,457 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 01:31:51,457 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 01:32:06,768 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 03:16:35,715 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 03:16:35,716 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 03:16:35,716 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 03:16:35,729 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 03:16:50,489 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 03:16:51,140 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 03:16:51,141 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 03:16:51,142 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 03:16:51,142 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 03:16:53,682 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 03:16:53,689 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 03:16:53,691 - matplotlib - DEBUG - interactive is False
+2025-11-07 03:16:53,695 - matplotlib - DEBUG - platform is win32
+2025-11-07 03:16:53,750 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 03:16:53,755 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 03:16:54,850 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 03:16:54,851 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 03:16:54,858 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 03:16:55,757 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 03:16:55,779 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 03:16:55,989 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 03:16:56,009 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 03:16:56,229 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 03:16:56,233 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 03:16:56,987 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 03:16:57,205 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 03:16:57,329 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 03:16:57,353 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 03:16:57,420 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 03:16:57,562 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 03:16:57,583 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 03:16:57,649 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 03:16:57,788 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 03:16:57,956 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 03:16:58,162 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 03:16:58,165 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 03:16:58,367 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 03:16:58,572 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 03:16:58,784 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 03:16:58,993 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 03:16:59,148 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 03:16:59,150 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 03:16:59,151 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 03:16:59,152 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 03:16:59,152 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 03:17:30,848 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 03:45:26,425 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 03:45:26,426 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 03:45:26,426 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 03:45:26,436 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 03:45:39,244 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 03:45:39,832 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 03:45:39,832 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 03:45:39,832 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 03:45:39,832 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 03:45:42,317 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 03:45:42,326 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 03:45:42,328 - matplotlib - DEBUG - interactive is False
+2025-11-07 03:45:42,332 - matplotlib - DEBUG - platform is win32
+2025-11-07 03:45:42,394 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 03:45:42,398 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 03:45:43,516 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 03:45:43,516 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 03:45:43,523 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 03:45:44,321 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 03:45:44,341 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 03:45:44,500 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 03:45:44,526 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 03:45:44,706 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 03:45:44,715 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 03:45:45,380 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 03:45:45,546 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 03:45:45,731 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 03:45:45,773 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 03:45:45,790 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 03:45:45,912 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 03:45:45,952 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 03:45:45,971 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 03:45:46,065 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 03:45:46,131 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 03:45:46,300 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 03:45:46,459 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 03:45:46,636 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 03:45:46,801 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 03:45:46,958 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 03:45:47,115 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 03:45:47,274 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 03:45:47,275 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 03:45:47,276 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 03:45:47,277 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 03:45:47,277 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 03:45:58,991 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 03:47:29,466 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 03:47:29,466 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 03:47:29,467 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:25]
+2025-11-07 03:47:29,467 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 03:47:29,467 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 03:47:29,468 - python_multipart.multipart - DEBUG - Calling on_field_name with data[26:34]
+2025-11-07 03:47:29,468 - python_multipart.multipart - DEBUG - Calling on_field_data with data[35:47]
+2025-11-07 03:47:29,468 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 03:47:29,468 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 03:48:43,758 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 03:48:43,758 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 03:48:43,758 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:25]
+2025-11-07 03:48:43,759 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 03:48:43,759 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 03:48:43,759 - python_multipart.multipart - DEBUG - Calling on_field_name with data[26:34]
+2025-11-07 03:48:43,759 - python_multipart.multipart - DEBUG - Calling on_field_data with data[35:47]
+2025-11-07 03:48:43,759 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 03:48:43,759 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 03:49:28,094 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 03:49:28,094 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 03:49:28,094 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:25]
+2025-11-07 03:49:28,094 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 03:49:28,095 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 03:49:28,095 - python_multipart.multipart - DEBUG - Calling on_field_name with data[26:34]
+2025-11-07 03:49:28,095 - python_multipart.multipart - DEBUG - Calling on_field_data with data[35:47]
+2025-11-07 03:49:28,096 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 03:49:28,096 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 05:38:17,822 - root - INFO - Socket connected: b3Vj0g5Q4uxgetWcAAAB
+2025-11-07 05:38:33,912 - root - ERROR - Error in assistant_query: 'list' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\main.py", line 89, in assistant_query
+    result = get_ai_response(query, location)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 179, in get_ai_response
+    monuments = load_monument_data()
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 162, in load_monument_data
+    return data.get("monuments", [])
+           ^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+2025-11-07 05:38:34,594 - services.assistant_service.routes - INFO - Received text-to-voice request (language: en)
+2025-11-07 05:38:34,678 - fsspec.local - DEBUG - open file: C:/Users/moras/Documents/GitHub/TRAVO/.venv/Lib/site-packages/TTS/.models.json
+2025-11-07 05:38:34,697 - TTS.utils.manage - INFO - Downloading model to C:\Users\moras\AppData\Local\tts\tts_models--en--ljspeech--tacotron2-DDC
+2025-11-07 05:38:34,841 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): github.com:443
+2025-11-07 05:38:35,527 - urllib3.connectionpool - DEBUG - https://github.com:443 "GET /coqui-ai/TTS/releases/download/v0.6.1_models/tts_models--en--ljspeech--tacotron2-DDC.zip HTTP/1.1" 302 0
+2025-11-07 05:38:35,531 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): release-assets.githubusercontent.com:443
+2025-11-07 05:38:36,043 - urllib3.connectionpool - DEBUG - https://release-assets.githubusercontent.com:443 "GET /github-production-release-asset/265612440/ac41b668-fa36-4cd3-8bdb-21d17682b1a5?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-11-07T04%3A36%3A39Z&rscd=attachment%3B+filename%3Dtts_models--en--ljspeech--tacotron2-DDC.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-11-07T03%3A36%3A15Z&ske=2025-11-07T04%3A36%3A39Z&sks=b&skv=2018-11-09&sig=1tVcATtT%2BZrjLAN7RLULakQzLwEugwKXypJcHAHQD20%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MjQ5MDMxNSwibmJmIjoxNzYyNDg2NzE1LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.pxd3xyo3NSigBjL3lFgKJ09q9diTkO3ZyDOKGxVr7tI&response-content-disposition=attachment%3B%20filename%3Dtts_models--en--ljspeech--tacotron2-DDC.zip&response-content-type=application%2Foctet-stream HTTP/1.1" 200 112684567
+2025-11-07 05:39:07,420 - TTS.utils.manage - INFO - Model's license - apache 2.0
+2025-11-07 05:39:07,421 - TTS.utils.manage - INFO - Check https://choosealicense.com/licenses/apache-2.0/ for more info.
+2025-11-07 05:39:07,427 - TTS.utils.manage - INFO - Downloading model to C:\Users\moras\AppData\Local\tts\vocoder_models--en--ljspeech--hifigan_v2
+2025-11-07 05:39:07,430 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): github.com:443
+2025-11-07 05:39:08,054 - urllib3.connectionpool - DEBUG - https://github.com:443 "GET /coqui-ai/TTS/releases/download/v0.6.1_models/vocoder_models--en--ljspeech--hifigan_v2.zip HTTP/1.1" 302 0
+2025-11-07 05:39:08,056 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): release-assets.githubusercontent.com:443
+2025-11-07 05:39:08,557 - urllib3.connectionpool - DEBUG - https://release-assets.githubusercontent.com:443 "GET /github-production-release-asset/265612440/36406a05-cf11-46a7-a5c9-a052cec60d81?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-11-07T04%3A36%3A26Z&rscd=attachment%3B+filename%3Dvocoder_models--en--ljspeech--hifigan_v2.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-11-07T03%3A36%3A17Z&ske=2025-11-07T04%3A36%3A26Z&sks=b&skv=2018-11-09&sig=kKwQTTq%2FEuQnrajq0KxwrmjbFqiiGWkavCPFCUi%2BNFk%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MjQ4NzA0OCwibmJmIjoxNzYyNDg2NzQ4LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.-86E9XUCIPbvuvL2vIFQcWPJVxGt6rH-fbCVv2AGSN8&response-content-disposition=attachment%3B%20filename%3Dvocoder_models--en--ljspeech--hifigan_v2.zip&response-content-type=application%2Foctet-stream HTTP/1.1" 200 3802006
+2025-11-07 05:39:09,945 - TTS.utils.manage - INFO - Model's license - apache 2.0
+2025-11-07 05:39:09,946 - TTS.utils.manage - INFO - Check https://choosealicense.com/licenses/apache-2.0/ for more info.
+2025-11-07 05:39:09,957 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 05:39:09,957 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 05:39:10,081 - TTS.tts.models - INFO - Using model: Tacotron2
+2025-11-07 05:39:10,185 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:10,185 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:10,186 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:10,186 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:10,186 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:10,187 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:10,187 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:10,187 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:10,187 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:10,188 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:10,188 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:10,188 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:10,188 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:10,188 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:10,189 - TTS.utils.audio.processor - INFO -  | do_trim_silence: True
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:10,190 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:10,495 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/model.pth
+2025-11-07 05:39:10,624 - TTS.tts.models.base_tacotron - INFO - Model's reduction rate `r` is set to: 1
+2025-11-07 05:39:10,626 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 05:39:10,626 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 05:39:10,632 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:10,632 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:10,632 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:10,632 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:10,633 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:10,633 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:10,633 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:10,633 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:10,633 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:10,633 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:10,634 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:10,635 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:10,636 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:10,636 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:10,636 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:10,636 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:10,636 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:10,637 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:10,659 - TTS.vocoder.models - INFO - Vocoder model: hifigan
+2025-11-07 05:39:10,659 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:10,660 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:10,660 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:10,660 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:10,660 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:10,660 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:10,661 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:10,661 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:10,661 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:10,661 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:10,661 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:10,662 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:10,662 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:10,662 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:10,662 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:10,662 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:10,663 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:10,663 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:10,663 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:10,663 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:10,663 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:10,663 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:10,664 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:10,664 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 05:39:10,664 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:10,664 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:10,665 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:10,669 - TTS.vocoder.models - INFO - Generator model: hifigan_generator
+2025-11-07 05:39:10,709 - TTS.vocoder.models - INFO - Discriminator model: hifigan_discriminator
+2025-11-07 05:39:10,978 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 05:39:11,008 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 05:39:11,036 - TTS.vocoder.models.hifigan_generator - INFO - Removing weight norm...
+2025-11-07 05:39:11,108 - TTS.utils.synthesizer - INFO - Text split into sentences.
+2025-11-07 05:39:11,109 - TTS.utils.synthesizer - INFO - Input: ["Error: 'list' object has no attribute 'get'"]
+2025-11-07 05:39:11,110 - TTS.tts.utils.text.tokenizer - DEBUG - Tokenizer input text: Error: 'list' object has no attribute 'get'
+2025-11-07 05:39:11,114 - TTS.tts.utils.text.tokenizer - DEBUG - Cleaned text: error, 'list' object has no attribute 'get'
+2025-11-07 05:39:12,877 - TTS.utils.synthesizer - INFO - Processing time: 1.812
+2025-11-07 05:39:12,877 - TTS.utils.synthesizer - INFO - Real-time factor: 0.361
+2025-11-07 05:39:13,105 - root - INFO - Socket disconnected: b3Vj0g5Q4uxgetWcAAAB
+2025-11-07 05:39:13,109 - root - INFO - Socket connected: r8FlmxY7aa6IoTJUAAAD
+2025-11-07 05:39:19,278 - root - ERROR - Error in assistant_query: 'list' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\main.py", line 89, in assistant_query
+    result = get_ai_response(query, location)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 179, in get_ai_response
+    monuments = load_monument_data()
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 162, in load_monument_data
+    return data.get("monuments", [])
+           ^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+2025-11-07 05:39:19,284 - services.assistant_service.routes - INFO - Received text-to-voice request (language: en)
+2025-11-07 05:39:19,285 - fsspec.local - DEBUG - open file: C:/Users/moras/Documents/GitHub/TRAVO/.venv/Lib/site-packages/TTS/.models.json
+2025-11-07 05:39:19,290 - TTS.utils.manage - INFO - tts_models/en/ljspeech/tacotron2-DDC is already downloaded.
+2025-11-07 05:39:19,292 - TTS.utils.manage - INFO - vocoder_models/en/ljspeech/hifigan_v2 is already downloaded.
+2025-11-07 05:39:19,294 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 05:39:19,295 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 05:39:19,297 - TTS.tts.models - INFO - Using model: Tacotron2
+2025-11-07 05:39:19,298 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:19,298 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:19,298 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:19,298 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:19,298 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:19,299 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | do_trim_silence: True
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:19,300 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:19,301 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:19,394 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/model.pth
+2025-11-07 05:39:19,442 - TTS.tts.models.base_tacotron - INFO - Model's reduction rate `r` is set to: 1
+2025-11-07 05:39:19,447 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 05:39:19,448 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 05:39:19,450 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:19,450 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:19,450 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:19,450 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:19,450 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:19,450 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:19,450 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:19,451 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:19,451 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:19,451 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:19,451 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:19,451 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:19,451 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:19,451 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:19,452 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:19,452 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:19,452 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:19,452 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:19,452 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:19,452 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:19,453 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:19,453 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:19,453 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:19,453 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:19,454 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:19,455 - TTS.vocoder.models - INFO - Vocoder model: hifigan
+2025-11-07 05:39:19,456 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:19,456 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:19,456 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:19,456 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:19,456 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:19,457 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:19,457 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:19,457 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:19,457 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:19,457 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:19,457 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:19,457 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:19,458 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:19,459 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:19,459 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:19,459 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:19,459 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:19,459 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:19,459 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:19,460 - TTS.vocoder.models - INFO - Generator model: hifigan_generator
+2025-11-07 05:39:19,479 - TTS.vocoder.models - INFO - Discriminator model: hifigan_discriminator
+2025-11-07 05:39:19,720 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 05:39:19,740 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 05:39:19,764 - TTS.vocoder.models.hifigan_generator - INFO - Removing weight norm...
+2025-11-07 05:39:19,783 - TTS.utils.synthesizer - INFO - Text split into sentences.
+2025-11-07 05:39:19,783 - TTS.utils.synthesizer - INFO - Input: ["Error: 'list' object has no attribute 'get'"]
+2025-11-07 05:39:19,783 - TTS.tts.utils.text.tokenizer - DEBUG - Tokenizer input text: Error: 'list' object has no attribute 'get'
+2025-11-07 05:39:19,783 - TTS.tts.utils.text.tokenizer - DEBUG - Cleaned text: error, 'list' object has no attribute 'get'
+2025-11-07 05:39:21,172 - TTS.utils.synthesizer - INFO - Processing time: 1.390
+2025-11-07 05:39:21,172 - TTS.utils.synthesizer - INFO - Real-time factor: 0.316
+2025-11-07 05:39:38,631 - root - ERROR - Error in assistant_query: 'list' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\main.py", line 89, in assistant_query
+    result = get_ai_response(query, location)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 179, in get_ai_response
+    monuments = load_monument_data()
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 162, in load_monument_data
+    return data.get("monuments", [])
+           ^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+2025-11-07 05:39:38,953 - services.assistant_service.routes - INFO - Received text-to-voice request (language: en)
+2025-11-07 05:39:38,954 - fsspec.local - DEBUG - open file: C:/Users/moras/Documents/GitHub/TRAVO/.venv/Lib/site-packages/TTS/.models.json
+2025-11-07 05:39:38,957 - TTS.utils.manage - INFO - tts_models/en/ljspeech/tacotron2-DDC is already downloaded.
+2025-11-07 05:39:38,959 - TTS.utils.manage - INFO - vocoder_models/en/ljspeech/hifigan_v2 is already downloaded.
+2025-11-07 05:39:38,960 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 05:39:38,961 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 05:39:38,963 - TTS.tts.models - INFO - Using model: Tacotron2
+2025-11-07 05:39:38,964 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:38,964 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:38,965 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:38,965 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:38,965 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:38,965 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:38,965 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:38,966 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:38,966 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:38,966 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:38,966 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:38,966 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:38,967 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:38,967 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:38,967 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:38,967 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:38,967 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:38,968 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:38,968 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:38,968 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:38,968 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:38,969 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:38,969 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:38,969 - TTS.utils.audio.processor - INFO -  | do_trim_silence: True
+2025-11-07 05:39:38,969 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:38,969 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:38,969 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:38,969 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:38,970 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:38,970 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:38,970 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:38,970 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:38,970 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:38,970 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:39,058 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/model.pth
+2025-11-07 05:39:39,110 - TTS.tts.models.base_tacotron - INFO - Model's reduction rate `r` is set to: 1
+2025-11-07 05:39:39,111 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 05:39:39,112 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 05:39:39,113 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:39,113 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:39,113 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:39,114 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:39,114 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:39,114 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:39,114 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:39,115 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:39,115 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:39,115 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:39,115 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:39,115 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:39,116 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:39,116 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:39,116 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:39,116 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:39,116 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:39,116 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:39,117 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:39,117 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:39,117 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:39,117 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:39,117 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:39,118 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 05:39:39,118 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:39,118 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:39,118 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:39,118 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:39,118 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:39,118 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:39,119 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:39,119 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:39,119 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:39,119 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:39,121 - TTS.vocoder.models - INFO - Vocoder model: hifigan
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 05:39:39,122 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 05:39:39,123 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 05:39:39,123 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 05:39:39,123 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 05:39:39,123 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 05:39:39,123 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 05:39:39,123 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 05:39:39,124 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 05:39:39,124 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 05:39:39,124 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 05:39:39,124 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 05:39:39,124 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 05:39:39,125 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 05:39:39,125 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 05:39:39,125 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 05:39:39,125 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 05:39:39,125 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 05:39:39,126 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 05:39:39,126 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 05:39:39,127 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 05:39:39,128 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 05:39:39,128 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 05:39:39,128 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 05:39:39,128 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 05:39:39,128 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 05:39:39,129 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 05:39:39,129 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 05:39:39,130 - TTS.vocoder.models - INFO - Generator model: hifigan_generator
+2025-11-07 05:39:39,150 - TTS.vocoder.models - INFO - Discriminator model: hifigan_discriminator
+2025-11-07 05:39:39,414 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 05:39:39,433 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 05:39:39,456 - TTS.vocoder.models.hifigan_generator - INFO - Removing weight norm...
+2025-11-07 05:39:39,471 - TTS.utils.synthesizer - INFO - Text split into sentences.
+2025-11-07 05:39:39,471 - TTS.utils.synthesizer - INFO - Input: ["Error: 'list' object has no attribute 'get'"]
+2025-11-07 05:39:39,471 - TTS.tts.utils.text.tokenizer - DEBUG - Tokenizer input text: Error: 'list' object has no attribute 'get'
+2025-11-07 05:39:39,471 - TTS.tts.utils.text.tokenizer - DEBUG - Cleaned text: error, 'list' object has no attribute 'get'
+2025-11-07 05:39:40,888 - TTS.utils.synthesizer - INFO - Processing time: 1.418
+2025-11-07 05:39:40,889 - TTS.utils.synthesizer - INFO - Real-time factor: 0.317
+2025-11-07 05:43:53,743 - root - INFO - Socket disconnected: r8FlmxY7aa6IoTJUAAAD
+2025-11-07 05:44:04,836 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 05:44:04,837 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 05:44:04,837 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 05:44:04,849 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 05:44:17,520 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 05:44:18,069 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 05:44:18,069 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 05:44:18,069 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 05:44:18,069 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 05:44:20,467 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 05:44:20,476 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 05:44:20,479 - matplotlib - DEBUG - interactive is False
+2025-11-07 05:44:20,483 - matplotlib - DEBUG - platform is win32
+2025-11-07 05:44:20,539 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 05:44:20,543 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 05:44:21,610 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 05:44:21,611 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 05:44:21,621 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 05:44:22,327 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 05:44:22,345 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 05:44:22,507 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 05:44:22,525 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 05:44:22,700 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 05:44:22,706 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 05:44:23,359 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 05:44:23,529 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 05:44:23,729 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 05:44:23,749 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 05:44:23,778 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 05:44:23,908 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 05:44:23,927 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 05:44:24,083 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 05:44:24,228 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 05:44:24,387 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 05:44:24,387 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 05:44:24,541 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 05:44:24,548 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 05:44:24,720 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 05:44:24,876 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 05:44:25,030 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 05:44:25,185 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 05:44:25,186 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 05:44:25,187 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 05:44:25,188 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 05:44:25,188 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 05:44:36,799 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 05:44:44,870 - root - INFO - Socket connected: YwYKai8vV36zKxEDAAAD
+2025-11-07 05:47:26,036 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:47:26,038 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 05:47:26,039 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:47:26,039 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:47:26,039 - python_multipart.multipart - DEBUG - Calling on_field_name with data[10:18]
+2025-11-07 05:47:26,040 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:47:26,040 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 05:51:57,439 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 05:51:57,440 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 05:51:57,440 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 05:51:57,445 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 05:52:04,381 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 05:52:04,681 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 05:52:04,682 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 05:52:04,682 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 05:52:04,682 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 05:52:06,140 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 05:52:06,146 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 05:52:06,147 - matplotlib - DEBUG - interactive is False
+2025-11-07 05:52:06,151 - matplotlib - DEBUG - platform is win32
+2025-11-07 05:52:06,184 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 05:52:06,187 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 05:52:06,766 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 05:52:06,766 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 05:52:06,770 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 05:52:07,342 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 05:52:07,360 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 05:52:07,514 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 05:52:07,533 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 05:52:07,690 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 05:52:07,695 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 05:52:08,171 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 05:52:08,344 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 05:52:08,515 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 05:52:08,549 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 05:52:08,567 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 05:52:08,692 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 05:52:08,725 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 05:52:08,743 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 05:52:08,847 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 05:52:08,901 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 05:52:09,022 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 05:52:09,177 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 05:52:09,329 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 05:52:09,486 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 05:52:09,642 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 05:52:09,797 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 05:52:09,896 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 05:52:09,898 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 05:52:09,898 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 05:52:09,899 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 05:52:09,900 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 05:52:16,581 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 05:52:22,854 - root - INFO - Socket connected: gF-tVD9hNdo2i-KaAAAB
+2025-11-07 05:52:36,025 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:52:36,026 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 05:52:36,026 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:52:36,026 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:52:36,026 - python_multipart.multipart - DEBUG - Calling on_field_name with data[10:18]
+2025-11-07 05:52:36,027 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:52:36,027 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 05:56:39,830 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:56:39,830 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 05:56:39,830 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:56:39,830 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:56:39,830 - python_multipart.multipart - DEBUG - Calling on_field_name with data[10:18]
+2025-11-07 05:56:39,831 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:56:39,831 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 05:58:15,701 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:58:15,701 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 05:58:15,701 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-07 05:58:15,701 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:58:15,702 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 05:58:15,702 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-07 05:58:15,702 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-07 05:58:15,703 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 05:58:15,704 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 06:01:29,436 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:01:29,437 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 06:01:29,437 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-07 06:01:29,438 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:01:29,438 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:01:29,438 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-07 06:01:29,438 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-07 06:01:29,439 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:01:29,440 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 06:16:18,137 - root - INFO - Socket disconnected: gF-tVD9hNdo2i-KaAAAB
+2025-11-07 06:16:26,727 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 06:16:26,728 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 06:16:26,728 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 06:16:26,734 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 06:16:34,077 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 06:16:34,437 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 06:16:34,437 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 06:16:34,437 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 06:16:34,437 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 06:16:35,861 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 06:16:35,867 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 06:16:35,868 - matplotlib - DEBUG - interactive is False
+2025-11-07 06:16:35,871 - matplotlib - DEBUG - platform is win32
+2025-11-07 06:16:35,904 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 06:16:35,907 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 06:16:36,460 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 06:16:36,460 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 06:16:36,466 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 06:16:37,029 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 06:16:37,050 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 06:16:37,287 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 06:16:37,305 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 06:16:37,649 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 06:16:37,654 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 06:16:38,127 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 06:16:38,312 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 06:16:38,487 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 06:16:38,502 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 06:16:38,520 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 06:16:38,658 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 06:16:38,675 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 06:16:38,693 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 06:16:38,810 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 06:16:38,851 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 06:16:38,966 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 06:16:39,120 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 06:16:39,278 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 06:16:39,436 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 06:16:39,593 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 06:16:39,749 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 06:16:39,844 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 06:16:39,845 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 06:16:39,846 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 06:16:39,847 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 06:16:39,847 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 06:16:46,409 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 06:16:53,100 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 06:16:53,100 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 06:16:53,100 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 06:16:53,106 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 06:16:59,602 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 06:16:59,920 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 06:16:59,920 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 06:16:59,920 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 06:16:59,921 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 06:17:01,115 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 06:17:01,121 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 06:17:01,122 - matplotlib - DEBUG - interactive is False
+2025-11-07 06:17:01,125 - matplotlib - DEBUG - platform is win32
+2025-11-07 06:17:01,157 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 06:17:01,159 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 06:17:01,771 - services.vision_service.new_service_logic - INFO - Initializing monument detection service...
+2025-11-07 06:17:01,772 - models.monuments.model - INFO - Loading CLIP model: openai/clip-vit-base-patch32
+2025-11-07 06:17:01,776 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 06:17:02,256 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 06:17:02,277 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 06:17:02,430 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 06:17:02,451 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/config.json HTTP/1.1" 200 0
+2025-11-07 06:17:02,617 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/model.safetensors HTTP/1.1" 404 0
+2025-11-07 06:17:02,624 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 06:17:03,326 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32 HTTP/1.1" 200 4964
+2025-11-07 06:17:03,492 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/main HTTP/1.1" 200 4272
+2025-11-07 06:17:03,604 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 06:17:03,622 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 06:17:03,785 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-11-07 06:17:03,807 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/openai/clip-vit-base-patch32/3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268/tokenizer_config.json HTTP/1.1" 200 0
+2025-11-07 06:17:03,923 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/discussions?p=0 HTTP/1.1" 200 33578
+2025-11-07 06:17:03,962 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 06:17:04,256 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-11-07 06:17:04,345 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/openai/clip-vit-base-patch32/commits/refs%2Fpr%2F66 HTTP/1.1" 200 5237
+2025-11-07 06:17:04,409 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/processor_config.json HTTP/1.1" 404 0
+2025-11-07 06:17:04,496 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors.index.json HTTP/1.1" 404 0
+2025-11-07 06:17:04,568 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.json HTTP/1.1" 404 0
+2025-11-07 06:17:04,654 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/refs%2Fpr%2F66/model.safetensors HTTP/1.1" 302 0
+2025-11-07 06:17:04,729 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-11-07 06:17:04,886 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /openai/clip-vit-base-patch32/resolve/main/audio_tokenizer_config.json HTTP/1.1" 404 0
+2025-11-07 06:17:05,041 - models.monuments.model - INFO - CLIP model loaded successfully on cpu
+2025-11-07 06:17:05,042 - models.monuments.model - INFO - Loaded 20 monument labels
+2025-11-07 06:17:05,043 - services.vision_service.new_service_logic - INFO - Loading pre-computed embeddings from C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\models\monuments\embeddings.pkl
+2025-11-07 06:17:05,044 - models.monuments.model - INFO - Loaded 20 precomputed embeddings
+2025-11-07 06:17:05,044 - services.vision_service.new_service_logic - INFO - Monument detection service initialized successfully!
+2025-11-07 06:17:14,534 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 06:17:19,834 - root - INFO - Socket connected: qCUFRxOuV-PiLcU6AAAC
+2025-11-07 06:20:04,680 - root - INFO - Socket disconnected: qCUFRxOuV-PiLcU6AAAC
+2025-11-07 06:20:14,462 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-07 06:20:14,463 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-07 06:20:14,463 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-07 06:20:14,472 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-07 06:20:23,705 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-07 06:20:24,190 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 06:20:24,190 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 06:20:24,190 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-07 06:20:24,190 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-07 06:20:26,371 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-07 06:20:26,378 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-07 06:20:26,379 - matplotlib - DEBUG - interactive is False
+2025-11-07 06:20:26,380 - matplotlib - DEBUG - platform is win32
+2025-11-07 06:20:26,423 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-07 06:20:26,426 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-07 06:20:35,433 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-07 06:20:38,061 - root - INFO - Socket connected: LttGKxW5NeeUIYquAAAC
+2025-11-07 06:22:09,122 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-07 06:22:09,125 - models.landmark_hf - INFO - Initializing landmark model on device: cpu
+2025-11-07 06:22:09,141 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-07 06:22:09,708 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-07 06:22:09,729 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-07 06:22:09,882 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 06:22:09,898 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-07 06:22:10,066 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-07 06:22:10,083 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-07 06:22:10,222 - models.landmark_hf - INFO - Number of classes: 1000
+2025-11-07 06:22:10,990 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'revolver, six-gun, six-shooter', 'confidence': 0.028041211888194084}, {'monument_name': 'oboe, hautboy, hautbois', 'confidence': 0.02565130591392517}, {'monument_name': 'bassoon', 'confidence': 0.017598634585738182}]
+2025-11-07 06:22:10,990 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'revolver, six-gun, six-shooter', 'confidence': 0.028041211888194084, 'monument_id': None, 'candidates': [{'monument_name': 'revolver, six-gun, six-shooter', 'confidence': 0.028041211888194084}, {'monument_name': 'oboe, hautboy, hautbois', 'confidence': 0.02565130591392517}, {'monument_name': 'bassoon', 'confidence': 0.017598634585738182}]}
+2025-11-07 06:22:10,999 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:22:10,999 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 06:22:10,999 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:22:10,999 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:22:11,000 - python_multipart.multipart - DEBUG - Calling on_field_name with data[10:18]
+2025-11-07 06:22:11,000 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:22:11,000 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 06:23:44,721 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:23:44,722 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 06:23:44,722 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-07 06:23:44,722 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:23:44,723 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:23:44,723 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-07 06:23:44,723 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-07 06:23:44,723 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:23:44,724 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 06:24:10,703 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:24:10,703 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 06:24:10,703 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-07 06:24:10,703 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:24:10,703 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:24:10,703 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-07 06:24:10,704 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-07 06:24:10,704 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:24:10,704 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 06:25:21,954 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:25:21,955 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 06:25:21,955 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-07 06:25:21,955 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:25:21,955 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:25:21,955 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-07 06:25:21,955 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-07 06:25:21,955 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:25:21,956 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 06:25:50,566 - root - ERROR - Error in assistant_query: 'list' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\main.py", line 89, in assistant_query
+    result = get_ai_response(query, location)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 179, in get_ai_response
+    monuments = load_monument_data()
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\assistant_service\service_logic.py", line 162, in load_monument_data
+    return data.get("monuments", [])
+           ^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+2025-11-07 06:25:51,228 - services.assistant_service.routes - INFO - Received text-to-voice request (language: en)
+2025-11-07 06:25:51,343 - fsspec.local - DEBUG - open file: C:/Users/moras/Documents/GitHub/TRAVO/.venv/Lib/site-packages/TTS/.models.json
+2025-11-07 06:25:51,368 - TTS.utils.manage - INFO - tts_models/en/ljspeech/tacotron2-DDC is already downloaded.
+2025-11-07 06:25:51,376 - TTS.utils.manage - INFO - vocoder_models/en/ljspeech/hifigan_v2 is already downloaded.
+2025-11-07 06:25:51,389 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 06:25:51,393 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/config.json
+2025-11-07 06:25:51,539 - TTS.tts.models - INFO - Using model: Tacotron2
+2025-11-07 06:25:51,649 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 06:25:51,649 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 06:25:51,649 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 06:25:51,650 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 06:25:51,650 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 06:25:51,650 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 06:25:51,650 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 06:25:51,651 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 06:25:51,651 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 06:25:51,651 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 06:25:51,652 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 06:25:51,652 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 06:25:51,652 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 06:25:51,652 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 06:25:51,652 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 06:25:51,652 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 06:25:51,653 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 06:25:51,653 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 06:25:51,653 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 06:25:51,653 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 06:25:51,653 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 06:25:51,653 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 06:25:51,653 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 06:25:51,654 - TTS.utils.audio.processor - INFO -  | do_trim_silence: True
+2025-11-07 06:25:51,654 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 06:25:51,654 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 06:25:51,654 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 06:25:51,655 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 06:25:51,655 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 06:25:51,655 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 06:25:51,656 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 06:25:51,656 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 06:25:51,656 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 06:25:51,656 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 06:25:51,949 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/tts_models--en--ljspeech--tacotron2-DDC/model.pth
+2025-11-07 06:25:52,130 - TTS.tts.models.base_tacotron - INFO - Model's reduction rate `r` is set to: 1
+2025-11-07 06:25:52,132 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 06:25:52,134 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/config.json
+2025-11-07 06:25:52,141 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 06:25:52,142 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 06:25:52,142 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 06:25:52,142 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 06:25:52,142 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 06:25:52,143 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 06:25:52,143 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 06:25:52,143 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 06:25:52,143 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 06:25:52,144 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 06:25:52,144 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 06:25:52,144 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 06:25:52,144 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 06:25:52,144 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 06:25:52,145 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 06:25:52,145 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 06:25:52,145 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 06:25:52,145 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 06:25:52,145 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 06:25:52,146 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 06:25:52,146 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 06:25:52,146 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 06:25:52,147 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 06:25:52,147 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 06:25:52,147 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 06:25:52,147 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 06:25:52,148 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 06:25:52,148 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 06:25:52,148 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 06:25:52,148 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 06:25:52,149 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 06:25:52,149 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 06:25:52,149 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 06:25:52,149 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 06:25:52,170 - TTS.vocoder.models - INFO - Vocoder model: hifigan
+2025-11-07 06:25:52,171 - TTS.utils.audio.processor - INFO - Setting up Audio Processor...
+2025-11-07 06:25:52,171 - TTS.utils.audio.processor - INFO -  | sample_rate: 22050
+2025-11-07 06:25:52,172 - TTS.utils.audio.processor - INFO -  | resample: False
+2025-11-07 06:25:52,172 - TTS.utils.audio.processor - INFO -  | num_mels: 80
+2025-11-07 06:25:52,172 - TTS.utils.audio.processor - INFO -  | log_func: np.log
+2025-11-07 06:25:52,172 - TTS.utils.audio.processor - INFO -  | min_level_db: -100
+2025-11-07 06:25:52,173 - TTS.utils.audio.processor - INFO -  | frame_shift_ms: None
+2025-11-07 06:25:52,173 - TTS.utils.audio.processor - INFO -  | frame_length_ms: None
+2025-11-07 06:25:52,173 - TTS.utils.audio.processor - INFO -  | ref_level_db: 20
+2025-11-07 06:25:52,174 - TTS.utils.audio.processor - INFO -  | fft_size: 1024
+2025-11-07 06:25:52,174 - TTS.utils.audio.processor - INFO -  | power: 1.5
+2025-11-07 06:25:52,174 - TTS.utils.audio.processor - INFO -  | preemphasis: 0.0
+2025-11-07 06:25:52,174 - TTS.utils.audio.processor - INFO -  | griffin_lim_iters: 60
+2025-11-07 06:25:52,175 - TTS.utils.audio.processor - INFO -  | signal_norm: False
+2025-11-07 06:25:52,175 - TTS.utils.audio.processor - INFO -  | symmetric_norm: True
+2025-11-07 06:25:52,175 - TTS.utils.audio.processor - INFO -  | mel_fmin: 0
+2025-11-07 06:25:52,176 - TTS.utils.audio.processor - INFO -  | mel_fmax: 8000.0
+2025-11-07 06:25:52,176 - TTS.utils.audio.processor - INFO -  | pitch_fmin: 1.0
+2025-11-07 06:25:52,176 - TTS.utils.audio.processor - INFO -  | pitch_fmax: 640.0
+2025-11-07 06:25:52,176 - TTS.utils.audio.processor - INFO -  | spec_gain: 1.0
+2025-11-07 06:25:52,177 - TTS.utils.audio.processor - INFO -  | stft_pad_mode: reflect
+2025-11-07 06:25:52,177 - TTS.utils.audio.processor - INFO -  | max_norm: 4.0
+2025-11-07 06:25:52,177 - TTS.utils.audio.processor - INFO -  | clip_norm: True
+2025-11-07 06:25:52,177 - TTS.utils.audio.processor - INFO -  | do_trim_silence: False
+2025-11-07 06:25:52,177 - TTS.utils.audio.processor - INFO -  | trim_db: 60
+2025-11-07 06:25:52,178 - TTS.utils.audio.processor - INFO -  | do_sound_norm: False
+2025-11-07 06:25:52,178 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_linear: True
+2025-11-07 06:25:52,178 - TTS.utils.audio.processor - INFO -  | do_amp_to_db_mel: True
+2025-11-07 06:25:52,178 - TTS.utils.audio.processor - INFO -  | do_rms_norm: False
+2025-11-07 06:25:52,179 - TTS.utils.audio.processor - INFO -  | db_level: None
+2025-11-07 06:25:52,179 - TTS.utils.audio.processor - INFO -  | stats_path: None
+2025-11-07 06:25:52,179 - TTS.utils.audio.processor - INFO -  | base: 2.718281828459045
+2025-11-07 06:25:52,179 - TTS.utils.audio.processor - INFO -  | hop_length: 256
+2025-11-07 06:25:52,179 - TTS.utils.audio.processor - INFO -  | win_length: 1024
+2025-11-07 06:25:52,184 - TTS.vocoder.models - INFO - Generator model: hifigan_generator
+2025-11-07 06:25:52,240 - TTS.vocoder.models - INFO - Discriminator model: hifigan_discriminator
+2025-11-07 06:25:52,684 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 06:25:52,752 - fsspec.local - DEBUG - open file: C:/Users/moras/AppData/Local/tts/vocoder_models--en--ljspeech--hifigan_v2/model.pth
+2025-11-07 06:25:52,810 - TTS.vocoder.models.hifigan_generator - INFO - Removing weight norm...
+2025-11-07 06:25:52,903 - TTS.utils.synthesizer - INFO - Text split into sentences.
+2025-11-07 06:25:52,903 - TTS.utils.synthesizer - INFO - Input: ["Error: 'list' object has no attribute 'get'"]
+2025-11-07 06:25:52,905 - TTS.tts.utils.text.tokenizer - DEBUG - Tokenizer input text: Error: 'list' object has no attribute 'get'
+2025-11-07 06:25:52,913 - TTS.tts.utils.text.tokenizer - DEBUG - Cleaned text: error, 'list' object has no attribute 'get'
+2025-11-07 06:25:55,508 - TTS.utils.synthesizer - INFO - Processing time: 2.661
+2025-11-07 06:25:55,509 - TTS.utils.synthesizer - INFO - Real-time factor: 0.598
+2025-11-07 06:25:55,834 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:25:55,835 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-07 06:25:55,835 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-07 06:25:55,835 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:25:55,835 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-07 06:25:55,836 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-07 06:25:55,836 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-07 06:25:55,836 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-07 06:25:55,836 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-07 06:28:11,247 - services.assistant_service.routes - INFO - Received query: string (type: QueryType.TEXT, location: string)
+2025-11-07 06:28:11,249 - services.assistant_service.routes - ERROR - Error processing assistant query: 'list' object has no attribute 'get'
+2025-11-07 06:34:30,338 - root - INFO - Socket disconnected: LttGKxW5NeeUIYquAAAC
+2025-11-08 11:00:26,370 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-08 11:00:26,371 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-08 11:00:26,371 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-08 11:00:26,374 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-08 11:00:31,434 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-08 11:00:31,645 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:00:31,645 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:00:31,645 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:00:31,645 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:00:32,550 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-08 11:00:32,554 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:00:32,555 - matplotlib - DEBUG - interactive is False
+2025-11-08 11:00:32,556 - matplotlib - DEBUG - platform is win32
+2025-11-08 11:00:32,578 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:00:32,580 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-08 11:00:36,224 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-08 11:00:38,229 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-11-08 11:02:30,060 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-08 11:02:30,061 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-08 11:02:30,061 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-08 11:02:30,067 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-08 11:02:36,846 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-08 11:02:37,236 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:02:37,236 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:02:37,236 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:02:37,236 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:02:38,944 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-08 11:02:38,952 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:02:38,954 - matplotlib - DEBUG - interactive is False
+2025-11-08 11:02:38,954 - matplotlib - DEBUG - platform is win32
+2025-11-08 11:02:38,996 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:02:39,000 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-08 11:02:46,738 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-08 11:06:06,064 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-08 11:06:06,065 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-08 11:06:06,066 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-08 11:06:06,066 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-08 11:06:06,066 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-08 11:06:06,066 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-08 11:06:06,066 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-08 11:06:06,066 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-08 11:06:06,067 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-08 11:12:19,839 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-08 11:12:19,839 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-08 11:12:19,840 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-08 11:12:19,846 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-08 11:12:26,708 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-08 11:12:27,016 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:12:27,016 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:12:27,017 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:12:27,017 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:12:28,310 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-08 11:12:28,315 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:12:28,316 - matplotlib - DEBUG - interactive is False
+2025-11-08 11:12:28,316 - matplotlib - DEBUG - platform is win32
+2025-11-08 11:12:28,344 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:12:28,347 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-08 11:12:34,934 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-08 11:12:40,691 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-08 11:12:40,691 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-08 11:12:40,691 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-08 11:12:40,695 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-08 11:12:45,189 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-08 11:12:45,385 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:12:45,385 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:12:45,386 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:12:45,386 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:12:46,286 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-08 11:12:46,290 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:12:46,292 - matplotlib - DEBUG - interactive is False
+2025-11-08 11:12:46,292 - matplotlib - DEBUG - platform is win32
+2025-11-08 11:12:46,313 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:12:46,315 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-08 11:12:51,502 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-08 11:13:28,360 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-08 11:13:28,360 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-08 11:13:28,360 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:25]
+2025-11-08 11:13:28,360 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-08 11:13:28,360 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-08 11:13:28,360 - python_multipart.multipart - DEBUG - Calling on_field_name with data[26:34]
+2025-11-08 11:13:28,360 - python_multipart.multipart - DEBUG - Calling on_field_data with data[35:46]
+2025-11-08 11:13:28,361 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-08 11:13:28,361 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-08 11:13:28,477 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:13:28,477 - models.landmark_hf - INFO - Initializing landmark model on device: cpu
+2025-11-08 11:13:28,481 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-08 11:13:29,081 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-08 11:13:29,152 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-08 11:13:29,359 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-08 11:13:29,378 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-08 11:13:29,629 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-08 11:13:29,648 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-08 11:13:29,775 - models.landmark_hf - INFO - Number of classes: 1000
+2025-11-08 11:13:30,630 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'revolver, six-gun, six-shooter', 'confidence': 0.02083388715982437}, {'monument_name': 'hook, claw', 'confidence': 0.015950612723827362}, {'monument_name': "plunger, plumber's helper", 'confidence': 0.015743521973490715}]
+2025-11-08 11:13:30,631 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'revolver, six-gun, six-shooter', 'confidence': 0.02083388715982437, 'monument_id': None, 'candidates': [{'monument_name': 'revolver, six-gun, six-shooter', 'confidence': 0.02083388715982437}, {'monument_name': 'hook, claw', 'confidence': 0.015950612723827362}, {'monument_name': "plunger, plumber's helper", 'confidence': 0.015743521973490715}]}
+2025-11-08 11:14:15,833 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-08 11:14:15,833 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-08 11:14:15,833 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:25]
+2025-11-08 11:14:15,834 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-08 11:14:15,834 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-08 11:14:15,834 - python_multipart.multipart - DEBUG - Calling on_field_name with data[26:34]
+2025-11-08 11:14:15,834 - python_multipart.multipart - DEBUG - Calling on_field_data with data[35:46]
+2025-11-08 11:14:15,834 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-08 11:14:15,835 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-08 11:14:15,869 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:14:16,007 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'revolver, six-gun, six-shooter', 'confidence': 0.02083388715982437}, {'monument_name': 'hook, claw', 'confidence': 0.015950612723827362}, {'monument_name': "plunger, plumber's helper", 'confidence': 0.015743521973490715}]
+2025-11-08 11:14:16,007 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'revolver, six-gun, six-shooter', 'confidence': 0.02083388715982437, 'monument_id': None, 'candidates': [{'monument_name': 'revolver, six-gun, six-shooter', 'confidence': 0.02083388715982437}, {'monument_name': 'hook, claw', 'confidence': 0.015950612723827362}, {'monument_name': "plunger, plumber's helper", 'confidence': 0.015743521973490715}]}
+2025-11-08 11:15:56,113 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:15:56,118 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x03\xc0'
+2025-11-08 11:15:56,119 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x05\x00'
+2025-11-08 11:15:56,119 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-08 11:15:56,119 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-08 11:15:56,272 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]
+2025-11-08 11:15:56,272 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561, 'monument_id': None, 'candidates': [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]}
+2025-11-08 11:20:18,801 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:20:18,804 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x01\x03'
+2025-11-08 11:20:18,804 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x00\xc2'
+2025-11-08 11:20:18,804 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-08 11:20:18,804 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-08 11:20:18,970 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'seashore, coast, seacoast, sea-coast', 'confidence': 0.07475104928016663}, {'monument_name': 'Arabian camel, dromedary, Camelus dromedarius', 'confidence': 0.051861342042684555}, {'monument_name': 'megalith, megalithic structure', 'confidence': 0.026950327679514885}]
+2025-11-08 11:20:18,971 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'seashore, coast, seacoast, sea-coast', 'confidence': 0.07475104928016663, 'monument_id': None, 'candidates': [{'monument_name': 'seashore, coast, seacoast, sea-coast', 'confidence': 0.07475104928016663}, {'monument_name': 'Arabian camel, dromedary, Camelus dromedarius', 'confidence': 0.051861342042684555}, {'monument_name': 'megalith, megalithic structure', 'confidence': 0.026950327679514885}]}
+2025-11-08 11:20:23,079 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:20:23,080 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x03U'
+2025-11-08 11:20:23,081 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x05\x00'
+2025-11-08 11:20:23,081 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-08 11:20:23,081 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-08 11:20:23,229 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'church, church building', 'confidence': 0.5042045712471008}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.18897973001003265}, {'monument_name': 'monastery', 'confidence': 0.13857442140579224}]
+2025-11-08 11:20:23,229 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'church, church building', 'confidence': 0.5042045712471008, 'monument_id': None, 'candidates': [{'monument_name': 'church, church building', 'confidence': 0.5042045712471008}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.18897973001003265}, {'monument_name': 'monastery', 'confidence': 0.13857442140579224}]}
+2025-11-08 11:20:32,677 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:20:32,678 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x03?'
+2025-11-08 11:20:32,678 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x05\x00'
+2025-11-08 11:20:32,678 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-08 11:20:32,678 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-08 11:20:32,836 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'Arabian camel, dromedary, Camelus dromedarius', 'confidence': 0.08914035558700562}, {'monument_name': 'obelisk', 'confidence': 0.051444586366415024}, {'monument_name': 'megalith, megalithic structure', 'confidence': 0.012559234164655209}]
+2025-11-08 11:20:32,837 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'Arabian camel, dromedary, Camelus dromedarius', 'confidence': 0.08914035558700562, 'monument_id': None, 'candidates': [{'monument_name': 'Arabian camel, dromedary, Camelus dromedarius', 'confidence': 0.08914035558700562}, {'monument_name': 'obelisk', 'confidence': 0.051444586366415024}, {'monument_name': 'megalith, megalithic structure', 'confidence': 0.012559234164655209}]}
+2025-11-08 11:20:38,666 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:20:38,666 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x03\xc0'
+2025-11-08 11:20:38,666 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x05\x00'
+2025-11-08 11:20:38,667 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-08 11:20:38,667 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-08 11:20:38,810 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]
+2025-11-08 11:20:38,810 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561, 'monument_id': None, 'candidates': [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]}
+2025-11-08 11:21:30,539 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:21:30,549 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\r\x90'
+2025-11-08 11:21:30,550 - PIL.TiffImagePlugin - DEBUG - tag: Model (272) - type: string (2) Tag Location: 34 - Data Location: 98 - value: b'Redmi Note 8 Pro\x00'
+2025-11-08 11:21:30,550 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x12\x10'
+2025-11-08 11:21:30,551 - PIL.TiffImagePlugin - DEBUG - tag: Make (271) - type: string (2) Tag Location: 58 - Data Location: 115 - value: b'Xiaomi\x00'
+2025-11-08 11:21:30,551 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00\x8e'
+2025-11-08 11:21:30,551 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-08 11:21:30,552 - PIL.TiffImagePlugin - DEBUG - tag: DateTime (306) - type: string (2) Tag Location: 94 - Data Location: 122 - value: b'2025:11:08 11:20:22\x00'
+2025-11-08 11:21:31,134 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.790628969669342}, {'monument_name': 'fountain', 'confidence': 0.03677690029144287}, {'monument_name': 'monitor', 'confidence': 0.01977030374109745}]
+2025-11-08 11:21:31,141 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'pedestal, plinth, footstall', 'confidence': 0.790628969669342, 'monument_id': None, 'candidates': [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.790628969669342}, {'monument_name': 'fountain', 'confidence': 0.03677690029144287}, {'monument_name': 'monitor', 'confidence': 0.01977030374109745}]}
+2025-11-08 11:28:56,135 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-08 11:28:56,142 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x03\xc0'
+2025-11-08 11:28:56,142 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x05\x00'
+2025-11-08 11:28:56,143 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-08 11:28:56,143 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-08 11:28:57,024 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]
+2025-11-08 11:28:57,025 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561, 'monument_id': None, 'candidates': [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]}
+2025-11-08 11:43:55,899 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-08 11:43:55,900 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-08 11:43:55,900 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-08 11:43:55,907 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-08 11:44:03,759 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-08 11:44:04,076 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:44:04,076 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:44:04,076 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:44:04,076 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:44:05,588 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-08 11:44:05,597 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:44:05,598 - matplotlib - DEBUG - interactive is False
+2025-11-08 11:44:05,599 - matplotlib - DEBUG - platform is win32
+2025-11-08 11:44:05,638 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:44:05,641 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-08 11:44:11,970 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-08 11:44:18,414 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-08 11:44:18,414 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-08 11:44:18,414 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-08 11:44:18,419 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-08 11:44:23,191 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-08 11:44:23,387 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:44:23,387 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:44:23,387 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:44:23,387 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:44:24,220 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-08 11:44:24,224 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:44:24,225 - matplotlib - DEBUG - interactive is False
+2025-11-08 11:44:24,226 - matplotlib - DEBUG - platform is win32
+2025-11-08 11:44:24,247 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:44:24,250 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-08 11:44:29,534 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-08 11:59:04,478 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-08 11:59:04,478 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-08 11:59:04,479 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-08 11:59:04,483 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-08 11:59:10,853 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-08 11:59:11,163 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:59:11,163 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:59:11,163 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-08 11:59:11,164 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-08 11:59:12,306 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-08 11:59:12,311 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:59:12,312 - matplotlib - DEBUG - interactive is False
+2025-11-08 11:59:12,313 - matplotlib - DEBUG - platform is win32
+2025-11-08 11:59:12,341 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-08 11:59:12,344 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-08 11:59:18,174 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-08 11:59:31,327 - services.assistant_service.routes - INFO - Received query: Tell me about the Sphinx (type: TEXT, location: Giza, Egypt)
+2025-11-08 11:59:31,327 - services.ai_integration.deepseek_client - INFO - Calling DeepSeek API with model: Distil-llama-8b_46e6iu
+2025-11-08 11:59:31,329 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): deepseek.huaweicloud.com:443
+2025-11-08 11:59:31,406 - services.ai_integration.deepseek_client - ERROR - DeepSeek API request error: HTTPSConnectionPool(host='deepseek.huaweicloud.com', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000021147110D70>: Failed to resolve 'deepseek.huaweicloud.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-08 11:59:48,336 - services.assistant_service.routes - INFO - Received query: Tell me about the Sphinx (type: TEXT, location: Giza, Egypt)
+2025-11-08 11:59:48,337 - services.ai_integration.deepseek_client - INFO - Calling DeepSeek API with model: Distil-llama-8b_46e6iu
+2025-11-08 11:59:48,338 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): deepseek.huaweicloud.com:443
+2025-11-08 11:59:48,341 - services.ai_integration.deepseek_client - ERROR - DeepSeek API request error: HTTPSConnectionPool(host='deepseek.huaweicloud.com', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000021147116710>: Failed to resolve 'deepseek.huaweicloud.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-08 11:59:51,971 - services.assistant_service.routes - INFO - Received query: Tell me about the pedestal in the museum. (type: TEXT, location: Egyptian Museum, Cairo)
+2025-11-08 11:59:51,972 - services.ai_integration.deepseek_client - INFO - Calling DeepSeek API with model: Distil-llama-8b_46e6iu
+2025-11-08 11:59:51,973 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): deepseek.huaweicloud.com:443
+2025-11-08 11:59:51,976 - services.ai_integration.deepseek_client - ERROR - DeepSeek API request error: HTTPSConnectionPool(host='deepseek.huaweicloud.com', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000021147117ED0>: Failed to resolve 'deepseek.huaweicloud.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-08 11:59:52,021 - services.assistant_service.routes - INFO - Received query: What can you tell me about this landmark? (type: IMAGE, location: Cairo, Egypt)
+2025-11-08 11:59:52,021 - services.assistant_service.routes - INFO - Detecting landmark with Google Vision...
+2025-11-08 11:59:52,400 - services.ai_integration.google_vision_client - ERROR - Error detecting landmark from base64: 403 This API method requires billing to be enabled. Please enable billing on project #737046218261 by visiting https://console.developers.google.com/billing/enable?project=737046218261 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry. [reason: "BILLING_DISABLED"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "vision.googleapis.com"
+}
+metadata {
+  key: "containerInfo"
+  value: "737046218261"
+}
+metadata {
+  key: "consumer"
+  value: "projects/737046218261"
+}
+, locale: "en-US"
+message: "This API method requires billing to be enabled. Please enable billing on project #737046218261 by visiting https://console.developers.google.com/billing/enable?project=737046218261 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry."
+, links {
+  description: "Google developers console billing"
+  url: "https://console.developers.google.com/billing/enable?project=737046218261"
+}
+]
+Traceback (most recent call last):
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\google\api_core\grpc_helpers.py", line 75, in error_remapped_callable
+    return callable_(*args, **kwargs)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\grpc\_interceptor.py", line 276, in __call__
+    response, ignored_call = self._with_call(
+                             ~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<4 lines>...
+        compression=compression,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\grpc\_interceptor.py", line 328, in _with_call
+    call = self._interceptor.intercept_unary_unary(
+        continuation, client_call_details, request
+    )
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\google\cloud\vision_v1\services\image_annotator\transports\grpc.py", line 87, in intercept_unary_unary
+    result = response.result()
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\grpc\_channel.py", line 438, in result
+    raise self
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\grpc\_interceptor.py", line 314, in continuation
+    response, call = self._thunk(new_method).with_call(
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<4 lines>...
+        compression=new_compression,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\grpc\_channel.py", line 1180, in with_call
+    return _end_unary_response_blocking(state, call, True, None)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\grpc\_channel.py", line 996, in _end_unary_response_blocking
+    raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.PERMISSION_DENIED
+	details = "This API method requires billing to be enabled. Please enable billing on project #737046218261 by visiting https://console.developers.google.com/billing/enable?project=737046218261 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry."
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:172.217.19.138:443 {grpc_status:7, grpc_message:"This API method requires billing to be enabled. Please enable billing on project #737046218261 by visiting https://console.developers.google.com/billing/enable?project=737046218261 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry."}"
+>
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\ai_integration\google_vision_client.py", line 155, in detect_landmark_from_base64
+    response = client.landmark_detection(image=image)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\google\cloud\vision_helpers\decorators.py", line 112, in inner
+    response = self.annotate_image(
+        request, retry=retry, timeout=timeout, metadata=metadata
+    )
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\google\cloud\vision_helpers\__init__.py", line 76, in annotate_image
+    r = self.batch_annotate_images(
+        requests=[request], retry=retry, timeout=timeout, metadata=metadata
+    )
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\google\cloud\vision_v1\services\image_annotator\client.py", line 840, in batch_annotate_images
+    response = rpc(
+        request,
+    ...<2 lines>...
+        metadata=metadata,
+    )
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+  File "C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\google\api_core\grpc_helpers.py", line 77, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 This API method requires billing to be enabled. Please enable billing on project #737046218261 by visiting https://console.developers.google.com/billing/enable?project=737046218261 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry. [reason: "BILLING_DISABLED"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "vision.googleapis.com"
+}
+metadata {
+  key: "containerInfo"
+  value: "737046218261"
+}
+metadata {
+  key: "consumer"
+  value: "projects/737046218261"
+}
+, locale: "en-US"
+message: "This API method requires billing to be enabled. Please enable billing on project #737046218261 by visiting https://console.developers.google.com/billing/enable?project=737046218261 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry."
+, links {
+  description: "Google developers console billing"
+  url: "https://console.developers.google.com/billing/enable?project=737046218261"
+}
+]
+2025-11-08 11:59:52,424 - services.assistant_service.routes - INFO - Received query: Test query (type: INVALID, location: None)
+2025-11-08 11:59:52,441 - services.assistant_service.routes - INFO - Received query: What is this? (type: IMAGE, location: None)
