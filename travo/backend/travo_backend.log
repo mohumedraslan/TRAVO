@@ -46515,3 +46515,154 @@ message: "This API method requires billing to be enabled. Please enable billing 
 ]
 2025-11-08 11:59:52,424 - services.assistant_service.routes - INFO - Received query: Test query (type: INVALID, location: None)
 2025-11-08 11:59:52,441 - services.assistant_service.routes - INFO - Received query: What is this? (type: IMAGE, location: None)
+2025-11-09 15:42:23,010 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-09 15:42:23,010 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-09 15:42:23,010 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-09 15:42:23,018 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-09 16:08:50,071 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-09 16:08:50,074 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-09 16:08:50,078 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-09 16:08:50,091 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-09 16:09:19,797 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-09 16:09:23,639 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-09 16:09:23,641 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-09 16:09:23,645 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-09 16:09:23,647 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-09 16:09:36,155 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-09 16:09:36,164 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-09 16:09:36,166 - matplotlib - DEBUG - interactive is False
+2025-11-09 16:09:36,167 - matplotlib - DEBUG - platform is win32
+2025-11-09 16:09:36,244 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-09 16:09:36,249 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-09 16:10:03,994 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-09 16:25:00,653 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-09 16:25:00,653 - models.landmark_hf - INFO - Initializing landmark model on device: cpu
+2025-11-09 16:25:00,665 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-09 16:25:01,365 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-09 16:25:01,386 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-09 16:25:01,561 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-09 16:25:01,586 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-09 16:25:01,766 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-09 16:25:01,788 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-09 16:25:01,930 - models.landmark_hf - INFO - Number of classes: 1000
+2025-11-09 16:25:01,957 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x03\xc0'
+2025-11-09 16:25:01,957 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x05\x00'
+2025-11-09 16:25:01,957 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-09 16:25:01,958 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-09 16:25:03,139 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]
+2025-11-09 16:25:03,139 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561, 'monument_id': None, 'candidates': [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.9834485650062561}, {'monument_name': 'obelisk', 'confidence': 0.0015132356202229857}, {'monument_name': 'bell cote, bell cot', 'confidence': 0.001442472916096449}]}
+2025-11-09 17:29:14,190 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-09 17:29:14,191 - python_multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2025-11-09 17:29:14,192 - python_multipart.multipart - DEBUG - Calling on_field_data with data[9:34]
+2025-11-09 17:29:14,192 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-09 17:29:14,192 - python_multipart.multipart - DEBUG - Calling on_field_start with no data
+2025-11-09 17:29:14,192 - python_multipart.multipart - DEBUG - Calling on_field_name with data[35:43]
+2025-11-09 17:29:14,193 - python_multipart.multipart - DEBUG - Calling on_field_data with data[44:56]
+2025-11-09 17:29:14,193 - python_multipart.multipart - DEBUG - Calling on_field_end with no data
+2025-11-09 17:29:14,193 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-11-09 19:47:21,060 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-09 19:47:21,061 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-09 19:47:21,061 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-09 19:47:21,068 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-09 19:47:37,508 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-09 19:47:40,021 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-09 19:47:40,023 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-09 19:47:40,024 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-09 19:47:40,024 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-09 19:47:46,283 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-09 19:47:46,291 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-09 19:47:46,293 - matplotlib - DEBUG - interactive is False
+2025-11-09 19:47:46,294 - matplotlib - DEBUG - platform is win32
+2025-11-09 19:47:46,363 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-09 19:47:46,367 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-09 19:48:08,551 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-09 20:02:23,710 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-09 20:02:23,712 - models.landmark_hf - INFO - Initializing landmark model on device: cpu
+2025-11-09 20:02:23,733 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-09 20:02:24,366 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-09 20:02:24,386 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-09 20:02:24,551 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-09 20:02:24,570 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-09 20:02:24,764 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-09 20:02:24,783 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-09 20:02:25,020 - models.landmark_hf - INFO - Number of classes: 1000
+2025-11-09 20:02:25,051 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x05\x00'
+2025-11-09 20:02:25,052 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x027'
+2025-11-09 20:02:25,052 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-09 20:02:25,052 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-09 20:02:26,209 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'web site, website, internet site, site', 'confidence': 0.9210753440856934}, {'monument_name': 'desktop computer', 'confidence': 0.02528136596083641}, {'monument_name': 'screen, CRT screen', 'confidence': 0.013200250454246998}]
+2025-11-09 20:02:26,210 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'web site, website, internet site, site', 'confidence': 0.9210753440856934, 'monument_id': None, 'candidates': [{'monument_name': 'web site, website, internet site, site', 'confidence': 0.9210753440856934}, {'monument_name': 'desktop computer', 'confidence': 0.02528136596083641}, {'monument_name': 'screen, CRT screen', 'confidence': 0.013200250454246998}]}
+2025-11-09 20:02:34,775 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-09 20:02:34,775 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x00\xb7'
+2025-11-09 20:02:34,776 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x01\x13'
+2025-11-09 20:02:34,776 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-09 20:02:34,776 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-09 20:02:35,164 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.2260776162147522}, {'monument_name': 'mask', 'confidence': 0.07862493395805359}, {'monument_name': 'vase', 'confidence': 0.06017230823636055}]
+2025-11-09 20:02:35,164 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'pedestal, plinth, footstall', 'confidence': 0.2260776162147522, 'monument_id': None, 'candidates': [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.2260776162147522}, {'monument_name': 'mask', 'confidence': 0.07862493395805359}, {'monument_name': 'vase', 'confidence': 0.06017230823636055}]}
+2025-11-09 20:02:44,990 - services.assistant_service.routes - INFO - Received query: Tell me more about it  (type: TEXT, location: pedestal, plinth, footstall)
+2025-11-09 20:02:44,991 - services.ai_integration.deepseek_client - INFO - Calling DeepSeek API with model: Distil-llama-8b_46e6iu
+2025-11-09 20:02:44,992 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): deepseek.huaweicloud.com:443
+2025-11-09 20:02:45,069 - services.ai_integration.deepseek_client - ERROR - DeepSeek API request error: HTTPSConnectionPool(host='deepseek.huaweicloud.com', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000016796B76E90>: Failed to resolve 'deepseek.huaweicloud.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-10 12:05:09,580 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-10 12:05:09,581 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-10 12:05:09,581 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-10 12:05:09,591 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-10 12:05:37,838 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-10 12:05:40,046 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-10 12:05:40,046 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-10 12:05:40,047 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-10 12:05:40,047 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-10 12:05:45,815 - matplotlib - DEBUG - matplotlib data path: C:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-10 12:05:45,826 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-10 12:05:45,829 - matplotlib - DEBUG - interactive is False
+2025-11-10 12:05:45,830 - matplotlib - DEBUG - platform is win32
+2025-11-10 12:05:45,929 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-10 12:05:45,936 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+2025-11-10 12:06:04,861 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+2025-11-10 12:11:09,723 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-10 12:11:09,724 - models.landmark_hf - INFO - Initializing landmark model on device: cpu
+2025-11-10 12:11:09,732 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-11-10 12:11:10,440 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/preprocessor_config.json HTTP/1.1" 307 0
+2025-11-10 12:11:10,460 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json HTTP/1.1" 200 0
+2025-11-10 12:11:10,616 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-10 12:11:10,638 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-10 12:11:11,065 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /google/vit-base-patch16-224/resolve/main/config.json HTTP/1.1" 307 0
+2025-11-10 12:11:11,093 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json HTTP/1.1" 200 0
+2025-11-10 12:11:11,287 - models.landmark_hf - INFO - Number of classes: 1000
+2025-11-10 12:11:11,313 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\r\x90'
+2025-11-10 12:11:11,314 - PIL.TiffImagePlugin - DEBUG - tag: Model (272) - type: string (2) Tag Location: 34 - Data Location: 98 - value: b'Redmi Note 8 Pro\x00'
+2025-11-10 12:11:11,314 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x12\x10'
+2025-11-10 12:11:11,314 - PIL.TiffImagePlugin - DEBUG - tag: Make (271) - type: string (2) Tag Location: 58 - Data Location: 115 - value: b'Xiaomi\x00'
+2025-11-10 12:11:11,314 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00\x8e'
+2025-11-10 12:11:11,314 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-10 12:11:11,315 - PIL.TiffImagePlugin - DEBUG - tag: DateTime (306) - type: string (2) Tag Location: 94 - Data Location: 122 - value: b'2025:11:05 23:08:55\x00'
+2025-11-10 12:11:12,553 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'sunglass', 'confidence': 0.1797276884317398}, {'monument_name': 'grey whale, gray whale, devilfish, Eschrichtius gibbosus, Eschrichtius robustus', 'confidence': 0.09488966315984726}, {'monument_name': 'leatherback turtle, leatherback, leathery turtle, Dermochelys coriacea', 'confidence': 0.09216640889644623}]
+2025-11-10 12:11:12,556 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'sunglass', 'confidence': 0.1797276884317398, 'monument_id': None, 'candidates': [{'monument_name': 'sunglass', 'confidence': 0.1797276884317398}, {'monument_name': 'grey whale, gray whale, devilfish, Eschrichtius gibbosus, Eschrichtius robustus', 'confidence': 0.09488966315984726}, {'monument_name': 'leatherback turtle, leatherback, leathery turtle, Dermochelys coriacea', 'confidence': 0.09216640889644623}]}
+2025-11-10 12:11:26,615 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-10 12:11:26,616 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x02\x80'
+2025-11-10 12:11:26,616 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x02\x80'
+2025-11-10 12:11:26,616 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-10 12:11:26,616 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-10 12:11:26,983 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'cliff, drop, drop-off', 'confidence': 0.04366713762283325}, {'monument_name': 'sarong', 'confidence': 0.03970852866768837}, {'monument_name': 'panpipe, pandean pipe, syrinx', 'confidence': 0.03956151008605957}]
+2025-11-10 12:11:26,984 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'cliff, drop, drop-off', 'confidence': 0.04366713762283325, 'monument_id': None, 'candidates': [{'monument_name': 'cliff, drop, drop-off', 'confidence': 0.04366713762283325}, {'monument_name': 'sarong', 'confidence': 0.03970852866768837}, {'monument_name': 'panpipe, pandean pipe, syrinx', 'confidence': 0.03956151008605957}]}
+2025-11-10 12:12:10,415 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-10 12:12:10,416 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x02\xd0'
+2025-11-10 12:12:10,416 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x01\x95'
+2025-11-10 12:12:10,416 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-10 12:12:10,416 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-10 12:12:10,809 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'notebook, notebook computer', 'confidence': 0.4468013644218445}, {'monument_name': 'laptop, laptop computer', 'confidence': 0.28624576330184937}, {'monument_name': 'harmonica, mouth organ, harp, mouth harp', 'confidence': 0.017277823761105537}]
+2025-11-10 12:12:10,810 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'notebook, notebook computer', 'confidence': 0.4468013644218445, 'monument_id': None, 'candidates': [{'monument_name': 'notebook, notebook computer', 'confidence': 0.4468013644218445}, {'monument_name': 'laptop, laptop computer', 'confidence': 0.28624576330184937}, {'monument_name': 'harmonica, mouth organ, harp, mouth harp', 'confidence': 0.017277823761105537}]}
+2025-11-10 12:12:17,539 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-10 12:12:17,540 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x00\xb7'
+2025-11-10 12:12:17,540 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x01\x13'
+2025-11-10 12:12:17,540 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-10 12:12:17,540 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-10 12:12:17,910 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.2260776162147522}, {'monument_name': 'mask', 'confidence': 0.07862493395805359}, {'monument_name': 'vase', 'confidence': 0.06017230823636055}]
+2025-11-10 12:12:17,911 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'pedestal, plinth, footstall', 'confidence': 0.2260776162147522, 'monument_id': None, 'candidates': [{'monument_name': 'pedestal, plinth, footstall', 'confidence': 0.2260776162147522}, {'monument_name': 'mask', 'confidence': 0.07862493395805359}, {'monument_name': 'vase', 'confidence': 0.06017230823636055}]}
+2025-11-10 12:12:59,028 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-10 12:12:59,029 - PIL.TiffImagePlugin - DEBUG - tag: ImageWidth (256) - type: long (4) - value: b'\x00\x00\x04\x00'
+2025-11-10 12:12:59,029 - PIL.TiffImagePlugin - DEBUG - tag: ImageLength (257) - type: long (4) - value: b'\x00\x00\x04\x00'
+2025-11-10 12:12:59,029 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00>'
+2025-11-10 12:12:59,029 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: long (4) - value: b'\x00\x00\x00\x00'
+2025-11-10 12:12:59,303 - models.landmark_hf - INFO - Predictions: [{'monument_name': 'matchstick', 'confidence': 0.14215169847011566}, {'monument_name': 'rule, ruler', 'confidence': 0.07930978387594223}, {'monument_name': 'golf ball', 'confidence': 0.04106248542666435}]
+2025-11-10 12:12:59,303 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'matchstick', 'confidence': 0.14215169847011566, 'monument_id': None, 'candidates': [{'monument_name': 'matchstick', 'confidence': 0.14215169847011566}, {'monument_name': 'rule, ruler', 'confidence': 0.07930978387594223}, {'monument_name': 'golf ball', 'confidence': 0.04106248542666435}]}
