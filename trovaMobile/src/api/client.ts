@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Configure API base URL based on platform
 // For Android emulator: use 10.0.2.2 (emulator's special alias for host machine)
 // For physical device or if emulator doesn't work: use your machine's IP address
-const API_BASE_URL = Platform.OS === 'android' 
+export const API_BASE_URL = Platform.OS === 'android' 
   ? 'http://192.168.1.5:8000'  // Your machine's IPv4 address
   : 'http://localhost:8000';
 

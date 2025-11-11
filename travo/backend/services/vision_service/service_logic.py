@@ -23,8 +23,8 @@ from PIL import Image
 import io
 
 # CLIP model and processor initialization
-clip_model = None
-clip_processor = None
+model = None
+processor = None
 text_embeddings = None
 monument_labels = None
 
@@ -35,53 +35,38 @@ CONFIDENCE_THRESHOLD = 0.45
 logger = logging.getLogger(__name__)
 
 def initialize_clip_model():
-    """Initialize CLIP model and precompute text embeddings"""
-    global clip_model, clip_processor, text_embeddings, monument_labels
-    
-    if not CLIP_AVAILABLE:
-        logger.warning("CLIP not available, using fallback identification")
-        return False
-    
+    """Initialize CLIP if available; always load monument labels.
+    Returns True if CLIP was initialized successfully, else False.
+    """
+    global model, processor, text_embeddings, monument_labels
+
+    # Always load labels for both CLIP and fallback paths
+    monuments_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'monuments.json'))
     try:
-        logger.info("Loading CLIP model and processor...")
-        start_time = time.time()
-        
-        # Load CLIP model and processor
-        clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-        clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-        
-        # Load monument labels
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        labels_path = os.path.join(current_dir, 'labels.json')
-        
-        with open(labels_path, 'r', encoding='utf-8') as f:
+        with open(monuments_path, "r") as f:
             monument_labels = json.load(f)
-        
-        logger.info(f"Loaded {len(monument_labels)} monument labels")
-        
-        # Precompute text embeddings for all labels
-        logger.info("Precomputing text embeddings...")
-        text_inputs = []
-        for monument in monument_labels:
-            # Combine label and description for better context
-            text = f"{monument['label']}: {monument['description']}"
-            text_inputs.append(text)
-        
-        # Process text inputs
-        text_inputs_processed = clip_processor(text=text_inputs, return_tensors="pt", padding=True)
-        
-        # Get text embeddings
+    except Exception as e:
+        logger.error(f"Failed to load monument labels from {monuments_path}: {e}")
+        monument_labels = []
+
+    if not CLIP_AVAILABLE:
+        logger.warning("CLIP not available; using fallback identification.")
+        return False
+
+    try:
+        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        monument_texts = [f"A photo of {m['name']}" for m in monument_labels]
+        text_inputs = processor(text=monument_texts, return_tensors="pt", padding=True)
         with torch.no_grad():
-            text_embeddings = clip_model.get_text_features(**text_inputs_processed)
-            # Normalize embeddings
-            text_embeddings = F.normalize(text_embeddings, p=2, dim=1)
-        
-        load_time = time.time() - start_time
-        logger.info(f"CLIP model initialized in {load_time:.2f} seconds")
+            text_features = model.get_text_features(**text_inputs)
+        text_embeddings = text_features / text_features.norm(dim=-1, keepdim=True)
         return True
-        
     except Exception as e:
         logger.error(f"Failed to initialize CLIP model: {e}", exc_info=True)
+        model = None
+        processor = None
+        text_embeddings = None
         return False
 
 # Initialize CLIP model on module import
@@ -178,7 +163,7 @@ MONUMENTS_DB = [
         "city": "New York"
     },
     {
-        "monument_.venv": "christ-the-redeemer-rio-de-janeiro",
+        "monument_id": "christ-the-redeemer-rio-de-janeiro",
         "name": "Christ the Redeemer",
         "description": "Art Deco statue of Jesus Christ in Rio de Janeiro, Brazil",
         "location": {"latitude": -22.9519, "longitude": -43.2105},
@@ -261,118 +246,70 @@ def get_monument_details_by_name(name: str) -> Optional[Dict[str, Any]]:
     logger.warning(f"No monument details found for: {name}")
     return None
 
-def identify_monument(image_bytes: bytes) -> Dict[str, Any]:
+def identify_monument(image: Image.Image):
+    """Identify monument using CLIP when available, else fallback.
+    Returns a dict with keys: identified_monument, confidence, monument_id, candidates.
     """
-    Identifies a monument from an image using CLIP or a fallback method.
-    """
-    request_id = uuid.uuid4()
-    logger.info(f"Request {request_id}: Starting monument identification")
-
-    if not clip_initialized or not CLIP_AVAILABLE:
-        logger.warning(f"Request {request_id}: CLIP not initialized, using fallback method")
-        return fallback_identification(request_id)
-
     try:
-        start_time = time.time()
-        
-        # Preprocess the image
-        logger.info(f"Request {request_id}: Preprocessing image")
-        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        image_input = clip_processor(images=image, return_tensors="pt")
-        
-        # Compute image embedding
-        logger.info(f"Request {request_id}: Computing image embedding")
+        if not CLIP_AVAILABLE or not clip_initialized or model is None or processor is None or text_embeddings is None:
+            # Fallback
+            return fallback_identification()
+
+        inputs = processor(images=image, return_tensors="pt")
         with torch.no_grad():
-            image_embedding = clip_model.get_image_features(**image_input)
-            image_embedding = F.normalize(image_embedding, p=2, dim=1)
-        
-        # Compute similarity
-        logger.info(f"Request {request_id}: Computing similarity with text embeddings")
-        similarity_scores = torch.matmul(image_embedding, text_embeddings.T)
-        
-        # Get top prediction
-        top_score, top_index = torch.max(similarity_scores, dim=1)
-        top_score = top_score.item()
-        top_index = top_index.item()
-        
-        processing_time = time.time() - start_time
-        logger.info(f"Request {request_id}: Image processing and similarity computation finished in {processing_time:.2f}s")
-        logger.info(f"Request {request_id}: Top match: {monument_labels[top_index]['label']} with score {top_score:.3f}")
+            image_features = model.get_image_features(**inputs)
+        image_features /= image_features.norm(dim=-1, keepdim=True)
 
-        if top_score < CONFIDENCE_THRESHOLD:
-            logger.warning(f"Request {request_id}: No confident match found. Score {top_score:.3f} is below threshold {CONFIDENCE_THRESHOLD}")
-            return {
-                "identified_monument": None,
-                "confidence": 0.0,
-                "monument_id": None,
-                "message": "No confident match found"
-            }
+        similarity = (image_features @ text_embeddings.T).softmax(dim=-1)
+        best_idx = similarity.argmax().item()
+        best_match = monument_labels[best_idx]
+        confidence = float(similarity[0][best_idx].item())
 
-        # Get monument details
-        monument_name = monument_labels[top_index]["label"]
-        logger.info(f"Request {request_id}: Retrieving details for monument: {monument_name}")
-        monument_details = get_monument_details_by_name(monument_name)
+        # Top-3 candidates
+        topk_idx = similarity[0].topk(3).indices.tolist()
+        candidates = [
+            {"monument_name": monument_labels[i]["name"], "confidence": float(similarity[0][i])}
+            for i in topk_idx
+        ]
 
-        if not monument_details:
-            logger.error(f"Request {request_id}: Monument details not found for '{monument_name}'")
-            return {
-                "identified_monument": None,
-                "confidence": 0.0,
-                "monument_id": None,
-                "message": "Monument details not found"
-            }
-        
-        logger.info(f"Request {request_id}: Successfully identified monument: {monument_name}")
         return {
-            "identified_monument": monument_details["name"],
-            "confidence": top_score,
-            "monument_id": monument_details["monument_id"]
+            "identified_monument": best_match.get("name"),
+            "confidence": confidence,
+            "monument_id": best_match.get("id"),
+            "candidates": candidates
         }
-
     except Exception as e:
-        logger.error(f"Request {request_id}: An error occurred during monument identification: {e}", exc_info=True)
-        return {
-            "identified_monument": None,
-            "confidence": 0.0,
-            "monument_id": None,
-            "message": f"Error during identification: {str(e)}"
-        }
-async def fallback_identify_monument(image_data: bytes) -> Dict[str, Any]:
-    """
-    Fallback monument identification using a simplified random choice from loaded labels.
-    """
+        logger.error(f"Error during CLIP identification, using fallback: {e}", exc_info=True)
+        return fallback_identification()
+def fallback_identification() -> Dict[str, Any]:
+    """Fallback monument identification: pick a random label and build a consistent response."""
     logger.info("Using fallback identification method")
     try:
-        # This fallback will just return a random monument from the loaded labels
         if monument_labels:
-            selected_monument_label = random.choice(monument_labels)
-            label_name = selected_monument_label["label"]
-            monument_details = get_monument_details_by_name(label_name)
-            confidence = round(random.uniform(0.3, 0.6), 4)  # Lower confidence for fallback
-
-            logger.info(f"Fallback selected monument: {label_name}")
+            selected = random.choice(monument_labels)
+            name = selected.get("name")
+            mid = selected.get("id")
+            confidence = round(random.uniform(0.3, 0.6), 4)
+            candidates = [{"monument_name": name, "confidence": confidence}]
             return {
-                "candidates": [{
-                    "monument_id": monument_details.get("monument_id") if monument_details else None,
-                    "label": label_name,
-                    "score": confidence,
-                    "description": selected_monument_label["description"]
-                }],
-                "identified": label_name,
-                "confidence": confidence
+                "identified_monument": name,
+                "confidence": confidence,
+                "monument_id": mid,
+                "candidates": candidates,
             }
         else:
-            # Ultimate fallback if no labels are loaded
             logger.warning("No monument labels loaded for fallback.")
             return {
+                "identified_monument": "Unknown",
+                "confidence": 0.0,
+                "monument_id": None,
                 "candidates": [],
-                "identified": None,
-                "confidence": 0.0
             }
     except Exception as e:
         logger.error(f"Error in fallback identification: {e}", exc_info=True)
         return {
+            "identified_monument": "Unknown",
+            "confidence": 0.0,
+            "monument_id": None,
             "candidates": [],
-            "identified": None,
-            "confidence": 0.0
         }

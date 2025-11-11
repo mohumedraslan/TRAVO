@@ -1,0 +1,14 @@
+[
+  { "id": "pyramids", "name": "Pyramids of Giza, Egypt" },
+  { "id": "sphinx", "name": "Great Sphinx of Giza, Egypt" },
+  { "id": "liberty", "name": "Statue of Liberty, USA" },
+  { "id": "eiffel", "name": "Eiffel Tower, France" },
+  { "id": "colosseum", "name": "Colosseum, Rome, Italy" },
+  { "id": "taj_mahal", "name": "Taj Mahal, India" },
+  { "id": "petra", "name": "Petra, Jordan" },
+  { "id": "redeemer", "name": "Christ the Redeemer, Brazil" },
+  { "id": "machu_picchu", "name": "Machu Picchu, Peru" },
+  { "id": "big_ben", "name": "Big Ben, London" },
+  { "id": "opera_house", "name": "Sydney Opera House, Australia" },
+  { "id": "rushmore", "name": "Mount Rushmore, USA" }
+]

@@ -7,8 +7,8 @@ from typing import Optional, Annotated
 import os
 
 # Import User model and database session
-from services.user_service.database import get_db
 from services.user_service.service_logic import get_user_by_email
+from services.user_service.database import get_db
 from services.user_service.schemas import UserResponse
 
 # JWT settings
@@ -17,7 +17,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # OAuth2 scheme for token authentication
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/login")
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

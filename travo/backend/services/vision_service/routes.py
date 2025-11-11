@@ -9,7 +9,9 @@ import logging
 import base64
 
 # Import the new landmark model
-from models.landmark_hf import predict_landmark
+from .service_logic import identify_monument
+from PIL import Image
+import io
 
 # Create router
 router = APIRouter()
@@ -49,7 +51,8 @@ async def identify_monument_upload(image: UploadFile = File(...)):
         image_base64 = base64.b64encode(image_bytes).decode('utf-8')
         
         # Predict using the model
-        result = predict_landmark(image_base64, top_k=3)
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        result = identify_monument(image)  # Removed await as it's not an async function
         logger.info(f"Prediction result: {result}")
 
         return JSONResponse(status_code=200, content=result)
@@ -69,18 +72,20 @@ async def identify_monument_upload(image: UploadFile = File(...)):
 
 # Identify monument from base64 image (JSON)
 @router.post("/identify")
-async def identify_monument(request: ImageIdentificationRequest):
+async def identify_monument_route(request: ImageIdentificationRequest):
     """Identify monument from base64 encoded image"""
     logger.info(f"Received base64 image identification request")
     try:
         # Predict using the model
-        result = predict_landmark(request.image, top_k=3)
+        image_bytes = base64.b64decode(request.image)
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        result = identify_monument(image)  # Removed await as it's not an async function
         logger.info(f"Prediction result: {result}")
 
         return JSONResponse(status_code=200, content=result)
 
     except Exception as e:
-        logger.error(f"Error in identify_monument: {e}", exc_info=True)
+        logger.error(f"Error in identify_monument_route: {e}", exc_info=True)
         return JSONResponse(
             status_code=500,
             content={

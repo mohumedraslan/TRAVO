@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { API_BASE_URL } from '../api/client';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../constants/theme';
 
@@ -78,13 +79,27 @@ const ExploreScreen = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const destRes = await client.get('/recommendations/destinations');
-      // const attrRes = await client.get('/recommendations/destinations/1/attractions');
-      
-      // Using mock data for now
-      setAttractions(mockAttractions);
-      setRecommended([...mockAttractions].sort(() => 0.5 - Math.random()).slice(0, 2));
+      // Build attractions using backend-served images from /assets
+      const files = [
+        { id: '1', name: 'Pyramids of Giza', file: 'pyramids.jpg', location: 'Giza, Egypt', rating: 4.8, categories: ['Historical', 'UNESCO'] },
+        { id: '2', name: 'Great Sphinx of Giza', file: 'sphinx.jpg', location: 'Giza, Egypt', rating: 4.6, categories: ['Historical'] },
+        { id: '3', name: 'Taj Mahal', file: 'taj_mahal.jpg', location: 'Agra, India', rating: 4.9, categories: ['UNESCO', 'Cultural'] },
+        { id: '4', name: 'Statue of Liberty', file: 'Statue of Liberty.jpg', location: 'New York, USA', rating: 4.7, categories: ['Monument'] },
+        { id: '5', name: 'Liberty Island', file: 'liberty.jpg', location: 'New York, USA', rating: 4.5, categories: ['Scenic'] },
+      ];
+      const assetsBase = `${API_BASE_URL}/assets`;
+      const built: Attraction[] = files.map((f) => ({
+        id: f.id,
+        name: f.name,
+        description: `Discover ${f.name}.`,
+        location: f.location,
+        rating: f.rating,
+        image: `${assetsBase}/${encodeURIComponent(f.file)}`,
+        categories: f.categories,
+        isFavorite: false,
+      }));
+      setAttractions(built);
+      setRecommended(built.slice(0, 3));
     } catch (err) {
       console.error('Error loading data:', err);
     } finally {
@@ -127,6 +142,9 @@ const ExploreScreen = () => {
           />
         </TouchableOpacity>
       </View>
+      {item.image ? (
+        <Image source={{ uri: item.image }} style={styles.cardImage} resizeMode="cover" />
+      ) : null}
       <Text style={styles.cardLocation}>
         <Ionicons name="location" size={14} color={colors.primary} /> {item.location}
       </Text>
@@ -150,9 +168,13 @@ const ExploreScreen = () => {
       style={styles.recommendedCard}
       onPress={() => navigation.navigate('attraction-detail', { id: item.id })}
     >
-      <View style={styles.recommendedImage}>
-        <Ionicons name="image" size={40} color="#ddd" />
-      </View>
+      {item.image ? (
+        <Image source={{ uri: item.image }} style={styles.recommendedImage} resizeMode="cover" />
+      ) : (
+        <View style={styles.recommendedImage}>
+          <Ionicons name="image" size={40} color="#ddd" />
+        </View>
+      )}
       <Text style={styles.recommendedTitle} numberOfLines={1}>{item.name}</Text>
       <View style={styles.ratingContainer}>
         <Ionicons name="star" size={14} color="#FFD700" />
@@ -314,6 +336,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  cardImage: {
+    width: '100%',
+    height: 180,
+    borderRadius: 8,
+    marginBottom: 10,
+    backgroundColor: '#f5f5f5',
   },
   cardHeader: {
     flexDirection: 'row',

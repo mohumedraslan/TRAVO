@@ -43,6 +43,7 @@ app = FastAPI(
     version="0.1.0",
 )
 
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
@@ -58,6 +59,18 @@ app.include_router(api_router, prefix="/api")
 # Mount static files directory for docs
 docs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs")
 app.mount("/static", StaticFiles(directory=docs_dir), name="static")
+
+# Mount assets directory to serve images from repository data folder
+# Try repo root: ../../.. -> /data, else fallback to /travo/data
+_here = os.path.abspath(__file__)
+_travo_dir = os.path.dirname(os.path.dirname(_here))
+_repo_root = os.path.dirname(_travo_dir)
+assets_dir_root = os.path.join(_repo_root, "data")
+assets_dir_travo = os.path.join(_travo_dir, "data")
+if os.path.isdir(assets_dir_root):
+    app.mount("/assets", StaticFiles(directory=assets_dir_root), name="assets")
+elif os.path.isdir(assets_dir_travo):
+    app.mount("/assets", StaticFiles(directory=assets_dir_travo), name="assets")
 
 # Initialize Socket.IO server and mount under /socket.io
 sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
