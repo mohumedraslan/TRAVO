@@ -1,0 +1,78 @@
+INFO:     Will watch for changes in these directories: ['C:\\Users\\moras\\Documents\\GitHub\\TRAVO\\travo\\backend']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [37788] using StatReload
+2025-11-20 21:16:29,301 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-20 21:16:29,301 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-20 21:16:29,301 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-20 21:16:29,306 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-20 21:16:34.384458: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-11-20 21:16:35,527 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-20 21:16:35,857 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-20 21:16:35,857 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-20 21:16:35,857 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-20 21:16:35,857 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-20 21:16:36.336209: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-11-20 21:16:37,003 - matplotlib - DEBUG - matplotlib data path: c:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-20 21:16:37,007 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-20 21:16:37,008 - matplotlib - DEBUG - interactive is False
+2025-11-20 21:16:37,008 - matplotlib - DEBUG - platform is win32
+2025-11-20 21:16:37,037 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-20 21:16:37,040 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+2025-11-20 21:16:43,337 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+INFO:     Started server process [25076]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+2025-11-20 21:17:00,763 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-20 21:17:00,771 - PIL.PngImagePlugin - DEBUG - STREAM b'IHDR' 16 13
+2025-11-20 21:17:00,771 - PIL.PngImagePlugin - DEBUG - STREAM b'IDAT' 41 11
+2025-11-20 21:17:00,771 - services.vision_service.routes - ERROR - Error in identify_monument_route: broken PNG file (chunk b'\x00IEN')
+Traceback (most recent call last):
+  File "C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\services\vision_service\routes.py", line 81, in identify_monument_route
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+  File "c:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\PIL\Image.py", line 972, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File "c:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\PIL\ImageFile.py", line 374, in load
+    s = read(read_bytes)
+  File "c:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\PIL\PngImagePlugin.py", line 996, in load_read
+    cid, pos, length = self.png.read()
+                       ~~~~~~~~~~~~~^^
+  File "c:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\PIL\PngImagePlugin.py", line 183, in read
+    raise SyntaxError(msg)
+SyntaxError: broken PNG file (chunk b'\x00IEN')
+INFO:     127.0.0.1:50256 - "POST /api/vision/identify HTTP/1.1" 500 Internal Server Error
+2025-11-20 21:17:33,906 - services.vision_service.routes - INFO - Received base64 image identification request
+2025-11-20 21:17:33,907 - PIL.PngImagePlugin - DEBUG - STREAM b'IHDR' 16 13
+2025-11-20 21:17:33,907 - PIL.PngImagePlugin - DEBUG - STREAM b'IDAT' 41 229
+2025-11-20 21:17:34,324 - services.vision_service.service_logic - DEBUG - Searching for monument details for: Golden Gate Bridge, USA
+2025-11-20 21:17:34,325 - services.vision_service.service_logic - DEBUG - Found monument details (fuzzy): Golden Gate Bridge
+2025-11-20 21:17:34,325 - services.vision_service.routes - INFO - Prediction result: {'identified_monument': 'Golden Gate Bridge, USA', 'confidence': 0.04693451523780823, 'monument_id': 'golden_gate', 'description': 'Suspension bridge spanning the Golden Gate strait in San Francisco, California', 'candidates': [{'monument_name': 'Golden Gate Bridge, USA', 'confidence': 0.04693451523780823}, {'monument_name': 'Great Wall of China, China', 'confidence': 0.04667269438505173}, {'monument_name': 'Sydney Opera House, Australia', 'confidence': 0.04616989940404892}]}
+INFO:     127.0.0.1:50268 - "POST /api/vision/identify HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'services\vision_service\routes.py'. Reloading...
+ INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [25076]
+2025-11-20 21:18:29,235 - passlib.utils.compat - DEBUG - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2025-11-20 21:18:29,235 - passlib.utils.compat - DEBUG - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2025-11-20 21:18:29,235 - passlib.utils.compat - DEBUG - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2025-11-20 21:18:29,242 - passlib.registry - DEBUG - registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+2025-11-20 21:18:37.943946: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-11-20 21:18:39,914 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2025-11-20 21:18:40,434 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-20 21:18:40,434 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-20 21:18:40,434 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2025-11-20 21:18:40,434 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2025-11-20 21:18:41.264379: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-11-20 21:18:42,338 - matplotlib - DEBUG - matplotlib data path: c:\Users\moras\Documents\GitHub\TRAVO\.venv\Lib\site-packages\matplotlib\mpl-data
+2025-11-20 21:18:42,344 - matplotlib - DEBUG - CONFIGDIR=C:\Users\moras\.matplotlib
+2025-11-20 21:18:42,346 - matplotlib - DEBUG - interactive is False
+2025-11-20 21:18:42,346 - matplotlib - DEBUG - platform is win32
+2025-11-20 21:18:42,397 - matplotlib - DEBUG - CACHEDIR=C:\Users\moras\.matplotlib
+2025-11-20 21:18:42,402 - matplotlib.font_manager - DEBUG - Using fontManager instance from C:\Users\moras\.matplotlib\fontlist-v390.json
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+2025-11-20 21:18:55,101 - matplotlib.pyplot - DEBUG - Loaded backend Agg version v2.2.
+INFO:     Started server process [3100]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

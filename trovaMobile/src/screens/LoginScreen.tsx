@@ -1,29 +1,49 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import client from '../api/client';
+import * as React from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { supabase } from '../config/supabase';
+import { useRouter } from 'expo-router';
 
 interface Props {
-  navigation: any;
+  navigation?: any; // Optional for backward compatibility
 }
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    setLoading(true);
     try {
-      // Use correct backend endpoint with OAuth2PasswordRequestForm fields
-      const form = new URLSearchParams();
-      form.append('username', email);
-      form.append('password', password);
-      const res = await client.post('/user/login', form.toString(), {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      Alert.alert('Logged in', `Welcome ${res.data?.user?.name || email}`);
-      navigation.replace('Explore');
+
+      if (error) throw error;
+
+      if (data.session) {
+        Alert.alert('Logged in', `Welcome back!`);
+        // Try expo-router first
+        try {
+          router.replace('/(tabs)/explore');
+        } catch (e) {
+          // Fallback to navigation prop if available
+          if (navigation && navigation.replace) {
+            navigation.replace('Main');
+          }
+        }
+      }
     } catch (err: any) {
-      const msg = err?.response?.data?.detail || err?.message || 'Please try again';
-      Alert.alert('Login failed', msg);
+      Alert.alert('Login failed', err.message || 'Please try again');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,6 +56,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
+        keyboardType="email-address"
       />
       <TextInput
         style={styles.input}
@@ -44,12 +65,18 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#007AFF" />
+      ) : (
+        <Button title="Login" onPress={handleLogin} />
+      )}
+
       <View style={{ height: 16 }} />
-      <Button title="Go to Explore" onPress={() => navigation.navigate('Explore')} />
+      <Button title="Go to Explore" onPress={() => router.replace('/(tabs)/explore')} />
       <View style={styles.signupContainer}>
         <Text>Don't have an account? </Text>
-        <Text style={styles.link} onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.link} onPress={() => router.push('/signup')}>
           Sign Up
         </Text>
       </View>
@@ -58,9 +85,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 24 },
+  container: { flex: 1, justifyContent: 'center', padding: 24, backgroundColor: '#fff' },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 24, textAlign: 'center' },
-  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 },
+  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 16 },
   signupContainer: {
     flexDirection: 'row',
     justifyContent: 'center',

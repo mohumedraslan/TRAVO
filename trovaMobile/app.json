@@ -48,7 +48,8 @@
           }
         }
       ],
-      "react-native-vision-camera"
+      "react-native-vision-camera",
+      "sentry-expo"
     ],
     "extra": {
       "API_URL": "http://127.0.0.1:8000/api"

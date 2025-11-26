@@ -10,7 +10,8 @@ Set-Location -Path "$PSScriptRoot\travo\backend"
 if (Test-Path ".venv") {
     Write-Host "✅ Activating virtual environment..." -ForegroundColor Green
     & .\.venv\Scripts\Activate.ps1
-} elseif (Test-Path "..\..\..\.venv") {
+}
+elseif (Test-Path "..\..\..\.venv") {
     Write-Host "✅ Activating virtual environment..." -ForegroundColor Green
     & ..\..\..\..\.venv\Scripts\Activate.ps1
 }
@@ -22,11 +23,11 @@ if (-not (Test-Path "main.py")) {
     exit 1
 }
 
-Write-Host "📡 Starting FastAPI server on http://localhost:8000" -ForegroundColor Yellow
-Write-Host "📚 API Documentation will be available at http://localhost:8000/docs" -ForegroundColor Yellow
+Write-Host "📡 Starting FastAPI server on http://localhost:8001" -ForegroundColor Yellow
+Write-Host "📚 API Documentation will be available at http://localhost:8001/docs" -ForegroundColor Yellow
 Write-Host "" 
 Write-Host "Press Ctrl+C to stop the server" -ForegroundColor Gray
 Write-Host ""
 
 # Start the server
-python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8001

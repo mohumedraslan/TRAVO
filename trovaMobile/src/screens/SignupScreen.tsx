@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import client from '../api/client';
+import * as React from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { supabase } from '../config/supabase';
+import { useRouter } from 'expo-router';
 
 interface Props {
-  navigation: any;
+  navigation?: any;
 }
 
 const SignupScreen: React.FC<Props> = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [interests, setInterests] = React.useState('');
+  const [language, setLanguage] = React.useState('en');
+  const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
 
   const handleSignup = async () => {
     if (!name || !email || !password) {
@@ -23,29 +28,39 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
 
-    if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters long');
+    if (password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters long');
       return;
     }
 
+    setLoading(true);
     try {
-      const userData = {
-        name,
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
-      };
+        options: {
+          data: {
+            full_name: name,
+            username: email.split('@')[0], // Default username from email
+            interests: interests.split(',').map(i => i.trim()).filter(i => i),
+            language,
+          },
+        },
+      });
 
-      const response = await client.post('/user/register', userData);
-      
-      if (response.status === 201) {
-        Alert.alert('Success', 'Account created successfully! Please log in.');
-        navigation.navigate('Login');
+      if (error) throw error;
+
+      if (data.session) {
+        Alert.alert('Success', 'Account created successfully!');
+        router.replace('/(tabs)');
       } else {
-        Alert.alert('Error', 'Registration failed. Please try again.');
+        Alert.alert('Check your email', 'Please check your email for the confirmation link.');
+        router.replace('/login');
       }
     } catch (err: any) {
-      const msg = err?.response?.data?.detail || err?.message || 'Registration failed';
-      Alert.alert('Error', msg);
+      Alert.alert('Error', err.message || 'Registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,7 +68,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.subtitle}>Join Trova and discover amazing monuments</Text>
-      
+
       <TextInput
         style={styles.input}
         placeholder="Full Name"
@@ -61,7 +76,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         onChangeText={setName}
         autoCapitalize="words"
       />
-      
+
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -70,7 +85,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         autoCapitalize="none"
         keyboardType="email-address"
       />
-      
+
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -78,7 +93,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      
+
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
@@ -86,12 +101,31 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
       />
-      
-      <Button title="Sign Up" onPress={handleSignup} />
-      
+
+      <TextInput
+        style={styles.input}
+        placeholder="Interests (comma separated, e.g. History, Art)"
+        value={interests}
+        onChangeText={setInterests}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Language (e.g. en, es, fr)"
+        value={language}
+        onChangeText={setLanguage}
+        autoCapitalize="none"
+      />
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#007AFF" />
+      ) : (
+        <Button title="Sign Up" onPress={handleSignup} />
+      )}
+
       <View style={styles.loginContainer}>
         <Text>Already have an account? </Text>
-        <Text style={styles.link} onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.link} onPress={() => router.push('/login')}>
           Log In
         </Text>
       </View>

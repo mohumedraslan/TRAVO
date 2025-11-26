@@ -1,47 +1,57 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ItineraryScreen from '../screens/ItineraryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import NotificationsScreen from '../screens/NotificationsScreen';
+import PrivacyScreen from '../screens/PrivacyScreen';
+import FavoritesScreen from '../screens/FavoritesScreen';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
+const SettingsStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
 
-// Main app tabs (after login)
-const MainTabs = () => {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Explore" component={ExploreScreen} />
-      <Tab.Screen name="Camera" component={CameraScreen} />
-      <Tab.Screen name="Itinerary" component={ItineraryScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
-    </Tab.Navigator>
-  );
-};
+// Settings nested stack
+const SettingsStackScreen = () => (
+  <SettingsStack.Navigator>
+    <SettingsStack.Screen name="SettingsHome" component={SettingsScreen} options={{ title: 'Settings' }} />
+    <SettingsStack.Screen name="Notifications" component={NotificationsScreen} />
+    <SettingsStack.Screen name="Privacy" component={PrivacyScreen} />
+    <SettingsStack.Screen name="Favorites" component={FavoritesScreen} />
+  </SettingsStack.Navigator>
+);
+
+// Main app tabs
+const MainTabs = () => (
+  <Tab.Navigator>
+    <Tab.Screen name="Explore" component={ExploreScreen} />
+    <Tab.Screen name="Camera" component={CameraScreen} />
+    <Tab.Screen name="Itinerary" component={ItineraryScreen} />
+    <Tab.Screen name="Settings" component={SettingsStackScreen} options={{ headerShown: false }} />
+  </Tab.Navigator>
+);
 
 // Auth stack (login/signup)
-const AuthStack = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Signup" component={SignupScreen} />
-    </Stack.Navigator>
-  );
-};
+const AuthStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Screen name="Signup" component={SignupScreen} />
+  </Stack.Navigator>
+);
 
-const AppNavigator: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-
+export default function AppNavigator() {
   return (
     <NavigationContainer>
-      {isAuthenticated ? <MainTabs /> : <AuthStack />}
+      <RootStack.Navigator screenOptions={{ headerShown: false }}>
+        <RootStack.Screen name="Auth" component={AuthStack} />
+        <RootStack.Screen name="Main" component={MainTabs} />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
-};
-
-export default AppNavigator;
+}

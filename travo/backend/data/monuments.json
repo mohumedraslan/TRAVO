@@ -1,14 +1,442 @@
 [
-  { "id": "pyramids", "name": "Pyramids of Giza, Egypt" },
-  { "id": "sphinx", "name": "Great Sphinx of Giza, Egypt" },
-  { "id": "liberty", "name": "Statue of Liberty, USA" },
-  { "id": "eiffel", "name": "Eiffel Tower, France" },
-  { "id": "colosseum", "name": "Colosseum, Rome, Italy" },
-  { "id": "taj_mahal", "name": "Taj Mahal, India" },
-  { "id": "petra", "name": "Petra, Jordan" },
-  { "id": "redeemer", "name": "Christ the Redeemer, Brazil" },
-  { "id": "machu_picchu", "name": "Machu Picchu, Peru" },
-  { "id": "big_ben", "name": "Big Ben, London" },
-  { "id": "opera_house", "name": "Sydney Opera House, Australia" },
-  { "id": "rushmore", "name": "Mount Rushmore, USA" }
+  {
+    "id": "pyramids",
+    "name": "Pyramids of Giza, Egypt",
+    "country": "Egypt",
+    "description": "The Great Pyramids of Giza were built over 4,500 years ago as monumental tombs for the pharaohs. The Great Pyramid of Khufu is the last surviving Wonder of the Ancient World.",
+    "facts": [
+      "The Great Pyramid originally stood at 146.6 meters (481 feet).",
+      "It was the tallest man-made structure for over 3,800 years.",
+      "The pyramids align closely with the points of the compass."
+    ],
+    "tags": [
+      "ancient",
+      "wonder",
+      "egypt",
+      "archaeology"
+    ]
+  },
+  {
+    "id": "sphinx",
+    "name": "Great Sphinx of Giza, Egypt",
+    "country": "Egypt",
+    "description": "The Great Sphinx is a colossal limestone statue with the body of a lion and the head of a pharaoh, likely Khafre. It guards the Giza Plateau.",
+    "facts": [
+      "Carved from a single limestone ridge.",
+      "Measures about 73 meters long and 20 meters high.",
+      "Traces of ancient pigment suggest it was once painted."
+    ],
+    "tags": [
+      "ancient",
+      "egypt",
+      "sculpture"
+    ]
+  },
+  {
+    "id": "liberty",
+    "name": "Statue of Liberty, USA",
+    "country": "United States",
+    "description": "A neoclassical sculpture on Liberty Island in New York Harbor, gifted by France to the United States in 1886, symbolizing freedom and democracy.",
+    "facts": [
+      "Designed by Frédéric Auguste Bartholdi with engineering by Gustave Eiffel.",
+      "The statue’s copper exterior has oxidized to a green patina.",
+      "The torch-bearing arm was displayed in Philadelphia from 1876–1882."
+    ],
+    "tags": [
+      "modern",
+      "usa",
+      "symbol"
+    ]
+  },
+  {
+    "id": "eiffel",
+    "name": "Eiffel Tower, France",
+    "country": "France",
+    "description": "An iron lattice tower in Paris constructed for the 1889 Exposition Universelle. It has become an enduring symbol of France.",
+    "facts": [
+      "Stands 324 meters tall with antennas.",
+      "Was the tallest man-made structure until the Chrysler Building (1930).",
+      "Initially criticized by artists and intellectuals."
+    ],
+    "tags": [
+      "modern",
+      "france",
+      "architecture"
+    ]
+  },
+  {
+    "id": "colosseum",
+    "name": "Colosseum, Rome, Italy",
+    "country": "Italy",
+    "description": "The largest ancient amphitheatre ever built, used for gladiatorial contests and public spectacles in ancient Rome.",
+    "facts": [
+      "Construction began under Emperor Vespasian in 72 CE.",
+      "Could host between 50,000 and 80,000 spectators.",
+      "Featured a complex system of vaults and corridors."
+    ],
+    "tags": [
+      "ancient",
+      "rome",
+      "amphitheatre"
+    ]
+  },
+  {
+    "id": "taj_mahal",
+    "name": "Taj Mahal, India",
+    "country": "India",
+    "description": "A white marble mausoleum in Agra, commissioned by Mughal emperor Shah Jahan in memory of his wife Mumtaz Mahal.",
+    "facts": [
+      "Construction took roughly 22 years (1632–1653).",
+      "Incorporates Persian, Islamic, and Indian architectural styles.",
+      "The marble changes hue depending on the light."
+    ],
+    "tags": [
+      "mughal",
+      "mausoleum",
+      "unesco"
+    ]
+  },
+  {
+    "id": "petra",
+    "name": "Petra, Jordan",
+    "country": "Jordan",
+    "description": "An ancient city carved into rose-red sandstone cliffs by the Nabataeans, famous for the Treasury (Al-Khazneh).",
+    "facts": [
+      "Rediscovered by Swiss explorer Johann Burckhardt in 1812.",
+      "Known as the 'Rose City' for its pink sandstone.",
+      "A major trading hub in antiquity."
+    ],
+    "tags": [
+      "ancient",
+      "nabataean",
+      "unesco"
+    ]
+  },
+  {
+    "id": "redeemer",
+    "name": "Christ the Redeemer, Brazil",
+    "country": "Brazil",
+    "description": "An Art Deco statue of Jesus Christ overlooking Rio de Janeiro from Mount Corcovado.",
+    "facts": [
+      "Completed in 1931.",
+      "Stands 30 meters tall (not including the 8-meter pedestal).",
+      "Constructed of reinforced concrete and soapstone."
+    ],
+    "tags": [
+      "modern",
+      "brazil",
+      "art_deco"
+    ]
+  },
+  {
+    "id": "machu_picchu",
+    "name": "Machu Picchu, Peru",
+    "country": "Peru",
+    "description": "A 15th-century Inca citadel set high in the Andes, renowned for its dry-stone construction and panoramic vistas.",
+    "facts": [
+      "Rediscovered by Hiram Bingham in 1911.",
+      "Likely a royal estate or sacred site.",
+      "Elevation is about 2,430 meters (7,970 ft)."
+    ],
+    "tags": [
+      "inca",
+      "andes",
+      "unesco"
+    ]
+  },
+  {
+    "id": "big_ben",
+    "name": "Big Ben, London",
+    "country": "United Kingdom",
+    "description": "Commonly the nickname for the Great Bell of the striking clock at the north end of the Palace of Westminster; often refers to the clock and tower (Elizabeth Tower).",
+    "facts": [
+      "The clock became operational in 1859.",
+      "The tower was renamed Elizabeth Tower in 2012.",
+      "The bell weighs about 13.5 tonnes."
+    ],
+    "tags": [
+      "victorian",
+      "clock_tower",
+      "uk"
+    ]
+  },
+  {
+    "id": "opera_house",
+    "name": "Sydney Opera House, Australia",
+    "country": "Australia",
+    "description": "A multi-venue performing arts centre with iconic sail-like shells, located on Sydney Harbour.",
+    "facts": [
+      "Designed by Danish architect Jørn Utzon.",
+      "Opened in 1973 and became a UNESCO site in 2007.",
+      "Hosts more than 1,500 performances annually."
+    ],
+    "tags": [
+      "modern",
+      "architecture",
+      "unesco"
+    ]
+  },
+  {
+    "id": "rushmore",
+    "name": "Mount Rushmore, USA",
+    "country": "United States",
+    "description": "A colossal sculpture carved into Mount Rushmore in South Dakota, depicting four U.S. presidents: Washington, Jefferson, Roosevelt, and Lincoln.",
+    "facts": [
+      "Sculpted by Gutzon Borglum and completed in 1941.",
+      "Each head is about 18 meters tall.",
+      "Originally conceived to promote tourism."
+    ],
+    "tags": [
+      "sculpture",
+      "usa",
+      "granite"
+    ]
+  },
+  {
+    "id": "great_wall",
+    "name": "Great Wall of China, China",
+    "country": "China",
+    "description": "A vast series of fortifications built across northern China for defense, with sections dating back over two millennia.",
+    "facts": [
+      "The most well-preserved sections are from the Ming dynasty.",
+      "Total length is over 21,000 km when including branches.",
+      "Visible from low Earth orbit under certain conditions (but not from the Moon)."
+    ],
+    "tags": [
+      "ancient",
+      "china",
+      "fortification",
+      "unesco"
+    ]
+  },
+  {
+    "id": "parthenon",
+    "name": "Parthenon, Greece",
+    "country": "Greece",
+    "description": "A 5th-century BCE temple on the Acropolis of Athens dedicated to the goddess Athena, exemplar of classical architecture.",
+    "facts": [
+      "Constructed between 447–432 BCE.",
+      "Designed by Iktinos and Kallikrates; sculptor Phidias.",
+      "Has served as a temple, church, and mosque."
+    ],
+    "tags": [
+      "classical",
+      "greece",
+      "temple"
+    ]
+  },
+  {
+    "id": "stonehenge",
+    "name": "Stonehenge, United Kingdom",
+    "country": "United Kingdom",
+    "description": "A prehistoric stone circle on Salisbury Plain with stones arranged in concentric rings; purpose remains debated.",
+    "facts": [
+      "Built in stages between 3000–2000 BCE.",
+      "Stones were transported from as far as Wales.",
+      "Aligned with the solstices."
+    ],
+    "tags": [
+      "prehistoric",
+      "uk",
+      "megalith"
+    ]
+  },
+  {
+    "id": "angkor",
+    "name": "Angkor Wat, Cambodia",
+    "country": "Cambodia",
+    "description": "The largest religious monument in the world, originally a Hindu temple later transformed into a Buddhist temple complex.",
+    "facts": [
+      "Built in the early 12th century by King Suryavarman II.",
+      "Features extensive bas-relief carvings.",
+      "Symbolizes Mount Meru in Hindu cosmology."
+    ],
+    "tags": [
+      "khmer",
+      "temple",
+      "unesco"
+    ]
+  },
+  {
+    "id": "chichen_itza",
+    "name": "Chichen Itza, Mexico",
+    "country": "Mexico",
+    "description": "A major pre-Columbian Maya city featuring the step pyramid El Castillo (Temple of Kukulcán).",
+    "facts": [
+      "El Castillo has 365 steps symbolizing the solar year.",
+      "Famous for serpent-shadow effect during equinoxes.",
+      "Includes the Great Ball Court, one of Mesoamerica’s largest."
+    ],
+    "tags": [
+      "maya",
+      "mesoamerica",
+      "unesco"
+    ]
+  },
+  {
+    "id": "sagrada_familia",
+    "name": "Sagrada Familia, Spain",
+    "country": "Spain",
+    "description": "Antoni Gaudí’s still-unfinished basilica in Barcelona, renowned for its organic forms and intricate facades.",
+    "facts": [
+      "Construction began in 1882 and continues today.",
+      "Combines Gothic and Art Nouveau forms.",
+      "Gaudí is buried in the crypt."
+    ],
+    "tags": [
+      "gaudi",
+      "basilica",
+      "architecture"
+    ]
+  },
+  {
+    "id": "notre_dame",
+    "name": "Notre-Dame Cathedral, France",
+    "country": "France",
+    "description": "A medieval Catholic cathedral in Paris and a prime example of French Gothic architecture; undergoing restoration after the 2019 fire.",
+    "facts": [
+      "Construction started in 1163 and largely completed by 1260.",
+      "Known for its flying buttresses and rose windows.",
+      "Victor Hugo’s novel helped spark 19th-century restoration."
+    ],
+    "tags": [
+      "gothic",
+      "cathedral",
+      "france"
+    ]
+  },
+  {
+    "id": "neuschwanstein",
+    "name": "Neuschwanstein Castle, Germany",
+    "country": "Germany",
+    "description": "A 19th-century Romanesque Revival palace commissioned by King Ludwig II, said to have inspired Disney castles.",
+    "facts": [
+      "Construction began in 1869 but was never fully completed.",
+      "Perched above Hohenschwangau near Füssen in Bavaria.",
+      "One of the most photographed buildings in the world."
+    ],
+    "tags": [
+      "castle",
+      "bavaria",
+      "romanesque_revival"
+    ]
+  },
+  {
+    "id": "golden_gate",
+    "name": "Golden Gate Bridge, USA",
+    "country": "United States",
+    "description": "A suspension bridge spanning the Golden Gate strait, iconic for its International Orange color and Art Deco elements.",
+    "facts": [
+      "Opened in 1937.",
+      "Main span is 1,280 meters (4,200 ft).",
+      "Often shrouded in fog, producing dramatic views."
+    ],
+    "tags": [
+      "bridge",
+      "usa",
+      "art_deco"
+    ]
+  },
+  {
+    "id": "luxor_temple",
+    "name": "Temple of Luxor, Egypt",
+    "country": "Egypt",
+    "description": "A large ancient Egyptian temple complex on the east bank of the Nile in Luxor, built around 1400 BCE and dedicated to the rejuvenation of kingship.",
+    "facts": [
+      "Linked to Karnak via the Avenue of Sphinxes.",
+      "Built largely by Amenhotep III and Ramesses II.",
+      "Features massive statues and towering columns."
+    ],
+    "tags": [
+      "ancient",
+      "egypt",
+      "temple"
+    ]
+  },
+  {
+    "id": "abu_simbel",
+    "name": "Abu Simbel, Egypt",
+    "country": "Egypt",
+    "description": "Two massive rock temples in Nubia, southern Egypt, carved out of the mountainside in the 13th century BC during the reign of Ramesses II.",
+    "facts": [
+      "Relocated in 1968 to avoid submersion by Lake Nasser.",
+      "Dedicated to Ramesses II and his queen Nefertari.",
+      "Famous for the four colossal statues of Ramesses II."
+    ],
+    "tags": [
+      "ancient",
+      "egypt",
+      "temple",
+      "unesco"
+    ]
+  },
+  {
+    "id": "valley_of_kings",
+    "name": "Valley of the Kings, Egypt",
+    "country": "Egypt",
+    "description": "A valley in Egypt where, for a period of nearly 500 years from the 16th to 11th century BC, rock-cut tombs were excavated for the pharaohs and powerful nobles.",
+    "facts": [
+      "Contains the tomb of Tutankhamun.",
+      "Located on the west bank of the Nile, opposite Thebes (modern Luxor).",
+      "Known for its intricate wall paintings."
+    ],
+    "tags": [
+      "ancient",
+      "egypt",
+      "tomb",
+      "unesco"
+    ]
+  },
+  {
+    "id": "karnak_temple",
+    "name": "Karnak Temple Complex, Egypt",
+    "country": "Egypt",
+    "description": "A vast mix of decayed temples, chapels, pylons, and other buildings near Luxor. Construction began during the reign of Senusret I in the Middle Kingdom and continued into the Ptolemaic period.",
+    "facts": [
+      "The second largest ancient religious site in the world, after Angkor Wat.",
+      "The Hypostyle Hall covers 50,000 sq ft with 134 massive columns.",
+      "Dedicated to the Theban triad: Amun, Mut, and Khonsu."
+    ],
+    "tags": [
+      "ancient",
+      "egypt",
+      "temple",
+      "unesco"
+    ]
+  },
+  {
+    "id": "pompeii",
+    "name": "Pompeii, Italy",
+    "country": "Italy",
+    "description": "An ancient Roman city near modern Naples, buried under volcanic ash and pumice in the eruption of Mount Vesuvius in AD 79.",
+    "facts": [
+      "Preserved under ash for centuries, providing a unique snapshot of Roman life.",
+      "Excavations have revealed streets, houses, and frescoes.",
+      "A UNESCO World Heritage Site."
+    ],
+    "tags": [
+      "ancient",
+      "italy",
+      "roman",
+      "ruins",
+      "unesco"
+    ]
+  },
+  {
+    "id": "acropolis",
+    "name": "Acropolis of Athens, Greece",
+    "country": "Greece",
+    "description": "An ancient citadel located on a rocky outcrop above the city of Athens and containing the remains of several ancient buildings of great architectural and historic significance, the most famous being the Parthenon.",
+    "facts": [
+      "Symbol of democracy and western civilization.",
+      "Includes the Parthenon, the Propylaea, the Erechtheion, and the Temple of Athena Nike.",
+      "Restoration projects have been ongoing since 1975."
+    ],
+    "tags": [
+      "ancient",
+      "greece",
+      "citadel",
+      "unesco"
+    ]
+  }
 ]

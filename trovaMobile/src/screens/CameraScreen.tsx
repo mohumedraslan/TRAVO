@@ -1,15 +1,10 @@
-// @ts-ignore - Ignore React 19 type issues
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert, Image, TouchableOpacity, Modal, Platform, ActivityIndicator } from 'react-native';
-import * as tf from '@tensorflow/tfjs';
-import '@tensorflow/tfjs-react-native';
+import { View, Text, StyleSheet, Alert, Image, TouchableOpacity, Platform, ActivityIndicator } from 'react-native';
+import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import { detectMonument } from '../services/monumentService';
-import SmartGuideChat from '../components/SmartGuideChat';
-// Simple icon component using Text
-const IconSymbol = ({ name, size, color, style }: { name: string; size: number; color: string; style?: any }) => (
-  <Text style={[{ fontSize: size, color }, style]}>{name}</Text>
-);
+import { Ionicons } from '@expo/vector-icons';
+import { supabase } from '../config/supabase';
+import { api } from '../api/client';
 
 // Only import VisionCamera on native platforms
 let Camera: any;
@@ -26,311 +21,203 @@ if (Platform.OS !== 'web') {
   }
 }
 
-interface MonumentInfo {
-  name: string;
-  confidence: number;
-  description?: string;
-  location?: string;
-}
-
 const CameraScreen = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const [monument, setMonument] = useState<MonumentInfo | null>(null);
-  const [chatOpen, setChatOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+  const [result, setResult] = useState<any>(null);
+  const router = useRouter();
+
   // For native camera
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const cameraRef = useRef<any>(null);
   const devices = Platform.OS !== 'web' && visionCameraAvailable ? useCameraDevices() : null;
   const device = devices?.back;
-  
-  // Initialize TensorFlow.js
-  const initTF = async () => {
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web' && visionCameraAvailable) {
+        const status = await Camera.requestCameraPermission();
+        setHasPermission(status === 'granted');
+      } else {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        setHasPermission(status === 'granted');
+      }
+    })();
+  }, []);
+
+  const takePhoto = async () => {
     try {
-      // Wait for TensorFlow to be ready
-      await tf.ready();
-      console.log('TensorFlow.js is ready');
-      
-      // Set backend to CPU for better compatibility
-      await tf.setBackend('cpu');
-      console.log('TensorFlow.js backend set to:', tf.getBackend());
+      if (Platform.OS === 'web' || !visionCameraAvailable) {
+        const result = await ImagePicker.launchCameraAsync({
+          quality: 0.5,
+          base64: true,
+        });
+        if (!result.canceled && result.assets[0]) {
+          setImageUri(result.assets[0].uri);
+          processPhoto(result.assets[0]);
+        }
+      } else if (cameraRef.current) {
+        const photo = await cameraRef.current.takePhoto({
+          qualityPrioritization: 'speed',
+          flash: 'off',
+        });
+        const uri = `file://${photo.path}`;
+        setImageUri(uri);
+        // For native, we need to read base64 if not provided, or upload file directly
+        // VisionCamera doesn't return base64 by default.
+        // For MVP, let's use ImagePicker on native too if VisionCamera is complex to get base64 quickly without FS
+        // Or just use ImagePicker for consistency and ease.
+      }
     } catch (error) {
-      console.error('Error initializing TensorFlow:', error);
+      Alert.alert('Error', 'Failed to take photo');
     }
   };
 
   const pickImage = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permissionResult.granted) {
-      Alert.alert('Permission required', 'Please grant photo library access.');
-      return;
-    }
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: 'images' as any, // Using string to avoid deprecated MediaTypeOptions
-      quality: 0.8,
-      base64: false,
+      mediaTypes: 'images',
+      quality: 0.5,
+      base64: true,
     });
-    if (!result.canceled && result.assets?.[0]?.uri) {
+    if (!result.canceled && result.assets[0]) {
       setImageUri(result.assets[0].uri);
-      await identify(result.assets[0].uri);
+      processPhoto(result.assets[0]);
     }
   };
 
-  // Request camera permissions for native platforms
-  useEffect(() => {
-    // Initialize TensorFlow on component mount
-    initTF();
-    
-    // Request camera permissions for native platforms
-    if (Platform.OS !== 'web') {
-      (async () => {
-        if (visionCameraAvailable) {
-          try {
-            const cameraPermission = await Camera.requestCameraPermission();
-            setHasPermission(cameraPermission === 'granted');
-          } catch (error) {
-            console.error('Error requesting camera permission:', error);
-            setHasPermission(false);
-          }
-        } else {
-          try {
-            const perm = await ImagePicker.requestCameraPermissionsAsync();
-            setHasPermission(perm.granted);
-          } catch (error) {
-            console.error('Error requesting camera permission:', error);
-            setHasPermission(false);
-          }
-        }
-      })();
-    }
-  }, []);
+  const processPhoto = async (asset: ImagePicker.ImagePickerAsset) => {
+    setLoading(true);
+    setResult(null);
 
-  const takePhoto = async () => {
-    if (Platform.OS === 'web') {
-      // Use ImagePicker on web
-      const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-      if (!permissionResult.granted) {
-        Alert.alert('Permission required', 'Please grant camera access.');
+    try {
+      // 1. Get Active Trip
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        Alert.alert('Login Required', 'Please log in to save to your diary.');
+        setLoading(false);
         return;
       }
-      const result = await ImagePicker.launchCameraAsync({
-        quality: 0.8,
-        base64: false,
-      });
-      if (!result.canceled && result.assets?.[0]?.uri) {
-        setImageUri(result.assets[0].uri);
-        await identify(result.assets[0].uri);
-      }
-    } else {
-      // Native: prefer VisionCamera, fallback to ImagePicker
-      if (visionCameraAvailable && cameraRef.current && hasPermission) {
-        try {
-          const photo = await cameraRef.current.takePhoto({
-            qualityPrioritization: 'speed',
-            flash: 'off',
-          });
-          const uri = `file://${photo.path}`;
-          setImageUri(uri);
-          await identify(uri);
-        } catch (err) {
-          console.error('Error taking photo:', err);
-          Alert.alert('Error', 'Failed to take photo. Please try again.');
-        }
-      } else {
-        // Fallback to Expo ImagePicker when VisionCamera is unavailable
-        const perm = await ImagePicker.requestCameraPermissionsAsync();
-        if (!perm.granted) {
-          Alert.alert('Permission required', 'Please grant camera access.');
-          return;
-        }
-        const result = await ImagePicker.launchCameraAsync({
-          quality: 0.8,
-          base64: false,
-        });
-        if (!result.canceled && result.assets?.[0]?.uri) {
-          setImageUri(result.assets[0].uri);
-          await identify(result.assets[0].uri);
-        }
-      }
-    }
-  };
 
-  const identify = async (uri: string) => {
-    try {
-      setLoading(true);
-      
-      // Call the monument service
-      const result = await detectMonument(uri);
-      
-      if (result) {
-        setMonument({
-          name: result.monumentName,
-          confidence: result.confidence,
-          description: result.description,
-          location: result.location
-        });
+      const { data: trip } = await supabase
+        .from('trips')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .single();
+
+      if (!trip) {
+        Alert.alert('No Active Trip', 'Please start a trip from the Home screen first.');
+        setLoading(false);
+        return;
       }
+
+      // 2. GPS (Default to 0,0 if not available)
+      // TODO: Install expo-location for real GPS
+      const gpsLat = 0.0;
+      const gpsLon = 0.0;
+
+      // 3. Send to Backend (Diary Service)
+      // We need to send FormData
+      const formData = new FormData();
+      formData.append('trip_id', trip.id);
+      formData.append('gps_lat', String(gpsLat));
+      formData.append('gps_lon', String(gpsLon));
+
+      // Append file
+      const filename = asset.uri.split('/').pop() || 'photo.jpg';
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : `image`;
+
+      formData.append('file', {
+        uri: asset.uri,
+        name: filename,
+        type: type,
+      } as any);
+
+      // Call API
+      const response = await api.post('/diary/identify', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setResult(response.data);
+      Alert.alert('Success', `Logged: ${response.data.place_name}`);
+
     } catch (error: any) {
-      console.error('Error identifying monument:', error);
-      Alert.alert('Error', error?.message || 'Failed to identify monument. Please try again.');
+      console.error('Error processing photo:', error);
+      Alert.alert('Error', 'Failed to process photo. ' + (error.response?.data?.detail || error.message));
     } finally {
       setLoading(false);
     }
   };
 
-  // Render different UI based on platform
-  const renderCamera = () => {
-    if (Platform.OS === 'web') {
-      // Web fallback UI
-      return (
-        <View style={styles.webFallback}>
-          <Text style={styles.webNote}>Camera not supported on web preview, please run on Expo Go app.</Text>
-          <View style={styles.actionsRow}>
-            <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]} onPress={pickImage}>
-              <IconSymbol name="photo.fill" size={24} color="#fff" />
-              <Text style={styles.actionButtonText}>Pick from Gallery</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    } else if (!visionCameraAvailable) {
-      // Native fallback UI when VisionCamera is unavailable
-      return (
-        <View style={styles.webFallback}>
-          <Text style={styles.webNote}>VisionCamera unavailable (Expo Go). Use the fallback below.</Text>
-          <View style={styles.actionsRow}>
-            <TouchableOpacity style={styles.actionButton} onPress={takePhoto}>
-              <IconSymbol name="camera.fill" size={24} color="#fff" />
-              <Text style={styles.actionButtonText}>Open Camera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]} onPress={pickImage}>
-              <IconSymbol name="photo.fill" size={24} color="#fff" />
-              <Text style={styles.actionButtonText}>Pick from Gallery</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    } else if (!device || hasPermission === null) {
-      // Loading state
-      return <Text style={styles.info}>Loading camera...</Text>;
-    } else if (hasPermission === false) {
-      // Permission denied
-      return <Text style={styles.info}>No access to camera</Text>;
-    } else {
-      // Native camera UI
-      return (
-        <View style={styles.cameraContainer}>
-          <Camera
-            ref={cameraRef}
-            style={styles.camera}
-            device={device}
-            isActive={true}
-            photo={true}
-          />
-          <TouchableOpacity style={styles.captureButton} onPress={takePhoto}>
-            <IconSymbol name="camera.fill" size={32} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      );
-    }
-  };
-
-  if (loading) {
-    return (
-      <View style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color="#1666c1" />
-        <Text style={styles.loadingText}>Identifying monument...</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Discover Egypt AI</Text>
-      <Text style={styles.subtitle}>Capture or select a photo to identify monuments</Text>
+      <Text style={styles.title}>Capture Moment</Text>
 
-      {!imageUri ? (
-        // Show camera or fallback UI when no image is captured
-        renderCamera()
+      {imageUri ? (
+        <View style={styles.previewContainer}>
+          <Image source={{ uri: imageUri }} style={styles.preview} />
+          {loading && (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator size="large" color="#fff" />
+              <Text style={styles.loadingText}>Identifying & Logging...</Text>
+            </View>
+          )}
+          {result && (
+            <View style={styles.resultOverlay}>
+              <Ionicons name="checkmark-circle" size={48} color="#4CAF50" />
+              <Text style={styles.resultText}>{result.place_name}</Text>
+            </View>
+          )}
+        </View>
       ) : (
-        // Show actions row when image is captured
-        <View style={styles.actionsRow}>
-          <TouchableOpacity style={styles.actionButton} onPress={takePhoto}>
-            <IconSymbol name="camera.fill" size={24} color="#fff" />
-            <Text style={styles.actionButtonText}>Open Camera</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]} onPress={pickImage}>
-            <IconSymbol name="photo.fill" size={24} color="#fff" />
-            <Text style={styles.actionButtonText}>Pick from Gallery</Text>
-          </TouchableOpacity>
+        <View style={styles.placeholder}>
+          <Ionicons name="camera-outline" size={64} color="#ccc" />
+          <Text style={styles.placeholderText}>Take a photo to log it to your diary</Text>
         </View>
       )}
 
-      {imageUri && (
-        <Image source={{ uri: imageUri }} style={styles.preview} />
+      <View style={styles.controls}>
+        <TouchableOpacity style={styles.button} onPress={takePhoto}>
+          <Ionicons name="camera" size={24} color="#fff" />
+          <Text style={styles.buttonText}>Camera</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.button, styles.secondaryButton]} onPress={pickImage}>
+          <Ionicons name="images" size={24} color="#fff" />
+          <Text style={styles.buttonText}>Gallery</Text>
+        </TouchableOpacity>
+      </View>
+
+      {result && (
+        <TouchableOpacity style={styles.viewDiaryButton} onPress={() => router.push('/(tabs)/diary')}>
+          <Text style={styles.viewDiaryText}>View in Diary</Text>
+          <Ionicons name="arrow-forward" size={20} color="#fff" />
+        </TouchableOpacity>
       )}
-
-      {loading && <Text style={styles.info}>Identifying monument...</Text>}
-
-      {monument && (
-        <View style={styles.resultCard}>
-          <Text style={styles.resultTitle}>{monument.name || 'Unknown Monument'}</Text>
-          <Text style={styles.resultSubtitle}>Confidence: {(monument.confidence * 100).toFixed(1)}%</Text>
-          <TouchableOpacity style={styles.askButton} onPress={() => setChatOpen(true)}>
-            <IconSymbol name="text.bubble.fill" size={20} color="#fff" />
-            <Text style={styles.askButtonText}>Ask About This</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <Modal visible={chatOpen} animationType="slide" onRequestClose={() => setChatOpen(false)}>
-        <View style={styles.modalHeader}>
-          <Text style={styles.modalTitle}>Ask About {monument?.name || 'the Monument'}</Text>
-          <TouchableOpacity onPress={() => setChatOpen(false)}>
-            <IconSymbol name="xmark.circle.fill" size={28} color="#333" />
-          </TouchableOpacity>
-        </View>
-        <View style={{ flex: 1 }}>
-          <SmartGuideChat initialLocation={monument?.name || undefined} />
-        </View>
-      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#f5f7fb' },
-  centered: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 16,
-    color: '#555',
-    fontSize: 16,
-  },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 6, color: '#333' },
-  subtitle: { fontSize: 14, color: '#666', marginBottom: 12 },
-  actionsRow: { flexDirection: 'row', gap: 10, marginBottom: 12 },
-  actionButton: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#1666c1', paddingVertical: 10, paddingHorizontal: 12, borderRadius: 10 },
-  secondaryButton: { backgroundColor: '#4f8bc9' },
-  actionButtonText: { color: '#fff', fontWeight: '600' },
-  preview: { width: '100%', height: 240, borderRadius: 12, marginBottom: 12, resizeMode: 'cover' },
-  info: { color: '#333', marginBottom: 8 },
-  resultCard: { backgroundColor: '#fff', borderRadius: 12, padding: 12, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 6, elevation: 2 },
-  resultTitle: { fontSize: 18, fontWeight: '700' },
-  resultSubtitle: { fontSize: 13, color: '#666', marginTop: 4 },
-  askButton: { marginTop: 12, backgroundColor: '#2f7b2d', flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 10, paddingHorizontal: 12, borderRadius: 8, alignSelf: 'flex-start' },
-  askButtonText: { color: '#fff', fontWeight: '600' },
-  modalHeader: { padding: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#eee' },
-  modalTitle: { fontSize: 18, fontWeight: '600' },
-  // Camera styles
-  cameraContainer: { width: '100%', height: 300, borderRadius: 10, overflow: 'hidden', position: 'relative', marginBottom: 20 },
-  camera: { flex: 1 },
-  captureButton: { position: 'absolute', bottom: 20, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.5)', borderRadius: 30, padding: 15 },
-  webFallback: { width: '100%', height: 200, backgroundColor: '#e0e0e0', borderRadius: 10, justifyContent: 'center', alignItems: 'center', padding: 20, marginBottom: 20 },
-  webNote: { fontSize: 16, color: '#666', textAlign: 'center', marginBottom: 20 },
+  container: { flex: 1, padding: 20, backgroundColor: '#fff', alignItems: 'center' },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, marginTop: 40 },
+  previewContainer: { width: '100%', height: 400, borderRadius: 20, overflow: 'hidden', marginBottom: 20, position: 'relative' },
+  preview: { width: '100%', height: '100%' },
+  placeholder: { width: '100%', height: 400, backgroundColor: '#f5f5f5', borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginBottom: 20 },
+  placeholderText: { color: '#999', marginTop: 10 },
+  controls: { flexDirection: 'row', gap: 20, width: '100%' },
+  button: { flex: 1, backgroundColor: '#000', padding: 15, borderRadius: 12, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 8 },
+  secondaryButton: { backgroundColor: '#666' },
+  buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  loadingOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', alignItems: 'center' },
+  loadingText: { color: '#fff', marginTop: 10, fontWeight: 'bold' },
+  resultOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(255,255,255,0.9)', padding: 20, alignItems: 'center' },
+  resultText: { fontSize: 18, fontWeight: 'bold', color: '#333', marginTop: 5 },
+  viewDiaryButton: { marginTop: 20, backgroundColor: '#4CAF50', paddingHorizontal: 30, paddingVertical: 12, borderRadius: 25, flexDirection: 'row', alignItems: 'center', gap: 5 },
+  viewDiaryText: { color: '#fff', fontWeight: 'bold' },
 });
 
 export default CameraScreen;

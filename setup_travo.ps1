@@ -24,6 +24,11 @@ try {
         exit 1
     }
     Write-ColorOutput "✅ Node.js version: $nodeVersion" "Green"
+    
+    # Get LAN IP for reference
+    $lanIp = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notlike "*Loopback*" -and $_.InterfaceAlias -notlike "*vEthernet*" }).IPAddress | Select-Object -First 1
+    Write-ColorOutput "ℹ️  Your LAN IP appears to be: $lanIp" "Cyan"
+    Write-ColorOutput "ℹ️  If emulator fails to connect, ensure it can reach http://$lanIp:8000" "Cyan"
 
     # Check npm version
     $npmVersion = npm --version
@@ -55,7 +60,8 @@ try {
         if (Test-Path "yarn.lock") {
             Remove-Item -Force -ErrorAction SilentlyContinue -Path "yarn.lock"
         }
-    } catch {
+    }
+    catch {
         Write-ColorOutput "⚠️  Warning: Could not clean up all previous installation files. Some files might be in use." "Yellow"
     }
 
@@ -100,7 +106,8 @@ try {
     # Start Expo in web mode by default
     try {
         npx expo start --web --clear
-    } catch {
+    }
+    catch {
         Write-ColorOutput "❌ Failed to start Expo web: $_" "Red"
         Write-ColorOutput "📄 Try running manually with: cd trovaMobile && npx expo start --web" "Yellow"
         exit 1
@@ -109,7 +116,8 @@ try {
     Write-ColorOutput "✅ Setup completed successfully!" "Green"
     Write-ColorOutput "🚀 Happy coding with TRAVO!" "Cyan"
 
-} catch {
+}
+catch {
     Write-ColorOutput "❌ An error occurred: $_" "Red"
     Write-ColorOutput "📄 Stack trace: $($_.ScriptStackTrace)" "Red"
     exit 1

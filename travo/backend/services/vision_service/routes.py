@@ -46,15 +46,11 @@ async def identify_monument_upload(image: UploadFile = File(...)):
                 }
             )
 
-        # Read and encode image
+        # Read and convert image to RGB
         image_bytes = await image.read()
-        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
-        
-        # Predict using the model
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        result = identify_monument(image)  # Removed await as it's not an async function
+        result = identify_monument(image)
         logger.info(f"Prediction result: {result}")
-
         return JSONResponse(status_code=200, content=result)
 
     except Exception as e:
@@ -76,12 +72,11 @@ async def identify_monument_route(request: ImageIdentificationRequest):
     """Identify monument from base64 encoded image"""
     logger.info(f"Received base64 image identification request")
     try:
-        # Predict using the model
+        # Decode base64 and run CLIP-based identification
         image_bytes = base64.b64decode(request.image)
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        result = identify_monument(image)  # Removed await as it's not an async function
+        result = identify_monument(image)
         logger.info(f"Prediction result: {result}")
-
         return JSONResponse(status_code=200, content=result)
 
     except Exception as e:

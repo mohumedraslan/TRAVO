@@ -17,8 +17,6 @@ except ImportError:
     CLIP_AVAILABLE = False
     logging.warning("CLIP dependencies not available. Monument identification will use fallback method.")
 
-import cv2
-import numpy as np
 from PIL import Image
 import io
 
@@ -42,21 +40,37 @@ def initialize_clip_model():
 
     # Always load labels for both CLIP and fallback paths
     monuments_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'monuments.json'))
+    logger.info(f"Attempting to load monuments from: {monuments_path}")
     try:
-        with open(monuments_path, "r") as f:
-            monument_labels = json.load(f)
+        if not os.path.exists(monuments_path):
+            logger.error(f"Monuments file not found at: {monuments_path}")
+            monument_labels = []
+        else:
+            with open(monuments_path, "r", encoding="utf-8") as f:
+                monument_labels = json.load(f)
+            logger.info(f"Successfully loaded {len(monument_labels)} monuments.")
     except Exception as e:
-        logger.error(f"Failed to load monument labels from {monuments_path}: {e}")
+        logger.error(f"Failed to load monument labels from {monuments_path}: {e}", exc_info=True)
         monument_labels = []
 
     if not CLIP_AVAILABLE:
         logger.warning("CLIP not available; using fallback identification.")
         return False
 
+    if not monument_labels:
+        logger.warning("No monument labels loaded; cannot initialize CLIP. Using fallback.")
+        return False
+
     try:
-        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        # Load models from local cache only; do not attempt network download
+        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", local_files_only=True)
+        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32", local_files_only=True)
         monument_texts = [f"A photo of {m['name']}" for m in monument_labels]
+        
+        if not monument_texts:
+             logger.warning("Monument texts list is empty. Using fallback.")
+             return False
+             
         text_inputs = processor(text=monument_texts, return_tensors="pt", padding=True)
         with torch.no_grad():
             text_features = model.get_text_features(**text_inputs)
@@ -236,13 +250,31 @@ MONUMENTS_DB = [
     }
 ]
 
+def _normalize_label(s: str) -> str:
+    import re
+    s = (s or "").lower()
+    # remove punctuation and commas, collapse spaces
+    s = re.sub(r"[^a-z0-9\s]", " ", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
 def get_monument_details_by_name(name: str) -> Optional[Dict[str, Any]]:
-    """Retrieve full monument details from MONUMENTS_DB by name."""
+    """Retrieve monument details using fuzzy matching (ignore punctuation/country)."""
     logger.debug(f"Searching for monument details for: {name}")
-    for monument in MONUMENTS_DB:
-        if monument["name"] == name:
-            logger.debug(f"Found monument details for: {name}")
-            return monument
+    if not name:
+        return None
+    norm_target = _normalize_label(name)
+    # 1) Exact match
+    for m in MONUMENTS_DB:
+        if _normalize_label(m["name"]) == norm_target:
+            logger.debug(f"Found monument details (exact): {m['name']}")
+            return m
+    # 2) Contains either way
+    for m in MONUMENTS_DB:
+        n = _normalize_label(m["name"])
+        if n in norm_target or norm_target in n:
+            logger.debug(f"Found monument details (fuzzy): {m['name']}")
+            return m
     logger.warning(f"No monument details found for: {name}")
     return None
 
@@ -272,10 +304,14 @@ def identify_monument(image: Image.Image):
             for i in topk_idx
         ]
 
+        name = best_match.get("name")
+        details = get_monument_details_by_name(name) if name else None
+        description = (details or {}).get("description")
         return {
-            "identified_monument": best_match.get("name"),
+            "identified_monument": name,
             "confidence": confidence,
             "monument_id": best_match.get("id"),
+            "description": description,
             "candidates": candidates
         }
     except Exception as e:
@@ -291,10 +327,13 @@ def fallback_identification() -> Dict[str, Any]:
             mid = selected.get("id")
             confidence = round(random.uniform(0.3, 0.6), 4)
             candidates = [{"monument_name": name, "confidence": confidence}]
+            details = get_monument_details_by_name(name) if name else None
+            description = (details or {}).get("description")
             return {
                 "identified_monument": name,
                 "confidence": confidence,
                 "monument_id": mid,
+                "description": description,
                 "candidates": candidates,
             }
         else:
@@ -303,6 +342,7 @@ def fallback_identification() -> Dict[str, Any]:
                 "identified_monument": "Unknown",
                 "confidence": 0.0,
                 "monument_id": None,
+                "description": None,
                 "candidates": [],
             }
     except Exception as e:
@@ -311,5 +351,6 @@ def fallback_identification() -> Dict[str, Any]:
             "identified_monument": "Unknown",
             "confidence": 0.0,
             "monument_id": None,
+            "description": None,
             "candidates": [],
         }

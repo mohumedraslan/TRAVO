@@ -6,11 +6,11 @@ export const API_CONFIG = {
   // For iOS simulator and physical devices, use your machine's local IP
   // For web, use localhost or your machine's IP
   BASE_URL: Platform.select({
-    android: 'http://10.0.2.2:8000',
-    ios: 'http://localhost:8000',
-    default: 'http://localhost:8000',
+    android: 'http://192.168.1.5:8001',
+    ios: 'http://localhost:8001',
+    default: 'http://localhost:8001',
   }),
-  
+
   // API endpoints
   ENDPOINTS: {
     AUTH: {
@@ -30,10 +30,10 @@ export const API_CONFIG = {
       DELETE: '/itinerary/',
     },
   },
-  
+
   // Timeout for API requests (in milliseconds)
   TIMEOUT: 30000,
-  
+
   // Default headers
   HEADERS: {
     'Content-Type': 'application/json',

@@ -50,73 +50,182 @@ TRAVO/
 ### Prerequisites
 
 - Python 3.8 or higher
-- Node.js 14 or higher
+- Node.js 16 or higher
 - npm or yarn
 - Git
+- Expo CLI (for mobile app)
+- Android Studio / Xcode (for mobile app development)
+
+## Setup and Running
 
 ### Backend Setup
 
-1. Clone the repository:
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/yourusername/TRAVO.git
    cd TRAVO
    ```
 
-2. Create and activate a virtual environment:
+2. **Set up a virtual environment**:
    ```bash
-   # For Windows
+   # Windows
    python -m venv venv
    .\venv\Scripts\activate
    
-   # For macOS/Linux
+   # macOS/Linux
    python -m venv venv
    source venv/bin/activate
    ```
 
-3. Install backend dependencies:
+3. **Install Python dependencies**:
    ```bash
    cd travo/backend
    pip install -r requirements.txt
    ```
 
-4. Create a `.env` file in the backend directory with the following variables:
-   ```
-   SECRET_KEY=your_secret_key
+4. **Set up environment variables**:
+   Create a `.env` file in the `travo/backend` directory with:
+   ```env
+   # Required
+   SECRET_KEY=your-secret-key-here
    DATABASE_URL=sqlite:///./travo.db
-   VISION_API_KEY=your_vision_api_key
-   WEATHER_API_KEY=your_weather_api_key
-   JWT_SECRET_KEY=your_jwt_secret_key
+   JWT_SECRET_KEY=your-jwt-secret-key
+   
+   # Optional (for production)
+   VISION_API_KEY=your-google-vision-api-key
+   WEATHER_API_KEY=your-weather-api-key
+   
+   # JWT Settings
    JWT_ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   ACCESS_TOKEN_EXPIRE_MINUTES=1440  # 24 hours
    ```
 
-5. Run the backend server:
+5. **Run database migrations**:
    ```bash
-   uvicorn main:app --reload
+   alembic upgrade head
    ```
 
-### Frontend Setup
+6. **Start the backend server**:
+   ```bash
+   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   ```
+   The API will be available at `http://localhost:8000`
+   - API Docs (Swagger UI): `http://localhost:8000/docs`
+   - Alternative Docs (ReDoc): `http://localhost:8000/redoc`
 
-1. Navigate to the frontend directory:
+### Web Frontend Setup
+
+1. **Install dependencies**:
    ```bash
    cd trovaweb
+   npm install  # or yarn install
    ```
 
-2. Install frontend dependencies:
+2. **Set up environment variables**:
+   Create a `.env.local` file in the `trovaweb` directory:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
+   ```
+
+3. **Start the development server**:
    ```bash
-   npm install
-   # or
-   yarn install
+   npm run dev  # or yarn dev
    ```
+   The web app will be available at `http://localhost:3000`
 
-3. Start the development server:
+### Mobile App Setup
+
+1. **Install Expo CLI** (if not already installed):
    ```bash
-   npm run dev
-   # or
-   yarn dev
+   npm install -g expo-cli
    ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+2. **Navigate to the mobile app directory**:
+   ```bash
+   cd travo/frontend/mobile
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   npm install  # or yarn install
+   ```
+
+4. **Start the development server**:
+   ```bash
+   npx expo start
+   ```
+   This will open the Expo DevTools in your browser. From here you can:
+   - Press `a` to open the app on an Android emulator
+   - Press `i` to open the app on an iOS simulator
+   - Scan the QR code with your phone's camera (requires Expo Go app)
+
+## Example API Calls
+
+### Authentication
+
+**Register a new user**:
+```http
+POST /users/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "securepassword123",
+  "full_name": "John Doe"
+}
+```
+
+**Login**:
+```http
+POST /users/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "securepassword123"
+}
+```
+
+### Monument Identification
+
+**Identify a monument from image** (requires authentication):
+```http
+POST /vision/identify
+Authorization: Bearer your-jwt-token
+Content-Type: multipart/form-data
+
+# Form data: file=@path/to/your/image.jpg
+```
+
+### Get Crowd Prediction
+
+```http
+GET /crowds/predict?monument_id=1&datetime=2025-12-25T14:30:00
+Authorization: Bearer your-jwt-token
+```
+
+## Demo Credentials
+
+For testing purposes, you can use the following demo account:
+
+- **Email**: demo@travo.app
+- **Password**: Demo@123
+
+Or register a new account using the registration endpoint above.
+
+## Environment Variables Reference
+
+### Backend (`.env`)
+- `DATABASE_URL`: Database connection string
+- `JWT_SECRET_KEY`: Secret key for JWT token generation
+- `VISION_API_KEY`: Google Cloud Vision API key
+- `WEATHER_API_KEY`: OpenWeatherMap API key
+- `ACCESS_TOKEN_EXPIRE_MINUTES`: JWT token expiration time
+
+### Frontend (`.env.local`)
+- `NEXT_PUBLIC_API_URL`: Backend API URL
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`: Google Maps JavaScript API key
 
 ## Testing
 

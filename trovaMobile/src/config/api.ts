@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 // Default to localhost for web and iOS, 10.0.2.2 for Android emulator
 const LOCAL_IP = '192.168.1.5'; // Change this to your local IP if testing on physical device
 const LOCAL_BACKEND_URL = `http://${LOCAL_IP}:8000`;
-const EMULATOR_BACKEND_URL = 'http://10.0.2.2:8000';
+const EMULATOR_BACKEND_URL = 'http://192.168.1.5:8001';
 
 // Determine the base URL based on platform
 export const getBaseUrl = () => {

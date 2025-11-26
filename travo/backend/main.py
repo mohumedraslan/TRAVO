@@ -17,6 +17,7 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 import os
 import logging
+from dotenv import load_dotenv
 
 # Configure logging
 logging.basicConfig(
@@ -29,12 +30,19 @@ logging.basicConfig(
 )
 logging.getLogger('numba').setLevel(logging.WARNING)
 
+# Load environment variables early
+load_dotenv('config.env')
+
 # Import the main API router
 from api.router import api_router
 
 # Socket.IO for real-time communication
 import socketio
-from services.assistant_service.service_logic import get_ai_response
+# External AI models are disabled; assistant uses static descriptions only
+
+# Initialize database
+from services.user_service.database import init_db
+init_db()
 
 # Create FastAPI app
 app = FastAPI(
@@ -61,16 +69,19 @@ docs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 app.mount("/static", StaticFiles(directory=docs_dir), name="static")
 
 # Mount assets directory to serve images from repository data folder
-# Try repo root: ../../.. -> /data, else fallback to /travo/data
+# Try repo root: ../../.. -> /data, then /travo/data, then backend/data
 _here = os.path.abspath(__file__)
 _travo_dir = os.path.dirname(os.path.dirname(_here))
 _repo_root = os.path.dirname(_travo_dir)
 assets_dir_root = os.path.join(_repo_root, "data")
 assets_dir_travo = os.path.join(_travo_dir, "data")
+assets_dir_backend = os.path.join(os.path.dirname(_here), "data")
 if os.path.isdir(assets_dir_root):
     app.mount("/assets", StaticFiles(directory=assets_dir_root), name="assets")
 elif os.path.isdir(assets_dir_travo):
     app.mount("/assets", StaticFiles(directory=assets_dir_travo), name="assets")
+elif os.path.isdir(assets_dir_backend):
+    app.mount("/assets", StaticFiles(directory=assets_dir_backend), name="assets")
 
 # Initialize Socket.IO server and mount under /socket.io
 sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
@@ -99,28 +110,79 @@ async def assistant_query(sid, data):
         if not query:
             await sio.emit("assistant_response", {"answer": "No query provided."}, to=sid)
             return
-        result = get_ai_response(query, location)
+        # Static description-based response using local data only
+        answer = None
+        model_used = None
+
+        if not answer:
+            try:
+                data_path = os.path.join(os.path.dirname(__file__), "data", "monuments.json")
+                catalog = []
+                if os.path.isfile(data_path):
+                    import json as _json
+                    with open(data_path, "r", encoding="utf-8") as f:
+                        catalog = _json.load(f)
+                ql = (query or "").lower()
+                locl = (location or "").lower()
+                chosen = None
+                for m in catalog:
+                    nm = str(m.get("name", "")).lower()
+                    if nm and ((nm in ql) or (ql in nm) or (nm in locl) or (locl in nm)):
+                        chosen = m
+                        break
+                if not chosen and catalog:
+                    chosen = catalog[0]
+                desc = (chosen or {}).get("description", "No description available.")
+                facts = (chosen or {}).get("facts", [])
+                extra = facts[0] if isinstance(facts, list) and facts else ""
+                answer = (f"{(chosen or {}).get('name', 'This monument')}: {desc} " + (extra or "")).strip()
+            except Exception:
+                answer = "I'm here to help with monuments. Could you try asking about a specific landmark or provide a location?"
+
         payload = {
-            "answer": result.get("answer", ""),
-            "confidence": result.get("confidence", 0.0),
-            "related_monuments": result.get("related_monuments", []),
+            "answer": answer,
+            "confidence": 0.0,
+            "related_monuments": [],
+            "model": model_used or "fallback",
         }
         await sio.emit("assistant_response", payload, to=sid)
     except Exception as e:
         logging.error(f"Error in assistant_query: {e}", exc_info=True)
-        await sio.emit("assistant_response", {"answer": f"Error: {str(e)}"}, to=sid)
+        try:
+            data_path = os.path.join(os.path.dirname(__file__), "data", "monuments.json")
+            catalog = []
+            if os.path.isfile(data_path):
+                import json as _json
+                with open(data_path, "r", encoding="utf-8") as f:
+                    catalog = _json.load(f)
+            ql = (data.get("query") or "").lower() if isinstance(data, dict) else ""
+            locl = (data.get("location") or "").lower() if isinstance(data, dict) else ""
+            chosen = None
+            for m in catalog:
+                nm = str(m.get("name", "")).lower()
+                if nm and ((nm in ql) or (ql in nm) or (nm in locl) or (locl in nm)):
+                    chosen = m
+                    break
+            if not chosen and catalog:
+                chosen = catalog[0]
+            desc = (chosen or {}).get("description", "No description available.")
+            facts = (chosen or {}).get("facts", [])
+            extra = facts[0] if isinstance(facts, list) and facts else ""
+            fallback_answer = (f"{(chosen or {}).get('name', 'This monument')}: {desc} " + (extra or "")).strip()
+        except Exception:
+            fallback_answer = "I'm here to help with monuments. Could you try asking about a specific landmark or provide a location?"
+        await sio.emit("assistant_response", {"answer": fallback_answer, "confidence": 0.0, "related_monuments": []}, to=sid)
 
-# API Spec endpoint
-@app.get("/api_spec.yaml")
-async def get_api_spec():
-    api_spec_path = os.path.join(docs_dir, "api_spec.yaml")
-    return FileResponse(api_spec_path)
+from services.vision_service import routes as vision_routes
+from services.diary_service import routes as diary_routes
 
-# Root endpoint
+app.include_router(vision_routes.router)
+app.include_router(diary_routes.router)
+
 @app.get("/")
 async def root():
     return {
-        "message": "Welcome to TRAVO API",
+        "message": "Welcome to TRAVO API (Diary Mode)",
         "docs": "/docs",
         "version": "0.1.0"
     }

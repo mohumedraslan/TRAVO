@@ -1,3 +1,4 @@
+import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -5,16 +6,38 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Use the correct storage key based on platform
 const storageKey = 'supabase.auth.token';
 
-// Create a custom storage adapter
+// Create a custom storage adapter that handles errors gracefully
 const storage = {
-  getItem: (key: string) => {
-    return AsyncStorage.getItem(key);
+  getItem: async (key: string) => {
+    try {
+      if (Platform.OS === 'web' && typeof window === 'undefined') {
+        return null;
+      }
+      return await AsyncStorage.getItem(key);
+    } catch (error) {
+      console.warn('Supabase storage getItem error:', error);
+      return null;
+    }
   },
-  setItem: (key: string, value: string) => {
-    return AsyncStorage.setItem(key, value);
+  setItem: async (key: string, value: string) => {
+    try {
+      if (Platform.OS === 'web' && typeof window === 'undefined') {
+        return;
+      }
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      console.warn('Supabase storage setItem error:', error);
+    }
   },
-  removeItem: (key: string) => {
-    return AsyncStorage.removeItem(key);
+  removeItem: async (key: string) => {
+    try {
+      if (Platform.OS === 'web' && typeof window === 'undefined') {
+        return;
+      }
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.warn('Supabase storage removeItem error:', error);
+    }
   },
 };
 
@@ -24,7 +47,7 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: storage as any,
+    storage: storage,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: Platform.OS === 'web',
@@ -33,7 +56,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 // Add a function to handle auth state changes
 supabase.auth.onAuthStateChange((event, session) => {
-  console.log('Auth state changed:', event, session);
+  // console.log('Auth state changed:', event, session);
 });
 
 export default supabase;

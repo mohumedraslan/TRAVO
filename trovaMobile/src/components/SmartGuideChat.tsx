@@ -11,13 +11,16 @@ import {
   Platform,
 } from 'react-native';
 import { askAssistant, voiceToText, textToVoice } from '@/src/api/assistantService';
+import { API_BASE_URL } from '@/src/api/client';
+
 import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import io from 'socket.io-client';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import Constants from 'expo-constants';
 
-const API_BASE_URL = (Constants?.expoConfig?.extra as any)?.API_URL?.replace('/api', '') || 'http://192.168.182.1:3000';
+const SOCKET_BASE_URL = API_BASE_URL;
+
 const IS_WEB = Platform.OS === 'web';
 
 interface Message {
@@ -42,11 +45,27 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const socketRef = useRef<any>(null);
+  const pendingTimerRef = useRef<any>(null);
+
+  const configureAudioSession = async () => {
+    if (IS_WEB) return;
+    try {
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+        staysActiveInBackground: false, // We don't need background audio for this
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false,
+      });
+    } catch (e) {
+      console.warn('Failed to configure audio session:', e);
+    }
+  };
 
   // Initialize socket connection
   useEffect(() => {
     // Connect to socket server
-    socketRef.current = io(API_BASE_URL, {
+    socketRef.current = io(SOCKET_BASE_URL, {
       transports: ['websocket', 'polling'],
       path: '/socket.io',
     });
@@ -56,6 +75,10 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
     });
 
     socketRef.current.on('assistant_response', async (data: any) => {
+      if (pendingTimerRef.current) {
+        clearTimeout(pendingTimerRef.current);
+        pendingTimerRef.current = null;
+      }
       addMessage({
         id: Date.now().toString(),
         text: data.answer,
@@ -65,17 +88,25 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
 
       // TTS playback for web/native
       try {
-        const speechResponse = await textToVoice(data.answer)
-        if (IS_WEB) {
-          const audioSrc = `data:audio/${speechResponse.format || 'mp3'};base64,${speechResponse.audio_data}`
-          const webAudio = new Audio(audioSrc)
-          await webAudio.play()
-        } else {
-          const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
-          await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
-          const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
-          setSound(newSound)
-          await newSound.playAsync()
+        if (typeof data?.answer === 'string' && data.answer.trim() && !data.answer.startsWith('Error:')) {
+          const speechResponse = await textToVoice(data.answer)
+          if (IS_WEB) {
+            const audioSrc = `data:audio/${speechResponse.format || 'mp3'};base64,${speechResponse.audio_data}`
+            const webAudio = new (globalThis as any).Audio(audioSrc)
+            await webAudio.play()
+          } else {
+            const baseDir = (FileSystem as any).cacheDirectory || (FileSystem as any).documentDirectory || ''
+            const audioPath = `${baseDir}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+            await FileSystem.writeAsStringAsync(
+              audioPath,
+              speechResponse.audio_data,
+              { encoding: 'base64' }
+            )
+            await configureAudioSession();
+            const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
+            setSound(newSound)
+            await newSound.playAsync()
+          }
         }
       } catch (error) {
         console.error('Error converting socket response to speech:', error)
@@ -159,30 +190,54 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
       // Prefer Socket.IO if connected, fallback to REST
       if (socketRef.current && socketRef.current.connected) {
         socketRef.current.emit('assistant_query', { query: messageToSend, location: initialLocation });
-        return; // Response will arrive via 'assistant_response'
+        pendingTimerRef.current = setTimeout(async () => {
+          try {
+            const response = await askAssistant(messageToSend, 'TEXT', initialLocation);
+            if (response?.answer) {
+              addMessage({
+                id: Date.now().toString(),
+                text: response.answer,
+                isUser: false,
+                timestamp: new Date(),
+              });
+            }
+          } catch (e) {
+          } finally {
+            setIsLoading(false);
+          }
+        }, 4000);
+        return;
       }
 
-      const response = await askAssistant(messageToSend, 'TEXT', initialLocation);
+      const response: any = await askAssistant(messageToSend, 'TEXT', initialLocation);
 
-      if (response.answer) {
+      const fallbackText = response?.answer || (
+        (response?.description || response?.extra_info)
+          ? `${response?.monument || 'This monument'}: ${response?.description || ''} ${response?.extra_info || ''}`.trim()
+          : ''
+      );
+
+      if (fallbackText) {
         addMessage({
           id: Date.now().toString(),
-          text: response.answer,
+          text: fallbackText,
           isUser: false,
           timestamp: new Date(),
         });
 
         // Optional: Convert response to speech
-        if (response.answer) {
+        if (fallbackText && !fallbackText.startsWith('Error:')) {
           try {
-            const speechResponse = await textToVoice(response.answer)
+            const speechResponse = await textToVoice(fallbackText)
             if (IS_WEB) {
               const audioSrc = `data:audio/${speechResponse.format || 'mp3'};base64,${speechResponse.audio_data}`
-              const webAudio = new Audio(audioSrc)
+              const webAudio = new (globalThis as any).Audio(audioSrc)
               await webAudio.play()
             } else {
-              const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
-              await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
+              const baseDir = (FileSystem as any).cacheDirectory || (FileSystem as any).documentDirectory || ''
+              const audioPath = `${baseDir}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+              await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: 'base64' })
+              await configureAudioSession();
               const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
               setSound(newSound)
               await newSound.playAsync()
@@ -257,7 +312,7 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
       addMessage(userMessage);
 
       // Convert audio to base64
-      const base64Audio = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 })
+      const base64Audio = await FileSystem.readAsStringAsync(uri, { encoding: 'base64' })
 
       // Send to voice-to-text API
       const voiceToTextResponse = await voiceToText(base64Audio);
@@ -296,11 +351,13 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
             const speechResponse = await textToVoice(assistantResponse.answer)
             if (IS_WEB) {
               const audioSrc = `data:audio/${speechResponse.format || 'mp3'};base64,${speechResponse.audio_data}`
-              const webAudio = new Audio(audioSrc)
+              const webAudio = new (globalThis as any).Audio(audioSrc)
               await webAudio.play()
             } else {
-              const audioPath = `${FileSystem.cacheDirectory}response_${Date.now()}.${speechResponse.format || 'mp3'}`
-              await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: FileSystem.EncodingType.Base64 })
+              const baseDir = (FileSystem as any).cacheDirectory || (FileSystem as any).documentDirectory || ''
+              const audioPath = `${baseDir}response_${Date.now()}.${speechResponse.format || 'mp3'}`
+              await FileSystem.writeAsStringAsync(audioPath, speechResponse.audio_data, { encoding: 'base64' })
+              await configureAudioSession();
               const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioPath })
               setSound(newSound)
               await newSound.playAsync()
@@ -332,6 +389,7 @@ const SmartGuideChat: React.FC<SmartGuideChatProps> = ({ initialLocation }) => {
       }
 
       // Create and play the new sound
+      await configureAudioSession();
       const { sound: newSound } = await Audio.Sound.createAsync({ uri });
       setSound(newSound);
       await newSound.playAsync();

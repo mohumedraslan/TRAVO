@@ -7,7 +7,7 @@ from utils.auth import create_access_token, get_current_user
 
 router = APIRouter()
 
-@router.post("/register", response_model=schemas.UserResponse)
+@router.post("/register", response_model=schemas.UserResponse, status_code=201)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return service_logic.create_user(db=db, user=user)
 

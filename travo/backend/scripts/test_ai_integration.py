@@ -1,5 +1,5 @@
 """
-Test AI Integration - DeepSeek + Google Vision
+Test AI Integration - Hugging Face / Ollama + Google Vision
 """
 import requests
 import json
@@ -11,7 +11,7 @@ BASE_URL = "http://127.0.0.1:8000/api"
 
 print("="*70)
 print("TRAVO AI INTEGRATION TEST")
-print("DeepSeek API + Google Vision API")
+print("Hugging Face / Ollama + Google Vision API")
 print("="*70)
 
 # Test 1: Text Query
@@ -42,10 +42,11 @@ try:
         print(f"\nType: {result.get('type')}")
         print(f"Original Query: {result.get('original_query')}")
         print(f"Location: {result.get('location')}")
-        print(f"\nDeepSeek Response:")
+        print(f"\nAnswer:")
         print("-" * 70)
-        print(result.get('deepseek_response', 'No response'))
+        print(result.get('answer', 'No answer'))
         print("-" * 70)
+        print(f"Model: {result.get('model', 'fallback')}  Fallback Used: {result.get('fallback_used', False)}")
     else:
         print(f"\n❌ TEXT QUERY FAILED")
         print(f"Response: {response.text}")
@@ -177,8 +178,7 @@ print("\n" + "="*70)
 print("TEST COMPLETE")
 print("="*70)
 print("\nSummary:")
-print("- Text queries use DeepSeek API for conversational responses")
-print("- Image queries use Google Vision for landmark detection")
-print("- Then DeepSeek provides detailed information about detected landmarks")
+print("- Text queries use Hugging Face or Ollama for conversational responses, with static fallback")
+print("- Image queries use Google Vision for landmark detection, then HF/Ollama or static fallback")
 print("- Error handling works for invalid inputs")
 print("\n" + "="*70)

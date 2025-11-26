@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Configure API base URL based on platform
 // For Android emulator: use 10.0.2.2 (emulator's special alias for host machine)
 // For physical device or if emulator doesn't work: use your machine's IP address
-export const API_BASE_URL = Platform.OS === 'android' 
-  ? 'http://192.168.1.5:8000'  // Your machine's IPv4 address
+export const API_BASE_URL = Platform.OS === 'android'
+  ? 'http://192.168.1.5:8000'  // Your LAN IP (works for Emulator & Physical Device)
   : 'http://localhost:8000';
 
 console.log(`[API] Using base URL: ${API_BASE_URL}`);
@@ -30,12 +30,12 @@ client.interceptors.request.use(
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-      
+
       console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, {
         params: config.params,
         data: config.data,
       });
-      
+
       return config;
     });
   },
@@ -59,16 +59,16 @@ client.interceptors.response.use(
       method: error.config?.method,
       response: error.response?.data,
     };
-    
+
     console.error('[API] Response error:', errorMessage);
-    
+
     // Handle specific status codes
     if (error.response?.status === 401) {
       // Handle unauthorized (e.g., redirect to login)
       console.warn('[API] Unauthorized - redirecting to login');
       // Add your auth redirect logic here
     }
-    
+
     return Promise.reject({
       ...error,
       message: error.response?.data?.message || error.message,
@@ -84,7 +84,7 @@ export const api = {
   put: (url: string, data: any, config = {}) => client.put(url, data, config),
   delete: (url: string, config = {}) => client.delete(url, config),
   patch: (url: string, data: any, config = {}) => client.patch(url, data, config),
-  
+
   // Health check endpoint
   healthCheck: async () => {
     try {

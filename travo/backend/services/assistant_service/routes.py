@@ -4,6 +4,8 @@ from typing import Optional
 from pydantic import BaseModel
 import base64
 import logging
+import os
+import json
 
 from .schemas import (
     AssistantQuery, 
@@ -14,12 +16,11 @@ from .schemas import (
     TextToVoiceResponse,
     QueryType
 )
-from .service_logic import get_ai_response, voice_to_text, text_to_voice
-from services.ai_integration import (
-    ask_simple_question,
-    ask_complex_question,
-    detect_landmark_from_base64
-)
+from .service_logic import voice_to_text, text_to_voice
+# External AI providers disabled by configuration
+from services.vision_service.service_logic import identify_monument
+from PIL import Image
+import io
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -40,11 +41,11 @@ class NewAssistantQuery(BaseModel):
 
 @router.post("/ask")
 async def ask_assistant(request: NewAssistantQuery):
-    """Process a text or image query to the AI assistant.
+    """Process a text or image query to the assistant using local logic only.
     
     Accepts:
-    - TEXT queries: Uses DeepSeek API for conversational responses
-    - IMAGE queries: Uses Google Vision for landmark detection, then DeepSeek for details
+    - TEXT queries: Returns static descriptions from local monuments.json
+    - IMAGE queries: Uses CLIP (if cached) or fallback to guess a monument, then returns static description
     
     Request body:
     {
@@ -58,24 +59,44 @@ async def ask_assistant(request: NewAssistantQuery):
         logger.info(f"Received query: {request.query} (type: {request.query_type}, location: {request.location})")
         
         if request.query_type.upper() == "TEXT":
-            # Handle text query with DeepSeek
-            context = f"Location: {request.location}" if request.location else None
-            
-            # Use simple model for straightforward questions
-            response_text = ask_simple_question(request.query, context)
-            
+            # Always use static description based on monuments.json
+            data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "monuments.json")
+            try:
+                with open(data_path, "r", encoding="utf-8") as f:
+                    catalog = json.load(f)
+            except Exception as e:
+                catalog = []
+                logger.error(f"Failed to load monuments.json: {e}")
+
+            ql = (request.query or "").lower()
+            locl = (request.location or "").lower()
+            chosen = None
+            for m in catalog:
+                nm = str(m.get("name", "")).lower()
+                if nm and ((nm in ql) or (ql in nm) or (nm in locl) or (locl in nm)):
+                    chosen = m
+                    break
+            if not chosen and catalog:
+                chosen = catalog[0]
+            desc = (chosen or {}).get("description", "No description available.")
+            facts = (chosen or {}).get("facts", [])
+            extra = facts[0] if isinstance(facts, list) and facts else ""
+            answer_text = (f"{(chosen or {}).get('name', 'This monument')}: {desc} " + (extra or "")).strip()
             return JSONResponse(
                 status_code=200,
                 content={
                     "type": "TEXT",
                     "original_query": request.query,
-                    "deepseek_response": response_text,
-                    "location": request.location
+                    "answer": answer_text,
+                    "fallback_used": True,
+                    "monument": (chosen or {}).get("name"),
+                    "description": desc,
+                    "extra_info": extra,
+                    "location": request.location,
                 }
             )
             
         elif request.query_type.upper() == "IMAGE":
-            # Handle image query with Google Vision + DeepSeek
             if not request.image:
                 return JSONResponse(
                     status_code=400,
@@ -83,63 +104,67 @@ async def ask_assistant(request: NewAssistantQuery):
                         "error": "Image data required for IMAGE query type"
                     }
                 )
-            
-            # Detect landmark using Google Vision
-            logger.info("Detecting landmark with Google Vision...")
-            vision_result = detect_landmark_from_base64(request.image)
-            
-            if not vision_result["success"]:
-                return JSONResponse(
-                    status_code=500,
-                    content={
-                        "type": "IMAGE",
-                        "original_query": request.query,
-                        "error": vision_result.get("error", "Landmark detection failed")
-                    }
-                )
-            
-            # Build context for DeepSeek
-            if vision_result.get("landmark_detected"):
-                landmark_name = vision_result["name"]
-                confidence = vision_result["confidence"]
-                
-                # Ask DeepSeek for details about the landmark
-                deepseek_query = f"Tell me about {landmark_name}. {request.query}"
-                context = f"Landmark detected: {landmark_name} (confidence: {confidence:.2f})"
-                if request.location:
-                    context += f"\nLocation: {request.location}"
-                
-                response_text = ask_complex_question(deepseek_query, context)
-                
-                return JSONResponse(
-                    status_code=200,
-                    content={
-                        "type": "IMAGE",
-                        "original_query": request.query,
-                        "landmark_detected": landmark_name,
-                        "confidence": confidence,
-                        "deepseek_response": response_text,
-                        "location": request.location
-                    }
-                )
-            else:
-                # No landmark detected, use labels
-                description = vision_result.get("description", "Unknown object")
-                
-                deepseek_query = f"I see {description} in an image. {request.query}"
-                response_text = ask_simple_question(deepseek_query)
-                
-                return JSONResponse(
-                    status_code=200,
-                    content={
-                        "type": "IMAGE",
-                        "original_query": request.query,
-                        "landmark_detected": None,
-                        "description": description,
-                        "deepseek_response": response_text,
-                        "location": request.location
-                    }
-                )
+            logger.info("Detecting landmark with CLIP...")
+            # Decode base64 to PIL image
+            try:
+                image_bytes = base64.b64decode(request.image)
+                image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+            except Exception as e:
+                logger.error(f"Invalid image data: {e}")
+                return JSONResponse(status_code=400, content={"error": "Invalid image data"})
+
+            # Run CLIP-based identification
+            clip_result = identify_monument(image)
+
+            # Load catalog for static descriptions
+            data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "monuments.json")
+            try:
+                with open(data_path, "r", encoding="utf-8") as f:
+                    catalog = json.load(f)
+            except Exception as e:
+                catalog = []
+                logger.error(f"Failed to load monuments.json: {e}")
+
+            landmark_name = clip_result.get("identified_monument") or None
+            confidence = float(clip_result.get("confidence") or 0.0)
+
+            if landmark_name and landmark_name != "Unknown":
+                # Static description by matching catalog name
+                matched = None
+                ln = (landmark_name or "").lower()
+                for m in catalog:
+                    nm = str(m.get("name", "")).lower()
+                    if nm and (nm in ln or ln in nm):
+                        matched = m
+                        break
+                desc = (matched or {}).get("description", "No description available.")
+                facts = (matched or {}).get("facts", [])
+                extra = facts[0] if isinstance(facts, list) and facts else ""
+                return JSONResponse(status_code=200, content={
+                    "type": "IMAGE",
+                    "original_query": request.query,
+                    "landmark_detected": landmark_name,
+                    "confidence": confidence,
+                    "answer": (f"About {landmark_name}: {desc} " + (extra or "")).strip(),
+                    "description": desc,
+                    "extra_info": extra,
+                    "location": request.location,
+                    "fallback_used": True,
+                })
+
+            # No clear landmark name; provide a simple static response
+            chosen = catalog[0] if catalog else {}
+            desc = chosen.get("description", "I couldn't identify the landmark from the image.")
+            extra = (chosen.get("facts", []) or [""])[0]
+            return JSONResponse(status_code=200, content={
+                "type": "IMAGE",
+                "original_query": request.query,
+                "landmark_detected": None,
+                "confidence": confidence,
+                "answer": (f"{desc} {extra}").strip(),
+                "location": request.location,
+                "fallback_used": True,
+            })
         else:
             return JSONResponse(
                 status_code=400,
