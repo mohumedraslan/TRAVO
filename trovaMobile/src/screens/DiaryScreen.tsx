@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, RefreshControl, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { supabase } from '../config/supabase';
 import { colors } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const DiaryScreen = () => {
     const [timeline, setTimeline] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         fetchTimeline();
@@ -79,6 +81,9 @@ const DiaryScreen = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Travel Diary</Text>
+                <TouchableOpacity onPress={() => router.push('/share')}>
+                    <Ionicons name="share-outline" size={24} color={colors.primary} />
+                </TouchableOpacity>
             </View>
 
             {loading ? (
@@ -104,7 +109,7 @@ const DiaryScreen = () => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#fff' },
-    header: { paddingTop: 60, paddingBottom: 20, paddingHorizontal: 20, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+    header: { paddingTop: 60, paddingBottom: 20, paddingHorizontal: 20, borderBottomWidth: 1, borderBottomColor: '#f0f0f0', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     headerTitle: { fontSize: 28, fontWeight: 'bold', color: '#333' },
     listContent: { padding: 20 },
     timelineItem: { flexDirection: 'row', marginBottom: 30 },

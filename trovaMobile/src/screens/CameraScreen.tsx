@@ -134,10 +134,15 @@ const CameraScreen = () => {
         type: type,
       } as any);
 
+      // Get session token for backend auth
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
       // Call API
       const response = await api.post('/diary/identify', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': token ? `Bearer ${token}` : '',
         },
       });
 

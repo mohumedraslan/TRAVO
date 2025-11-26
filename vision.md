@@ -1,187 +1,72 @@
-Absolutely — here is a **clear, production-focused roadmap** that you can hand directly to the development team to build the **pivoted TRAVO (Automatic Travel Diary)**.
+# 🚀 TRAVO: Automatic AI Travel Diary
 
-Everything is written from the perspective of execution — **no brainstorming, no theory, only tasks.**
+**Current Version:** 1.0 (MVP)
+**Status:** Live / Testing
 
----
-
-# 🚀 TRAVO — MVP Build Roadmap
-
-**Goal:** A mobile app that automatically builds a travel diary from the user’s photos and locations, and generates a shareable Trip Story.
-
-## 🔥 Core User Experience (MVP)
-
-User does the minimum → the app builds the trip story automatically.
-
-1. User opens the app and logs in.
-2. They take a photo inside the app (or upload from gallery).
-3. The app:
-
-   * identifies the location/monument
-   * logs the timestamp + coordinates + photo
-   * adds it to the **Live Travel Diary**
-4. User can share their **Trip Story** as a link / image.
+TRAVO is a mobile application that automatically builds a travel diary from your photos. It uses AI to identify monuments and locations, creating a timeline of your trip without you needing to type a single word.
 
 ---
 
-## 🧱 System Architecture Overview (Updated)
+## ✅ Current Features (MVP)
 
-| Component                    | Responsibility                                      |
-| ---------------------------- | --------------------------------------------------- |
-| React Native (Expo)          | Camera, gallery import, trip diary UI               |
-| FastAPI backend              | Photo recognition + location matching + diary logic |
-| Supabase                     | Auth + user data + trip logs                        |
-| CLIP model                   | Monument / location recognition                     |
-| Reverse geocoding (fallback) | Get place name via GPS if AI fails                  |
+The following features are fully implemented and functional:
 
----
+### 1. Smart Camera & Identification
+*   **Point & Shoot**: User takes a photo within the app.
+*   **AI Recognition**: The backend (CLIP model) analyzes the image to identify landmarks (e.g., "Eiffel Tower", "Taj Mahal").
+*   **GPS Fallback**: If AI is unsure, it falls back to GPS coordinates (currently defaults to 0,0 until `expo-location` is added).
+*   **Zero Typing**: The location name is automatically logged.
 
-## 🔑 Phase 1 — Data Model & Backend
+### 2. Automatic Diary
+*   **Timeline View**: A chronological feed of all your trips and visited places.
+*   **Trip Management**: Start and end trips easily.
+*   **Cloud Sync**: All data (photos, places, trips) is securely stored in Supabase.
 
-### PostgreSQL (Supabase) — Tables
-
-```
-users
-trips
-trip_places
-trip_photos
-```
-
-### Required backend endpoints
-
-| Endpoint                  | Method | Description                                                 |
-| ------------------------- | ------ | ----------------------------------------------------------- |
-| /photo/identify           | POST   | Accept photo → CLIP match → returns place name + confidence |
-| /photo/upload             | POST   | Save photo + recognition + timestamp                        |
-| /trips/start              | POST   | Create new trip session                                     |
-| /trips/{trip_id}/timeline | GET    | Return ordered trip diary                                   |
-
-### Recognition Logic Order
-
-1. Try CLIP (monuments dataset)
-2. If confidence < threshold → fallback:
-
-   * reverse geocoding from GPS
-3. If still unknown → store as “Unnamed place” and allow user rename later
-   → zero friction.
+### 3. Story Sharing
+*   **Trip Summary**: Generates a shareable card with stats (Places Visited, Photos Taken).
+*   **Social Sharing**: Uses native sharing to send the story to friends via Instagram, WhatsApp, etc.
 
 ---
 
-## 📱 Phase 2 — Mobile App (Expo)
+## 🏗️ Technical Architecture
 
-### Screens (only as needed for MVP)
-
-| Screen        | Components/Features                    |
-| ------------- | -------------------------------------- |
-| Login         | Supabase Auth                          |
-| Home          | Button: Start Trip / Continue Trip     |
-| Camera        | capture + optional upload from gallery |
-| Travel Diary  | List of visited places sorted by time  |
-| Place Details | Photo + timestamp + short description  |
-| Share Story   | Export as image/card + share sheet     |
-
-### Storage Rules (client side)
-
-* Do NOT store heavy AI data locally
-* Cache only last 20 photos for speed
-
-### UX Rule
-
-User should not need to **type** anything to get value.
+| Component | Technology | Role |
+| :--- | :--- | :--- |
+| **Mobile App** | React Native (Expo) | UI, Camera, Gallery, Navigation |
+| **Backend** | FastAPI (Python) | AI Logic, API Endpoints, Data Processing |
+| **Database** | Supabase (PostgreSQL) | User Data, Trip Logs, Relational Data |
+| **Storage** | Supabase Storage | Photo Hosting (`trip_photos` bucket) |
+| **AI Model** | OpenAI CLIP | Image-to-Text / Zero-shot Classification |
 
 ---
 
-## 🎨 Phase 3 — Trip Story Share Export
+## 🗺️ Roadmap: Version 2.0
 
-Export format for share:
+The next phase of development focuses on precision, engagement, and polish.
 
-* Card layout (single image / poster)
-* Includes:
+### 1. 📍 Precision Location (High Priority)
+*   **Real GPS Integration**: Implement `expo-location` to capture exact coordinates.
+*   **Smart Fallback**: Combine AI confidence + GPS proximity for 99% accuracy.
+*   **Map View**: Display the trip route on an interactive map (Google Maps / Mapbox).
 
-  * Map path
-  * Places visited (top 3)
-  * Best photo
-  * “Generated by TRAVO”
+### 2. 🧠 Enhanced AI
+*   **Expanded Dataset**: Add more monuments and hidden gems to `monuments.json`.
+*   **Fine-tuning**: Train a custom model layer for better accuracy on specific architectural styles.
+*   **Offline Mode**: Basic recognition or caching for when data is unavailable.
 
-**Sharing triggers virality automatically.**
+### 3. 🎨 UI/UX Polish
+*   **Rich Animations**: Smooth transitions between Diary and Details screens.
+*   **Custom Themes**: Allow users to skin their diary (e.g., "Vintage", "Modern").
+*   **Photo Gallery**: Better grid view for places with multiple photos.
 
----
-
-## 💰 Phase 4 — Monetization (after MVP)
-
-Do NOT add payments until **1,000+ active users**.
-
-But build toggles for these delayed features:
-
-| Tier         | Premium Feature                                   |
-| ------------ | ------------------------------------------------- |
-| Free         | 30-day trip storage                               |
-| Plus ($5/mo) | Unlimited storage + export to PDF                 |
-| Pro ($8/mo)  | AI storybook (automatic captions + history facts) |
-| Add-on       | Printed Photobook                                 |
+### 4. 💰 Monetization (Future)
+*   **Premium Export**: High-res PDF export of the diary.
+*   **Unlimited Cloud**: Paid tier for storing unlimited full-res photos.
 
 ---
 
-## ⏱️ Development Timeline (Realistic)
+## 🧪 Development Philosophy
 
-| Phase                   | Duration  | Team             |
-| ----------------------- | --------- | ---------------- |
-| Backend + DB            | 2 weeks   | 1 Python         |
-| Mobile UI + Auth        | 2 weeks   | 1 RN             |
-| Camera + AI recognition | 2–3 weeks | Full team        |
-| Travel diary timeline   | 1 week    | 1 RN             |
-| Share Story export      | 1–2 weeks | 1 RN + 1 backend |
-| Testing + polish        | 1–2 weeks | QA               |
-
-**Total MVP time:** 8–10 weeks with **2 developers**.
-
----
-
-## 🧪 Success Metrics After Launch
-
-MVP is successful if:
-
-* **25%+ of users share at least 1 trip**
-* **10%+ return within 7 days**
-* **>80% of photos result in a place name without typing**
-
-If these happen → scale.
-If not → fix recognition & UX before adding new features.
-
----
-
-## 🔩 Task Distribution (copy/paste for Jira / Trello)
-
-### Backend
-
-* [ ] Initialize FastAPI project structure
-* [ ] Create Supabase schema
-* [ ] Implement CLIP image recognition endpoint
-* [ ] Integrate reverse geocoding fallback
-* [ ] Create trip session endpoints
-* [ ] Create diary timeline endpoint
-* [ ] Deploy backend (Render/AWS)
-
-### Mobile
-
-* [ ] Supabase Auth integration
-* [ ] Tab navigation + global theme
-* [ ] Camera + gallery upload
-* [ ] API integration for photo recognition
-* [ ] Live Travel Diary screen
-* [ ] Place Detail screen
-* [ ] Trip Story export/share feature
-
-### Design
-
-* [ ] Poster-style story export template
-* [ ] Emotion-driven travel UI theme
-* [ ] High-contrast diary timeline visuals
-
----
-
-## 🧨 Notes for All Developers
-
-* Performance > perfection
-* Ship early, improve after user data
-* No extra features until we see retention
-* Memory > planning
+*   **Zero Friction**: The user should never have to type if the AI can guess it.
+*   **Performance First**: The app must feel instant. Optimistic updates for UI.
+*   **Privacy**: User data is theirs. Photos are private by default.

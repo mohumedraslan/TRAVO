@@ -122,9 +122,20 @@ async def identify_and_log_photo(
         # Let's assume we store the photo in Supabase Storage.
         
         photo_filename = f"{trip_id}/{uuid4()}.jpg"
-        # supabase.storage.from_("trip_photos").upload(photo_filename, contents)
-        # photo_url = supabase.storage.from_("trip_photos").get_public_url(photo_filename)
-        photo_url = f"https://placeholder.com/{photo_filename}" # Placeholder
+        
+        # Upload to Supabase Storage
+        # Note: 'trip_photos' bucket must exist and be public
+        try:
+            supabase.storage.from_("trip_photos").upload(
+                path=photo_filename,
+                file=contents,
+                file_options={"content-type": "image/jpeg"}
+            )
+            photo_url = supabase.storage.from_("trip_photos").get_public_url(photo_filename)
+        except Exception as e:
+            logger.error(f"Failed to upload photo to storage: {e}")
+            # Fallback to a placeholder only if upload fails
+            photo_url = f"https://placehold.co/600x400?text=Upload+Failed"
 
         # 6. Log Photo
         photo_data = {
