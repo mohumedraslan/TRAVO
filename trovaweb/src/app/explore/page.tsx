@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from 'react';
 import client from '@/api/client';
 import Card from '@/components/shared/Card';
