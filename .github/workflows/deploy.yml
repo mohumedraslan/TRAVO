@@ -68,10 +68,9 @@ jobs:
           # Create docker-compose.yml (or pull from git if you prefer)
           # Here we overwrite it with the latest version to ensure config updates
           cat <<EOF > docker-compose.yml
-          version: '3.8'
           services:
             frontend:
-              image: $SWR_SERVER/$SWR_ORG/trovaweb:latest
+              image: ${{ env.SWR_SERVER }}/${{ secrets.SWR_ORG }}/trovaweb:latest
               ports:
                 - "3000:3000"
               environment:
@@ -80,7 +79,7 @@ jobs:
                 - backend
               restart: always
             backend:
-              image: $SWR_SERVER/$SWR_ORG/travo-backend:latest
+              image: ${{ env.SWR_SERVER }}/${{ secrets.SWR_ORG }}/travo-backend:latest
               ports:
                 - "8000:8000"
               environment:
