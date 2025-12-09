@@ -1,3 +1,4 @@
+
 name: Deploy to Huawei Cloud
 
 on:
@@ -7,7 +8,7 @@ on:
 
 env:
   REGION_ID: ap-southeast-3
-  SWR_ORG: ${{ secrets.SWR_ORG }}
+  SWR_ORG: ${{ secrets.SWR_ORG }} # e.g., travo
   SWR_SERVER: swr.ap-southeast-3.myhuaweicloud.com
 
 jobs:
@@ -26,23 +27,17 @@ jobs:
 
     - name: Build and Push Frontend
       run: |
-        IMAGE_SHA=$SWR_SERVER/$SWR_ORG/trovaweb:${{ github.sha }}
-        IMAGE_LATEST=$SWR_SERVER/$SWR_ORG/trovaweb:latest
-
-        docker build -t $IMAGE_SHA ./trovaweb
-        docker tag $IMAGE_SHA $IMAGE_LATEST
-        docker push $IMAGE_SHA
-        docker push $IMAGE_LATEST
+        docker build -t $SWR_SERVER/$SWR_ORG/trovaweb:${{ github.sha }} ./trovaweb
+        docker tag $SWR_SERVER/$SWR_ORG/trovaweb:${{ github.sha }} $SWR_SERVER/$SWR_ORG/trovaweb:latest
+        docker push $SWR_SERVER/$SWR_ORG/trovaweb:${{ github.sha }}
+        docker push $SWR_SERVER/$SWR_ORG/trovaweb:latest
 
     - name: Build and Push Backend
       run: |
-        IMAGE_SHA=$SWR_SERVER/$SWR_ORG/travo-backend:${{ github.sha }}
-        IMAGE_LATEST=$SWR_SERVER/$SWR_ORG/travo-backend:latest
-
-        docker build -t $IMAGE_SHA ./travo/backend
-        docker tag $IMAGE_SHA $IMAGE_LATEST
-        docker push $IMAGE_SHA
-        docker push $IMAGE_LATEST
+        docker build -t $SWR_SERVER/$SWR_ORG/travo-backend:${{ github.sha }} ./travo/backend
+        docker tag $SWR_SERVER/$SWR_ORG/travo-backend:${{ github.sha }} $SWR_SERVER/$SWR_ORG/travo-backend:latest
+        docker push $SWR_SERVER/$SWR_ORG/travo-backend:${{ github.sha }}
+        docker push $SWR_SERVER/$SWR_ORG/travo-backend:latest
 
   deploy:
     needs: build-and-push
@@ -54,25 +49,31 @@ jobs:
         host: ${{ secrets.ECS_HOST }}
         username: ${{ secrets.ECS_USER }}
         password: ${{ secrets.ECS_PASSWORD }}
+        # key: ${{ secrets.ECS_KEY }}
         script: |
-          # Install Docker if missing
-          if ! command -v docker &>/dev/null; then
+          # Install Docker if not present
+          if ! command -v docker &> /dev/null; then
+              echo "Docker not found. Installing..."
               curl -fsSL https://get.docker.com -o get-docker.sh
               sh get-docker.sh
           fi
-
-          # Install Docker Compose if missing
-          if ! docker compose version &>/dev/null; then
+          
+          # Install Docker Compose Plugin (for 'docker compose' command) if not present
+          if ! docker compose version &> /dev/null; then
+              echo "Docker Compose Plugin not found. Installing..."
               sudo apt-get update
-              sudo apt-get install -y docker-compose-plugin
+              sudo apt-get install docker-compose-plugin -y
           fi
 
-          # Login to SWR
+          # Login to SWR on the server
           docker login -u ${{ secrets.SWR_USERNAME }} -p ${{ secrets.SWR_PASSWORD }} ${{ env.SWR_SERVER }}
-
-          mkdir -p ~/travo
+          
+          # Create directory if not exists
+          mkdir -p ~/travo/data
           cd ~/travo
-
+          
+          # Create docker-compose.yml (or pull from git if you prefer)
+          # Here we overwrite it with the latest version to ensure config updates
           cat <<EOF > docker-compose.yml
           services:
             frontend:
@@ -80,21 +81,22 @@ jobs:
               ports:
                 - "3000:3000"
               environment:
-                NEXT_PUBLIC_API_URL: "http://backend:8000"
+                - NEXT_PUBLIC_API_URL=http://backend:8000
               depends_on:
                 - backend
               restart: always
               networks:
                 - app-network
-
             backend:
               image: ${{ env.SWR_SERVER }}/${{ secrets.SWR_ORG }}/travo-backend:latest
               ports:
                 - "8000:8000"
               environment:
-                DATABASE_URL: "${{ secrets.DATABASE_URL }}"
-                SECRET_KEY: "${{ secrets.SECRET_KEY }}"
+                # Use absolute path for SQLite file in the mounted volume
+                - DATABASE_URL=sqlite:////app/data/travo.db
+                - SECRET_KEY=${{ secrets.SECRET_KEY }}
               volumes:
+                # Persist data directory
                 - ./data:/app/data
               restart: always
               networks:
@@ -102,7 +104,9 @@ jobs:
 
           networks:
             app-network:
+              driver: bridge
           EOF
-
+          
+          # Pull and restart
           docker compose pull
           docker compose up -d
