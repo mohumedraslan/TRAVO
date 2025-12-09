@@ -1,0 +1,89 @@
+
+name: Deploy to Huawei Cloud
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  REGION_ID: ap-southeast-3
+  SWR_ORG: ${{ secrets.SWR_ORG }} # e.g., travo
+  SWR_SERVER: swr.ap-southeast-3.myhuaweicloud.com
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Login to Huawei Cloud SWR
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.SWR_SERVER }}
+        username: ${{ secrets.SWR_USERNAME }}
+        password: ${{ secrets.SWR_PASSWORD }}
+
+    - name: Build and Push Frontend
+      run: |
+        docker build -t $SWR_SERVER/$SWR_ORG/trovaweb:${{ github.sha }} ./trovaweb
+        docker build -t $SWR_SERVER/$SWR_ORG/trovaweb:latest ./trovaweb
+        docker push $SWR_SERVER/$SWR_ORG/trovaweb:${{ github.sha }}
+        docker push $SWR_SERVER/$SWR_ORG/trovaweb:latest
+
+    - name: Build and Push Backend
+      run: |
+        docker build -t $SWR_SERVER/$SWR_ORG/travo-backend:${{ github.sha }} ./travo/backend
+        docker build -t $SWR_SERVER/$SWR_ORG/travo-backend:latest ./travo/backend
+        docker push $SWR_SERVER/$SWR_ORG/travo-backend:${{ github.sha }}
+        docker push $SWR_SERVER/$SWR_ORG/travo-backend:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to ECS
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.ECS_HOST }}
+        username: ${{ secrets.ECS_USER }}
+        key: ${{ secrets.ECS_KEY }}
+        script: |
+          # Login to SWR on the server
+          docker login -u ${{ secrets.SWR_USERNAME }} -p ${{ secrets.SWR_PASSWORD }} ${{ env.SWR_SERVER }}
+          
+          # Create directory if not exists
+          mkdir -p ~/travo
+          cd ~/travo
+          
+          # Create docker-compose.yml (or pull from git if you prefer)
+          # Here we overwrite it with the latest version to ensure config updates
+          cat <<EOF > docker-compose.yml
+          version: '3.8'
+          services:
+            frontend:
+              image: $SWR_SERVER/$SWR_ORG/trovaweb:latest
+              ports:
+                - "3000:3000"
+              environment:
+                - NEXT_PUBLIC_API_URL=http://backend:8000
+              depends_on:
+                - backend
+              restart: always
+            backend:
+              image: $SWR_SERVER/$SWR_ORG/travo-backend:latest
+              ports:
+                - "8000:8000"
+              environment:
+                - DATABASE_URL=${{ secrets.DATABASE_URL }}
+                - SECRET_KEY=${{ secrets.SECRET_KEY }}
+              volumes:
+                - ./data:/app/data
+                - ./travo.db:/app/travo.db
+              restart: always
+          EOF
+          
+          # Pull and restart
+          docker-compose pull
+          docker-compose up -d
