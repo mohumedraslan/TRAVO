@@ -48,7 +48,8 @@ jobs:
       with:
         host: ${{ secrets.ECS_HOST }}
         username: ${{ secrets.ECS_USER }}
-        key: ${{ secrets.ECS_KEY }}
+        password: ${{ secrets.ECS_PASSWORD }}
+        # key: ${{ secrets.ECS_KEY }}
         script: |
           # Login to SWR on the server
           docker login -u ${{ secrets.SWR_USERNAME }} -p ${{ secrets.SWR_PASSWORD }} ${{ env.SWR_SERVER }}
