@@ -78,6 +78,8 @@ jobs:
               environment:
                 - DATABASE_URL=${{ secrets.DATABASE_URL }}
                 - SECRET_KEY=${{ secrets.SECRET_KEY }}
+                - VISION_API_KEY=${{ secrets.VISION_API_KEY }}
+                - WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}
               volumes:
                 - ./data:/app/data
                 - ./travo.db:/app/travo.db
