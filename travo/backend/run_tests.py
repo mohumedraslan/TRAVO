@@ -39,12 +39,13 @@ def main():
         pytest_args.extend(["--cov=services", "--cov-report=term", "--cov-report=html"])
     
     # Select tests based on service
+    test_path = os.path.join(os.path.dirname(__file__), "tests")
     if args.service == "vision":
-        pytest_args.append("tests/test_vision_service.py")
+        pytest_args.append(os.path.join(test_path, "test_vision_service.py"))
     elif args.service == "recommendation":
-        pytest_args.append("tests/test_recommendation_service.py")
+        pytest_args.append(os.path.join(test_path, "test_recommendation_service.py"))
     else:  # all
-        pytest_args.append("tests/")
+        pytest_args.append(test_path)
     
     # Run the tests
     return pytest.main(pytest_args)
