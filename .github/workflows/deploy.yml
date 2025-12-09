@@ -64,7 +64,11 @@ jobs:
               sudo apt-get update
               sudo apt-get install docker-compose-plugin -y
           fi
-
+          
+          # Clean up disk space (remove unused images/containers)
+          echo "Cleaning up unused Docker resources..."
+          docker system prune -af
+          
           # Login to SWR on the server
           docker login -u ${{ secrets.SWR_USERNAME }} -p ${{ secrets.SWR_PASSWORD }} ${{ env.SWR_SERVER }}
           
