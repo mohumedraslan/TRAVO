@@ -1,0 +1,37 @@
+name: Debug Deployment
+
+on: workflow_dispatch
+
+env:
+  SWR_SERVER: swr.ap-southeast-3.myhuaweicloud.com
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Debug ECS
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.ECS_HOST }}
+        username: ${{ secrets.ECS_USER }}
+        password: ${{ secrets.ECS_PASSWORD }}
+        script: |
+          echo "================ DOCKER PROCESSES ================"
+          docker ps -a
+          
+          echo ""
+          echo "================ BACKEND LOGS (Last 50 lines) ================"
+          # Find container by image name (relaxed grep) or service name
+          # We try to identify the container ID for the backend
+          CID=$(docker ps -a | grep "backend" | head -n 1 | awk '{print $1}')
+          
+          if [ -z "$CID" ]; then
+            echo "❌ No backend container found!"
+          else
+            echo "Container ID: $CID"
+            docker logs --tail 100 $CID
+          fi
+          
+          echo ""
+          echo "================ LISTENING PORTS ================"
+          netstat -tulpn | grep 8000 || echo "Nothing listening on 8000"
