@@ -7,6 +7,8 @@ from services.crowd_service.routes import router as crowd_router
 from services.vision_service.routes import router as vision_router
 from services.assistant_service.routes import router as assistant_router
 from services.business_service.routes import router as business_router
+from services.analytics_service.routes import router as analytics_router
+from services.storage_service.routes import router as storage_router
 
 # Create main API router
 api_router = APIRouter()
@@ -18,3 +20,5 @@ api_router.include_router(crowd_router, prefix="/crowds", tags=["crowds"])
 api_router.include_router(vision_router, prefix="/vision", tags=["vision"])
 api_router.include_router(assistant_router, prefix="/assistant", tags=["assistant"])
 api_router.include_router(business_router, prefix="/business", tags=["business"])
+api_router.include_router(analytics_router, prefix="/analytics", tags=["analytics"])
+api_router.include_router(storage_router, prefix="/storage", tags=["storage"])

@@ -4,6 +4,12 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load .env from backend dir and project root
+load_dotenv()  # Backend .env
+load_dotenv(Path(__file__).parent.parent.parent / ".env")  # Project root .env
 
 # Import the main API router
 from api.router import api_router

@@ -14,7 +14,7 @@ from .service_logic import (
     get_personalized_recommendations, create_rule_based_recommendation
 )
 
-router = APIRouter(prefix="/recommendations", tags=["recommendations"])
+router = APIRouter(tags=["recommendations"])
 
 
 @router.get("/test")

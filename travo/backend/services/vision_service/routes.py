@@ -1,82 +1,62 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
-from typing import List, Optional
+from typing import Optional
 import os
 import tempfile
 import shutil
 
 # Import schemas and service logic
 from .schemas import MonumentDetectionResponse, MonumentInfo, MonumentIdentificationResponse
-from .service_logic import detect_monuments, get_monument_info, identify_monument
+from .deep_scan import deep_analyze_image
 
 # Create router
 router = APIRouter()
 
-# Test route
 @router.get("/test")
 async def test_vision_service():
     return {"status": "ok", "service": "vision_service"}
 
-# Upload image and detect monuments
-@router.post("/detect", response_model=MonumentDetectionResponse)
-async def detect_monuments_in_image(
-    image: UploadFile = File(...),
-    confidence_threshold: Optional[float] = 0.5
-):
-    # Validate file type
-    if not image.content_type.startswith('image/'):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="File must be an image"
-        )
-    
-    # Read image content
-    image_content = await image.read()
-    
-    # Call monument detection function
-    detection_result = await detect_monuments(image_content, confidence_threshold)
-    
-    return detection_result
-
-# Get information about a specific monument
-@router.get("/monument/{monument_id}", response_model=MonumentInfo)
-async def get_monument_details(monument_id: str):
-    monument = await get_monument_info(monument_id)
-    
-    if not monument:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Monument not found"
-        )
-    
-    return monument
-
-
-# Identify monument in an uploaded image
-@router.post("/identify", response_model=MonumentIdentificationResponse)
+@router.post("/identify")
 async def identify_monument_in_image(image: UploadFile = File(...)):
-    # Validate file type
+    """
+    Primary monument identification endpoint.
+    Uses Gemini 2.0 Flash for accurate identification.
+    """
     if not image.content_type.startswith('image/'):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="File must be an image"
         )
-    
-    # Create a temporary file to store the uploaded image
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp_file:
-        # Copy the uploaded file to the temporary file
-        shutil.copyfileobj(image.file, temp_file)
-        temp_file_path = temp_file.name
     
     try:
-        # Call the identify_monument function
-        result = identify_monument(temp_file_path)
+        # Read image bytes
+        image_bytes = await image.read()
+        
+        # Call Gemini-powered vision analysis
+        result = await deep_analyze_image(image_bytes)
+        
         return result
+        
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error identifying monument: {str(e)}"
+            detail=f"Vision analysis failed: {str(e)}"
         )
-    finally:
-        # Clean up the temporary file
-        if os.path.exists(temp_file_path):
-            os.unlink(temp_file_path)
+
+@router.post("/deep_scan")
+async def deep_scan_endpoint(image: UploadFile = File(...)):
+    """
+    Deep analysis with more detailed response.
+    Same as /identify but explicit for UI clarity.
+    """
+    if not image.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="Invalid file type")
+    
+    content = await image.read()
+    result = await deep_analyze_image(content)
+    return result
+
+# Get information about a specific monument (legacy)
+@router.get("/monument/{monument_id}")
+async def get_monument_details(monument_id: str):
+    # This would query a database in production
+    return {"monument_id": monument_id, "status": "not_implemented"}

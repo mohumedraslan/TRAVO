@@ -19,9 +19,17 @@ export default function ExplorePage() {
       setLoading(true);
       try {
         const destRes = await client.get('/recommendations/destinations');
-        const attrRes = await client.get('/recommendations/destinations/1/attractions');
-        setDestinations(destRes.data?.items || []);
-        setAttractions(attrRes.data?.items || []);
+        // Backend returns array directly, not {items: [...]}
+        const destArray = Array.isArray(destRes.data) ? destRes.data : [];
+        setDestinations(destArray);
+
+        // Get attractions for first destination if available
+        if (destArray.length > 0) {
+          const firstDestId = destArray[0].id;
+          const attrRes = await client.get(`/recommendations/destinations/${firstDestId}/attractions`);
+          const attrArray = Array.isArray(attrRes.data) ? attrRes.data : [];
+          setAttractions(attrArray);
+        }
       } catch (err) {
         console.error(err);
       } finally {
