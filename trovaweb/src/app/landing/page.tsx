@@ -10,7 +10,7 @@ export default function LandingPage() {
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md bg-black/50 border-b border-white/10">
                 <div className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                    TRAVO
+                    Memora
                 </div>
                 <div className="flex gap-6 text-sm font-medium text-zinc-400">
                     <Link href="#features" className="hover:text-white transition-colors">Features</Link>
@@ -156,7 +156,7 @@ export default function LandingPage() {
                     <h2 className="text-3xl font-bold mb-12">Loved by Travelers</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {[
-                            { quote: "TRAVO changed how I travel. No more guessing what I'm looking at!", author: "Sarah J., Backpacker" },
+                            { quote: "Memora changed how I travel. No more guessing what I'm looking at!", author: "Sarah J., Backpacker" },
                             { quote: "The automated diary feature is a lifesaver. I have a record of everywhere I've been.", author: "Mike T., Digital Nomad" }
                         ].map((t, i) => (
                             <div key={i} className="p-8 rounded-2xl bg-black border border-white/10 text-left">
@@ -173,7 +173,7 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/20 pointer-events-none" />
                 <h2 className="text-4xl md:text-6xl font-bold mb-8">Ready to explore?</h2>
                 <p className="text-xl text-zinc-400 mb-10 max-w-2xl mx-auto">
-                    Join thousands of travelers who are discovering the world with TRAVO.
+                    Join thousands of travelers who are discovering the world with Memora.
                 </p>
                 <Link
                     href="/dashboard"
@@ -187,7 +187,7 @@ export default function LandingPage() {
             <footer className="py-12 px-6 border-t border-white/10 bg-black text-zinc-500 text-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex flex-col gap-2">
-                        <span className="text-2xl font-bold text-white">TRAVO</span>
+                        <span className="text-2xl font-bold text-white">Memora</span>
                         <p>Your personal AI travel companion.</p>
                     </div>
                     <div className="flex gap-8">
@@ -196,7 +196,7 @@ export default function LandingPage() {
                         <a href="mailto:nabih.ai.agency@gmail.com" className="hover:text-white transition-colors">Contact</a>
                         <a href="https://wa.me/201102481879" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors">WhatsApp</a>
                     </div>
-                    <p>&copy; {new Date().getFullYear()} TRAVO Inc.</p>
+                    <p>&copy; {new Date().getFullYear()} Memora Inc.</p>
                 </div>
             </footer>
         </div>

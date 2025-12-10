@@ -6,7 +6,7 @@ export default function Footer() {
             <div className="mx-auto max-w-7xl px-6">
                 <div className="grid gap-8 md:grid-cols-4">
                     <div>
-                        <h3 className="mb-4 text-lg font-bold text-white">TRAVO</h3>
+                        <h3 className="mb-4 text-lg font-bold text-white">Memora</h3>
                         <p className="text-sm">
                             Your AI-Powered Travel Companion. Integrating machine learning to enhance your travel experience.
                         </p>
@@ -35,7 +35,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="mt-12 border-t border-white/10 pt-8 text-center text-xs">
-                    © {new Date().getFullYear()} TRAVO. All rights reserved.
+                    © {new Date().getFullYear()} Memora. All rights reserved.
                 </div>
             </div>
         </footer>

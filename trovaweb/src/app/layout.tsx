@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TrovaWeb",
-  description: "TRAVO Web Interface",
+  title: "Memora",
+  description: "Memora - AI-Powered Travel Companion",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-black/60">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-            <Link href="/" className="text-lg font-semibold">TrovaWeb</Link>
+            <Link href="/" className="text-lg font-semibold">Memora</Link>
             <nav className="flex items-center gap-4 text-sm">
               <Link href="/explore" className="hover:underline">Explore</Link>
               <Link href="/dashboard" className="hover:underline">Dashboard</Link>

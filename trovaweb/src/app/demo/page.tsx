@@ -57,7 +57,7 @@ export default function DemoPage() {
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md bg-black/50 border-b border-white/10">
                 <Link href="/landing" className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                    TRAVO
+                    Memora
                 </Link>
                 <Link href="/dashboard" className="px-4 py-2 text-sm font-semibold bg-white text-black rounded-full hover:bg-zinc-200 transition-colors">
                     Dashboard
@@ -145,8 +145,8 @@ export default function DemoPage() {
                                     </h3>
                                     <div className="flex items-center gap-2 mb-3">
                                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${result.confidence >= 0.7
-                                                ? 'bg-green-500/20 text-green-400'
-                                                : 'bg-yellow-500/20 text-yellow-400'
+                                            ? 'bg-green-500/20 text-green-400'
+                                            : 'bg-yellow-500/20 text-yellow-400'
                                             }`}>
                                             {(result.confidence * 100).toFixed(0)}% Confidence
                                         </span>

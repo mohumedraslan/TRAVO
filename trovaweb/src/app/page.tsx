@@ -24,7 +24,7 @@ export default function Home() {
         </h1>
 
         <p className="relative z-10 mt-8 max-w-2xl text-lg text-zinc-400 sm:text-xl">
-          TRAVO uses advanced AI to identify monuments, plan your perfect itinerary, and guide you through unforgettable adventures.
+          Memora uses advanced AI to identify monuments, plan your perfect itinerary, and guide you through unforgettable adventures.
         </p>
 
         <div className="relative z-10 mt-10 flex flex-wrap justify-center gap-4">

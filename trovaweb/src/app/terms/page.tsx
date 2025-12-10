@@ -12,15 +12,15 @@ export default function TermsPage() {
                 <div className="prose prose-invert max-w-none text-zinc-400">
                     <p>Last updated: December 2025</p>
                     <p>
-                        Please read these Terms of Service carefully before using the TRAVO platform.
+                        Please read these Terms of Service carefully before using the Memora platform.
                     </p>
                     <h3>1. Acceptance of Terms</h3>
                     <p>
-                        By accessing or using TRAVO, you agree to be bound by these Terms. If you disagree with any part of the terms, you may not access the service.
+                        By accessing or using Memora, you agree to be bound by these Terms. If you disagree with any part of the terms, you may not access the service.
                     </p>
                     <h3>2. AI Accuracy Disclaimer</h3>
                     <p>
-                        TRAVO uses artificial intelligence to provide recommendations and identify monuments. While we strive for accuracy, AI outputs may occasionally be incorrect. Always verify critical travel information.
+                        Memora uses artificial intelligence to provide recommendations and identify monuments. While we strive for accuracy, AI outputs may occasionally be incorrect. Always verify critical travel information.
                     </p>
                     <h3>3. User Accounts</h3>
                     <p>

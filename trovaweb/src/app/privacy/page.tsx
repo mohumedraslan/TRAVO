@@ -12,7 +12,7 @@ export default function PrivacyPage() {
                 <div className="prose prose-invert max-w-none text-zinc-400">
                     <p>Last updated: December 2025</p>
                     <p>
-                        At TRAVO, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our AI-powered travel companion services.
+                        At Memora, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our AI-powered travel companion services.
                     </p>
                     <h3>1. Information We Collect</h3>
                     <p>
