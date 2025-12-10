@@ -5,23 +5,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Try multiple env var formats for Supabase
-SUPABASE_URL = (
-    os.getenv("SUPABASE_URL") or 
-    os.getenv("NEXT_PUBLIC_SUPABASE_URL") or
-    "https://mvqljubjlufjyyktsljn.supabase.co"
-)
+# Hardcoded Supabase credentials (env loading broken)
+SUPABASE_URL = "https://mvqljubjlufjyyktsljn.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12cWxqdWJqbHVmanl5a3RzbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0MTQwMjksImV4cCI6MjA3Nzk5MDAyOX0._6sCVs20oYzLUNfyYqlx54ZnuwoaamiCI_9SuSt1crA"
 
-SUPABASE_KEY = (
-    os.getenv("SUPABASE_KEY") or 
-    os.getenv("SUPABASE_ANON_KEY") or
-    os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
-)
-
-# Storage bucket
 BUCKET_NAME = "trip_photos"
 
-# Lazy import supabase to avoid import errors if not installed
 _supabase_client = None
 
 def get_supabase_client():
@@ -31,14 +20,10 @@ def get_supabase_client():
     if _supabase_client:
         return _supabase_client
     
-    if not SUPABASE_KEY:
-        logger.warning("Supabase key not found in environment")
-        raise ValueError("Supabase credentials not configured. Set SUPABASE_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY")
-    
     try:
         from supabase import create_client
         _supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
-        logger.info(f"Supabase client initialized: {SUPABASE_URL}")
+        logger.info(f"Supabase connected: {SUPABASE_URL}")
         return _supabase_client
     except ImportError:
         raise ValueError("Supabase library not installed. Run: pip install supabase")
@@ -53,24 +38,20 @@ async def upload_photo(
     try:
         client = get_supabase_client()
         
-        # Generate unique filename
         photo_id = str(uuid.uuid4())
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
-        # Build path
         if trip_id:
             path = f"{user_id}/{trip_id}/{timestamp}_{photo_id}.{file_extension}"
         else:
             path = f"{user_id}/general/{timestamp}_{photo_id}.{file_extension}"
         
-        # Upload to Supabase Storage
         response = client.storage.from_(BUCKET_NAME).upload(
             path,
             image_bytes,
             {"content-type": f"image/{file_extension}"}
         )
         
-        # Get public URL
         public_url = client.storage.from_(BUCKET_NAME).get_public_url(path)
         
         logger.info(f"Photo uploaded: {path}")
