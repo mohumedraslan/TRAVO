@@ -83,19 +83,34 @@ export default function LandingPage() {
                         <div className="w-64 h-full bg-black border-x border-white/10 flex flex-col relative overflow-hidden">
                             {/* Mock Header */}
                             <div className="h-14 border-b border-white/10 flex items-center justify-center font-bold text-white">
-                                My Diary
+                                📖 My Diary
                             </div>
-                            {/* Mock Content */}
-                            <div className="flex-1 p-4 space-y-4">
-                                <div className="h-40 bg-zinc-800 rounded-lg animate-pulse" />
-                                <div className="h-4 w-3/4 bg-zinc-800 rounded animate-pulse" />
-                                <div className="h-4 w-1/2 bg-zinc-800 rounded animate-pulse" />
+                            {/* Sample Content */}
+                            <div className="flex-1 p-3 space-y-3 overflow-hidden">
+                                {/* Sample Entry 1 */}
+                                <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg p-2 border border-white/5">
+                                    <div className="h-24 bg-gradient-to-br from-amber-900/30 to-yellow-900/20 rounded-md mb-2 flex items-center justify-center text-3xl">
+                                        🏛️
+                                    </div>
+                                    <p className="text-xs font-medium text-white">Pyramids of Giza</p>
+                                    <p className="text-[10px] text-zinc-500">Cairo, Egypt • 2h ago</p>
+                                </div>
+                                {/* Sample Entry 2 */}
+                                <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg p-2 border border-white/5">
+                                    <div className="h-16 bg-gradient-to-br from-blue-900/30 to-cyan-900/20 rounded-md mb-2 flex items-center justify-center text-2xl">
+                                        🗼
+                                    </div>
+                                    <p className="text-xs font-medium text-white">Eiffel Tower</p>
+                                    <p className="text-[10px] text-zinc-500">Paris, France • Yesterday</p>
+                                </div>
                             </div>
                             {/* Mock Tab Bar */}
-                            <div className="h-16 border-t border-white/10 flex items-center justify-around text-2xl">
-                                <span>🏠</span>
-                                <span className="text-blue-500">📷</span>
-                                <span>👤</span>
+                            <div className="h-14 border-t border-white/10 flex items-center justify-around text-xl bg-zinc-950">
+                                <span className="opacity-50">🏠</span>
+                                <span className="text-blue-400">📖</span>
+                                <span className="opacity-50">📷</span>
+                                <span className="opacity-50">✈️</span>
+                                <span className="opacity-50">⚙️</span>
                             </div>
                         </div>
                     </div>

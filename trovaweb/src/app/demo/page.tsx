@@ -30,8 +30,12 @@ export default function DemoPage() {
             const formData = new FormData();
             formData.append('image', selectedFile);
 
-            // Use the correct API endpoint
-            const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+            // Use the backend on the same host, or fallback to localhost
+            const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+            const backendUrl = host === 'localhost' || host === '127.0.0.1'
+                ? 'http://localhost:8000/api'
+                : `http://${host}:8000/api`;
+
             const response = await fetch(`${backendUrl}/vision/identify`, {
                 method: 'POST',
                 body: formData,
