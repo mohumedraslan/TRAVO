@@ -126,7 +126,7 @@ export default function CameraTab() {
 
       const uploadRes = await client.post('/storage/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        timeout: 30000,
+        timeout: 60000, // Increased to 60s for slow networks
       });
 
       setPhotoMeta({

@@ -5,9 +5,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Hardcoded Supabase credentials (env loading broken)
-SUPABASE_URL = "https://mvqljubjlufjyyktsljn.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12cWxqdWJqbHVmanl5a3RzbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0MTQwMjksImV4cCI6MjA3Nzk5MDAyOX0._6sCVs20oYzLUNfyYqlx54ZnuwoaamiCI_9SuSt1crA"
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
+# Supabase settings
+SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL") or "https://mvqljubjlufjyyktsljn.supabase.co"
+# Prefer Service Role Key for backend operations (to bypass RLS)
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
 
 BUCKET_NAME = "trip_photos"
 
@@ -20,10 +25,19 @@ def get_supabase_client():
     if _supabase_client:
         return _supabase_client
     
+    if not SUPABASE_KEY:
+        logger.error("No Supabase key found! processing will fail.")
+        # Fallback to the hardcoded anon key if absolutely necessary, but warn
+        # (This section is effectively removed/replaced by the env var logic)
+    
     try:
         from supabase import create_client
         _supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
-        logger.info(f"Supabase connected: {SUPABASE_URL}")
+        
+        # Log which key type we are using (safely)
+        key_type = "SERVICE_ROLE (Admin)" if "service_role" in str(os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")) else "ANON (Public)"
+        logger.info(f"Supabase connected: {SUPABASE_URL} using {key_type} key")
+        
         return _supabase_client
     except ImportError:
         raise ValueError("Supabase library not installed. Run: pip install supabase")
@@ -72,22 +86,41 @@ async def list_user_photos(user_id: str, trip_id: str = None) -> list:
     """List photos for a user/trip."""
     try:
         client = get_supabase_client()
-        path = f"{user_id}/{trip_id}" if trip_id else user_id
+        base_path = f"{user_id}/{trip_id}" if trip_id else user_id
         
-        response = client.storage.from_(BUCKET_NAME).list(path)
+        # 1. List items in the base path
+        response = client.storage.from_(BUCKET_NAME).list(base_path)
         
         photos = []
-        for item in response:
-            if not item.get('id'):
-                continue
-            file_path = f"{path}/{item['name']}"
-            public_url = client.storage.from_(BUCKET_NAME).get_public_url(file_path)
-            photos.append({
-                "name": item['name'],
-                "path": file_path,
-                "url": public_url,
-                "created_at": item.get('created_at')
-            })
+        
+        # Helper to process a list of items and add to photos
+        def process_items(items, current_path):
+            for item in items:
+                # If it has an ID, it's a file
+                if item.get('id'):
+                    file_path = f"{current_path}/{item['name']}"
+                    public_url = client.storage.from_(BUCKET_NAME).get_public_url(file_path)
+                    photos.append({
+                        "name": item['name'],
+                        "path": file_path,
+                        "url": public_url,
+                        "created_at": item.get('created_at')
+                    })
+        
+        process_items(response, base_path)
+
+        # 2. If we are at the root (no trip_id), also check "general" folder specifically
+        # (This is where untripped photos go)
+        if not trip_id:
+            try:
+                general_path = f"{user_id}/general"
+                gen_response = client.storage.from_(BUCKET_NAME).list(general_path)
+                process_items(gen_response, general_path)
+            except Exception as e:
+                # Ignore if general folder doesn't exist
+                logger.warning(f"Could not list general folder: {e}")
+
+        # 3. Handle strict recursion if needed later, but this covers the current structure
         
         return photos
         

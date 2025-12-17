@@ -33,6 +33,10 @@ app.add_middleware(
 # Include the main API router
 app.include_router(api_router, prefix="/api")
 
+# Include the Live Assistant router
+from services.live_service.routes import router as live_router
+app.include_router(live_router, prefix="/api/live", tags=["Live Assistant"])
+
 # Mount static files directory for docs
 docs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs")
 app.mount("/static", StaticFiles(directory=docs_dir), name="static")

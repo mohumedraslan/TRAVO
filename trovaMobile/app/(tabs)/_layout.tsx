@@ -38,6 +38,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="live"
+        options={{
+          title: 'Live AI',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="eye.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="trip"
         options={{
           title: 'Trips',

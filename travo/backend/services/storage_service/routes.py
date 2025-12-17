@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from typing import Optional
 
 from .service_logic import upload_photo, list_user_photos, delete_photo
@@ -12,8 +12,8 @@ async def test_storage():
 @router.post("/upload")
 async def upload_photo_endpoint(
     image: UploadFile = File(...),
-    user_id: str = "anonymous",
-    trip_id: Optional[str] = None
+    user_id: str = Form("anonymous"),
+    trip_id: Optional[str] = Form(None)
 ):
     """Upload a photo to storage."""
     if not image.content_type.startswith('image/'):

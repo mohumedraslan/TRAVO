@@ -8,17 +8,24 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Hardcoded API key
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+if not OPENROUTER_API_KEY:
+    # Try looking in settings if available, or just log warning
+    from ...config import settings
+    OPENROUTER_API_KEY = settings.VISION_API_KEY
+    
+if not OPENROUTER_API_KEY:
+    logger.warning("OPENROUTER_API_KEY not found in environment variables!")
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 # Correct free vision models from OpenRouter (verified Dec 2024)
 OPENROUTER_MODELS = [
-    "qwen/qwen2.5-vl-32b-instruct:free",      # Qwen vision - works!
-    "meta-llama/llama-3.2-11b-vision-instruct:free",  # Llama vision
-    "nvidia/nemotron-nano-12b-v2-vl:free",    # NVIDIA vision
-    "amazon/nova-lite-v1:free",               # Amazon Nova
-    "google/gemma-3-12b-it:free",             # Google Gemma
+    "google/gemini-2.0-flash-exp:free",
+    "mistralai/mistral-small-24b-instruct-2501:free",
+    "google/gemma-3-12b-it:free",
+    "nvidia/nemotron-nano-12b-v2-vl:free",
+    # "amazon/nova-lite-v1:free", # User reported 404
 ]
 
 IDENTIFY_PROMPT = """Identify the monument/landmark in this image.

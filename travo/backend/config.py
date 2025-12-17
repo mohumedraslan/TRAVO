@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "TRAVO API"
     
     # CORS settings
-    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:3000", "https://localhost:3000"]
+    BACKEND_CORS_ORIGINS: List[str] = ["*"]
     
     # Security settings
     SECRET_KEY: str = os.getenv("SECRET_KEY", "development_secret_key")
