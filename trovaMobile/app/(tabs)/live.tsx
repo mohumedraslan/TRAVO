@@ -112,7 +112,7 @@ export default function LiveScreen() {
 
             const res = await client.post('/live/pulse', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
-                timeout: 15000,
+                timeout: 30000, // 30s for Local AI (can be slow to load first time)
             });
 
             setLastTip(res.data.tip);
