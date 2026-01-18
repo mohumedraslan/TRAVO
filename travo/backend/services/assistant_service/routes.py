@@ -13,18 +13,19 @@ router = APIRouter()
 async def test_assistant_service():
     return {"status": "ok", "service": "assistant_service"}
 
+from .expert_search import search_user_memories
+
 # Text-based Q&A endpoint
-@router.post("/query/text", response_model=TextQueryResponse)
-async def text_query(request: TextQueryRequest):
-    # Process the text query
-    response = await process_text_query(
-        query=request.query,
-        user_id=request.user_id,
-        conversation_id=request.conversation_id,
-        location=request.location,
-        language=request.language
-    )
+@router.post("/query", response_model=dict) # Simplified response model for flexibility
+async def assistant_query(request: dict):
+    # Expects {"query": "...", "user_id": "..."}
+    query = request.get("query")
+    user_id = request.get("user_id", "anonymous") # Fallback to anonymous for guest mode
     
+    if not query:
+        raise HTTPException(status_code=400, detail="Query is required")
+
+    response = await search_user_memories(query, user_id)
     return response
 
 # Voice-based Q&A endpoint

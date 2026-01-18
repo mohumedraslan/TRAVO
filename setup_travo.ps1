@@ -3,7 +3,7 @@
 .SYNOPSIS
     TRAVO Universal Setup & Startup Script
 .DESCRIPTION
-    Automates the setup and execution of Backend, Frontend (Next.js), and Mobile (Expo).
+    Automates the setup and execution of Backend, Frontend, and Mobile.
     Supports Windows Terminal (wt) tabs to keep everything in one window.
 #>
 
@@ -11,40 +11,62 @@ param (
     [string]$Mode = "All" # Options: All, Backend, Web, Mobile
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue" # Don't stop on minor errors like "Process not found"
 
 Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host "      TRAVO SETUP & STARTUP MANAGER       " -ForegroundColor Cyan
 Write-Host "==========================================" -ForegroundColor Cyan
 
-# Check Prerequisites
+# --- 1. CLEANUP OLD PROCESSES ---
+Write-Host "[0/3] Cleaning up old TRAVO processes..." -ForegroundColor Yellow
+
+function Stop-ProcessOnPort {
+    param([int]$Port)
+    $ProcessId = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -First 1
+    if ($ProcessId) {
+        Write-Host "Stopping process on port $Port (PID: $ProcessId)..." -ForegroundColor Gray
+        Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
+    }
+}
+
+Stop-ProcessOnPort 8000  # Backend
+Stop-ProcessOnPort 3000  # Web
+Stop-ProcessOnPort 8081  # Expo (Mobile)
+
+# --- 2. PREREQUISITES ---
 if (-not (Get-Command "npm" -ErrorAction SilentlyContinue)) { Write-Error "Node.js (npm) is not installed."; exit }
 if (-not (Get-Command "python" -ErrorAction SilentlyContinue)) { Write-Error "Python is not installed."; exit }
 
-# Detect Windows Terminal
-$HasWT = Get-Command "wt" -ErrorAction SilentlyContinue
+# Detect Windows Terminal (Check Path + Common Store Path)
+$WTPath = Get-Command "wt" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+if (-not $WTPath) {
+    $StorePath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
+    if (Test-Path $StorePath) { $WTPath = $StorePath }
+}
 
 # Function to run command
 function Start-ServiceWindow {
     param([string]$Command, [string]$Title, [string]$Dir, [bool]$First = $false)
     
-    $FullCommand = "cd '$Dir'; $Command"
-    
-    if ($HasWT) {
+    if ($WTPath) {
         # Use Windows Terminal Tabs
         if ($First) {
-            # Start new WT window
-            Start-Process wt -ArgumentList "-w", "0", "nt", "-d", "$Dir", "--title", "$Title", "powershell", "-NoExit", "-Command", "$Command"
+            Start-Process "$WTPath" -ArgumentList "-w", "0", "nt", "-d", "$Dir", "--title", "$Title", "powershell", "-NoExit", "-Command", "$Command"
         }
         else {
-            # Add tab to existing window (assuming focused/last used)
-            Start-Process wt -ArgumentList "-w", "0", "nt", "-d", "$Dir", "--title", "$Title", "powershell", "-NoExit", "-Command", "$Command"
+            Start-Sleep -Seconds 1
+            Start-Process "$WTPath" -ArgumentList "-w", "0", "nt", "-d", "$Dir", "--title", "$Title", "powershell", "-NoExit", "-Command", "$Command"
         }
     }
     else {
-        # Fallback to separate windows
-        Write-Host "Starting $Title..." -ForegroundColor Green
-        Start-Process powershell -ArgumentList "-NoExit", "-Command", "$FullCommand"
+        # NO WINDOWS TERMINAL: Run as Background Job to avoid terminal clutter
+        Write-Host "Starting $Title in background..." -ForegroundColor Green
+        # Use Start-Job so it stays in THIS terminal window
+        Start-Job -Name "$Title" -ScriptBlock {
+            param($d, $c)
+            Set-Location "$d"
+            powershell -Command "$c"
+        } -ArgumentList $Dir, $Command
     }
 }
 
@@ -53,54 +75,55 @@ $BackendDir = "$PSScriptRoot\travo\backend"
 $WebDir = "$PSScriptRoot\trovaweb"
 $MobileDir = "$PSScriptRoot\trovaMobile"
 
-# 1. SETUP BACKEND
+# --- 3. BACKEND ---
 if ($Mode -eq "All" -or $Mode -eq "Backend") {
-    Write-Host "`n[1/3] Checking Backend..." -ForegroundColor Yellow
+    Write-Host "`n[1/3] Preparing Backend..." -ForegroundColor Yellow
     if (Test-Path $BackendDir) {
-        Push-Location $BackendDir
-        if (-not (Test-Path "venv")) {
+        if (-not (Test-Path "$BackendDir\venv")) {
             Write-Host "Creating Python venv..."
-            python -m venv venv
-            Write-Host "Installing requirements..."
-            .\venv\Scripts\pip install -r requirements.txt
+            python -m venv "$BackendDir\venv"
         }
-        Pop-Location
         
-        Start-ServiceWindow -Command ".\venv\Scripts\python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000" -Title "TRAVO Backend" -Dir $BackendDir -First $true
+        # ALWAYS check/install requirements to ensure uvicorn exists
+        Write-Host "Verifying Backend dependencies..." -ForegroundColor Gray
+        & "$BackendDir\venv\Scripts\pip" install -q -r "$BackendDir\requirements.txt"
+        
+        # Ensure PYTHONPATH is set and use correct uvicorn invocation
+        $BackendCmd = "`$env:PYTHONPATH='.'; .\venv\Scripts\python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000"
+        Start-ServiceWindow -Command $BackendCmd -Title "TRAVO-Backend" -Dir $BackendDir -First $true
     }
 }
 
-# 2. SETUP WEB
+# --- 4. WEB ---
 if ($Mode -eq "All" -or $Mode -eq "Web") {
-    Write-Host "`n[2/3] Checking Web..." -ForegroundColor Yellow
+    Write-Host "`n[2/3] Preparing Web..." -ForegroundColor Yellow
     if (Test-Path $WebDir) {
-        Push-Location $WebDir
-        if (-not (Test-Path "node_modules")) {
+        if (-not (Test-Path "$WebDir\node_modules")) {
             Write-Host "Installing Web modules..."
-            npm install
+            Push-Location $WebDir; npm install; Pop-Location
         }
-        Pop-Location
-        
-        Start-ServiceWindow -Command "npm run dev" -Title "TRAVO Web" -Dir $WebDir
+        Start-ServiceWindow -Command "npm run dev" -Title "TRAVO-Web" -Dir $WebDir
     }
 }
 
-# 3. SETUP MOBILE
+# --- 5. MOBILE ---
 if ($Mode -eq "All" -or $Mode -eq "Mobile") {
-    Write-Host "`n[3/3] Checking Mobile..." -ForegroundColor Yellow
+    Write-Host "`n[3/3] Preparing Mobile..." -ForegroundColor Yellow
     if (Test-Path $MobileDir) {
-        Push-Location $MobileDir
-        if (-not (Test-Path "node_modules")) {
+        if (-not (Test-Path "$MobileDir\node_modules")) {
             Write-Host "Installing Mobile modules..."
-            npm install
+            Push-Location $MobileDir; npm install; Pop-Location
         }
-        Pop-Location
-        
-        # 'npx expo start -c' usually requires interaction, but -c clears cache.
-        Start-ServiceWindow -Command "npx expo start -c" -Title "TRAVO Mobile" -Dir $MobileDir
+        Start-ServiceWindow -Command "npx expo start -c" -Title "TRAVO-Mobile" -Dir $MobileDir
     }
 }
 
 Write-Host "`n[SUCCESS] Startup initiated!" -ForegroundColor Green
-Write-Host "If you have Windows Terminal installed, look for the new tabs."
-Write-Host "Otherwise, check the new popup windows."
+if ($WTPath) {
+    Write-Host "Processes are running in Windows Terminal tabs."
+}
+else {
+    Write-Host "Processes are running in the BACKGROUND of this window."
+    Write-Host "To see logs: 'Get-Job | Receive-Job -Keep'"
+    Write-Host "To stop: 'Get-Job | Stop-Job'"
+}
