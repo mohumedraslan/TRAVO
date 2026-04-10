@@ -19,36 +19,43 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Explore',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="map"
+        options={{
+          title: 'Map',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="camera"
         options={{
-          title: 'Capture',
+          title: 'Camera',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="camera.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="daily"
+        name="ar-guide"
         options={{
-          title: 'Daily',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
+          title: 'AR Guide',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="viewfinder" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="live"
+        name="itinerary"
         options={{
-          title: 'Live AI',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="eye.fill" color={color} />,
+          title: 'Itinerary',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="trip"
+        name="favorites"
         options={{
-          title: 'Trips',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="airplane" color={color} />,
+          title: 'Favorites',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="heart.fill" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -58,10 +65,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
         }}
       />
-      {/* Hidden screens - accessible via navigation but not in tab bar */}
-      <Tabs.Screen name="map" options={{ href: null }} />
-      <Tabs.Screen name="search" options={{ href: null }} />
-      <Tabs.Screen name="itinerary" options={{ href: null }} />
     </Tabs>
   );
 }

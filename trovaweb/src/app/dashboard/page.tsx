@@ -1,13 +1,11 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from 'react';
 import client from '@/api/client';
 
 interface Summary {
-  destinations_count: number;
-  attractions_count: number;
-  users_count: number;
-  trips_logged_today?: number;
-  popular_destination?: string;
+  destinationsCount: number;
+  attractionsCount: number;
+  usersCount: number;
 }
 
 export default function DashboardPage() {
@@ -16,11 +14,31 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const res = await client.get('/analytics/summary');
-        setSummary(res.data);
+        // Fetch destinations to compute count
+        const destinationsRes = await client.get('/recommendations/destinations?limit=50');
+        const destinations = Array.isArray(destinationsRes.data) ? destinationsRes.data : [];
+        const destinationsCount = destinations.length;
+
+        // Fetch attractions for the first destination (if available) to compute count
+        let attractionsCount = 0;
+        if (destinations.length > 0 && destinations[0]?.id) {
+          const destinationId = destinations[0].id as string;
+          try {
+            const attractionsRes = await client.get(`/recommendations/destinations/${destinationId}/attractions?limit=50`);
+            const attractions = Array.isArray(attractionsRes.data) ? attractionsRes.data : [];
+            attractionsCount = attractions.length;
+          } catch (innerErr) {
+            console.error('Failed to fetch attractions for destination', destinationId, innerErr);
+          }
+        }
+
+        // Users count placeholder until endpoint exists
+        const usersCount = 0;
+
+        setSummary({ destinationsCount, attractionsCount, usersCount });
       } catch (err) {
-        console.error(err);
-        setSummary({ destinations_count: 0, attractions_count: 0, users_count: 0 });
+        console.error('Failed to fetch dashboard summary', err);
+        setSummary({ destinationsCount: 0, attractionsCount: 0, usersCount: 0 });
       }
     };
     fetchSummary();
@@ -36,15 +54,15 @@ export default function DashboardPage() {
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
               <h3 className="text-lg font-semibold">Destinations</h3>
-              <p className="text-2xl">{summary.destinations_count}</p>
+              <p className="text-2xl">{summary.destinationsCount}</p>
             </div>
             <div className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
               <h3 className="text-lg font-semibold">Attractions</h3>
-              <p className="text-2xl">{summary.attractions_count}</p>
+              <p className="text-2xl">{summary.attractionsCount}</p>
             </div>
             <div className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
               <h3 className="text-lg font-semibold">Users</h3>
-              <p className="text-2xl">{summary.users_count}</p>
+              <p className="text-2xl">{summary.usersCount}</p>
             </div>
           </div>
         ) : (

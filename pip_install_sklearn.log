@@ -1,0 +1,19 @@
+Collecting scikit-learn
+  Using cached scikit_learn-1.7.2-cp313-cp313-win_amd64.whl.metadata (11 kB)
+Requirement already satisfied: numpy>=1.22.0 in c:\users\moras\documents\github\travo\travo\backend\traeai-6\lib\site-packages (from scikit-learn) (2.3.4)
+Collecting scipy>=1.8.0 (from scikit-learn)
+  Using cached scipy-1.16.3-cp313-cp313-win_amd64.whl.metadata (60 kB)
+Collecting joblib>=1.2.0 (from scikit-learn)
+  Using cached joblib-1.5.2-py3-none-any.whl.metadata (5.6 kB)
+Collecting threadpoolctl>=3.1.0 (from scikit-learn)
+  Using cached threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
+Using cached scikit_learn-1.7.2-cp313-cp313-win_amd64.whl (8.7 MB)
+Using cached joblib-1.5.2-py3-none-any.whl (308 kB)
+Using cached scipy-1.16.3-cp313-cp313-win_amd64.whl (38.5 MB)
+Using cached threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+Installing collected packages: threadpoolctl, scipy, joblib, scikit-learn
+
+Successfully installed joblib-1.5.2 scikit-learn-1.7.2 scipy-1.16.3 threadpoolctl-3.6.0
+
+[notice] A new release of pip is available: 25.2 -> 25.3
+[notice] To update, run: C:\Users\moras\Documents\GitHub\TRAVO\travo\backend\TraeAI-6\Scripts\python.exe -m pip install --upgrade pip

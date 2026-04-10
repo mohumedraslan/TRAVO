@@ -1,15 +1,19 @@
 {
   "expo": {
-    "name": "trovaMobile",
-    "slug": "trovaMobile",
+    "name": "Discover Egypt AI",
+    "slug": "discover-egypt-ai",
     "version": "1.0.0",
+    "sdkVersion": "54.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "trovamobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -19,21 +23,18 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.CAMERA"
+      ],
+      "package": "com.anonymous.discoveregyptai"
     },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "usesCleartextTraffic": true
-          }
-        }
-      ],
       "expo-router",
       [
         "expo-splash-screen",
@@ -47,27 +48,12 @@
           }
         }
       ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Allow TRAVO to access your photos for AI labeling."
-        }
-      ],
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow TRAVO to use your location for trip detection."
-        }
-      ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/images/icon.png",
-          "color": "#ffffff"
-        }
-      ],
-      "expo-media-library"
+      "react-native-vision-camera",
+      "sentry-expo"
     ],
+    "extra": {
+      "API_URL": "http://127.0.0.1:8000/api"
+    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true

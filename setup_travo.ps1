@@ -1,129 +1,124 @@
+# TRAVO Setup Script for Windows
+# This script sets up the development environment for TRAVO app
 
-<#
-.SYNOPSIS
-    TRAVO Universal Setup & Startup Script
-.DESCRIPTION
-    Automates the setup and execution of Backend, Frontend, and Mobile.
-    Supports Windows Terminal (wt) tabs to keep everything in one window.
-#>
+# Set error action preference
+$ErrorActionPreference = "Stop"
 
-param (
-    [string]$Mode = "All" # Options: All, Backend, Web, Mobile
-)
-
-$ErrorActionPreference = "Continue" # Don't stop on minor errors like "Process not found"
-
-Write-Host "==========================================" -ForegroundColor Cyan
-Write-Host "      TRAVO SETUP & STARTUP MANAGER       " -ForegroundColor Cyan
-Write-Host "==========================================" -ForegroundColor Cyan
-
-# --- 1. CLEANUP OLD PROCESSES ---
-Write-Host "[0/3] Cleaning up old TRAVO processes..." -ForegroundColor Yellow
-
-function Stop-ProcessOnPort {
-    param([int]$Port)
-    $ProcessId = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -First 1
-    if ($ProcessId) {
-        Write-Host "Stopping process on port $Port (PID: $ProcessId)..." -ForegroundColor Gray
-        Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
-    }
+# Function to write colored output
+function Write-ColorOutput {
+    param(
+        [string]$Message,
+        [string]$Color = "White"
+    )
+    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] $Message" -ForegroundColor $Color
 }
 
-Stop-ProcessOnPort 8000  # Backend
-Stop-ProcessOnPort 3000  # Web
-Stop-ProcessOnPort 8081  # Expo (Mobile)
-
-# --- 2. PREREQUISITES ---
-if (-not (Get-Command "npm" -ErrorAction SilentlyContinue)) { Write-Error "Node.js (npm) is not installed."; exit }
-if (-not (Get-Command "python" -ErrorAction SilentlyContinue)) { Write-Error "Python is not installed."; exit }
-
-# Detect Windows Terminal (Check Path + Common Store Path)
-$WTPath = Get-Command "wt" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-if (-not $WTPath) {
-    $StorePath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
-    if (Test-Path $StorePath) { $WTPath = $StorePath }
-}
-
-# Function to run command
-function Start-ServiceWindow {
-    param([string]$Command, [string]$Title, [string]$Dir, [bool]$First = $false)
+try {
+    Write-ColorOutput "🚀 Starting TRAVO Setup..." "Cyan"
     
-    if ($WTPath) {
-        # Use Windows Terminal Tabs
-        if ($First) {
-            Start-Process "$WTPath" -ArgumentList "-w", "0", "nt", "-d", "$Dir", "--title", "$Title", "powershell", "-NoExit", "-Command", "$Command"
+    # Check if Node.js is installed
+    Write-ColorOutput "🔍 Checking Node.js installation..." "Yellow"
+    $nodeVersion = node --version 2>$null
+    if (-not $nodeVersion) {
+        Write-ColorOutput "❌ Node.js is not installed. Please install Node.js from https://nodejs.org/" "Red"
+        exit 1
+    }
+    Write-ColorOutput "✅ Node.js version: $nodeVersion" "Green"
+    
+    # Get LAN IP for reference
+    $lanIp = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notlike "*Loopback*" -and $_.InterfaceAlias -notlike "*vEthernet*" }).IPAddress | Select-Object -First 1
+    Write-ColorOutput "ℹ️  Your LAN IP appears to be: $lanIp" "Cyan"
+    Write-ColorOutput "ℹ️  If emulator fails to connect, ensure it can reach http://$lanIp:8001" "Cyan"
+
+    # Check npm version
+    $npmVersion = npm --version
+    Write-ColorOutput "✅ npm version: $npmVersion" "Green"
+
+    # Install Expo CLI locally (recommended approach)
+    Write-ColorOutput "📦 Installing Expo CLI locally..." "Yellow"
+    npm install expo --save-dev
+    $expoVersion = npx expo --version 2>$null
+    if (-not $expoVersion) {
+        Write-ColorOutput "❌ Failed to verify Expo CLI installation." "Red"
+        exit 1
+    }
+    Write-ColorOutput "✅ Expo CLI version: $expoVersion" "Green"
+
+    # Navigate to mobile app directory
+    Set-Location -Path "$PSScriptRoot\trovaMobile"
+    
+    # Clean up previous installations (with error handling)
+    Write-ColorOutput "🧹 Cleaning up previous installations..." "Yellow"
+    try {
+        if (Test-Path "node_modules") {
+            # Try to remove node_modules with force and error action continue
+            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue -Path "node_modules"
         }
-        else {
-            Start-Sleep -Seconds 1
-            Start-Process "$WTPath" -ArgumentList "-w", "0", "nt", "-d", "$Dir", "--title", "$Title", "powershell", "-NoExit", "-Command", "$Command"
+        if (Test-Path "package-lock.json") {
+            Remove-Item -Force -ErrorAction SilentlyContinue -Path "package-lock.json"
+        }
+        if (Test-Path "yarn.lock") {
+            Remove-Item -Force -ErrorAction SilentlyContinue -Path "yarn.lock"
         }
     }
-    else {
-        # NO WINDOWS TERMINAL: Run as Background Job to avoid terminal clutter
-        Write-Host "Starting $Title in background..." -ForegroundColor Green
-        # Use Start-Job so it stays in THIS terminal window
-        Start-Job -Name "$Title" -ScriptBlock {
-            param($d, $c)
-            Set-Location "$d"
-            powershell -Command "$c"
-        } -ArgumentList $Dir, $Command
+    catch {
+        Write-ColorOutput "⚠️  Warning: Could not clean up all previous installation files. Some files might be in use." "Yellow"
     }
-}
 
-# Paths
-$BackendDir = "$PSScriptRoot\travo\backend"
-$WebDir = "$PSScriptRoot\trovaweb"
-$MobileDir = "$PSScriptRoot\trovaMobile"
+    # Install dependencies with legacy peer deps
+    Write-ColorOutput "📦 Installing dependencies (this may take a few minutes)..." "Yellow"
+    npm install --legacy-peer-deps
+    
+    # Install additional required packages
+    Write-ColorOutput "📦 Installing additional packages..." "Yellow"
+    npm install @react-native-async-storage/async-storage --legacy-peer-deps
+    npm install onnxruntime-react-native --legacy-peer-deps
 
-# --- 3. BACKEND ---
-if ($Mode -eq "All" -or $Mode -eq "Backend") {
-    Write-Host "`n[1/3] Preparing Backend..." -ForegroundColor Yellow
-    if (Test-Path $BackendDir) {
-        if (-not (Test-Path "$BackendDir\venv")) {
-            Write-Host "Creating Python venv..."
-            python -m venv "$BackendDir\venv"
+    # Skip Android prebuild for web-only mode
+    Write-ColorOutput "ℹ️  Skipping Android prebuild (web mode only)" "Yellow"
+
+    # Start backend in a new PowerShell window
+    Write-ColorOutput "🚀 Starting FastAPI backend..." "Yellow"
+    $backendScript = @"
+    try {
+        Set-Location -Path "$PSScriptRoot\travo\backend"
+        if (-not (Test-Path "main.py")) {
+            Write-Host "❌ Error: main.py not found in $PSScriptRoot\travo\backend" -ForegroundColor Red
+            exit 1
         }
-        
-        # ALWAYS check/install requirements to ensure uvicorn exists
-        Write-Host "Verifying Backend dependencies..." -ForegroundColor Gray
-        & "$BackendDir\venv\Scripts\pip" install -q -r "$BackendDir\requirements.txt"
-        
-        # Ensure PYTHONPATH is set and use correct uvicorn invocation
-        $BackendCmd = "`$env:PYTHONPATH='.'; .\venv\Scripts\python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000"
-        Start-ServiceWindow -Command $BackendCmd -Title "TRAVO-Backend" -Dir $BackendDir -First $true
+        python -m uvicorn main:app --reload --host 0.0.0.0 --port 8001
+    } catch {
+        Write-Host "❌ Error starting backend: $_" -ForegroundColor Red
+        exit 1
     }
-}
+"@
+    $tempScript = [System.IO.Path]::GetTempFileName() + '.ps1'
+    $backendScript | Out-File -FilePath $tempScript -Encoding utf8 -Force
+    Start-Process powershell -ArgumentList "-NoExit", "-File", "`"$tempScript`"" -WindowStyle Normal
 
-# --- 4. WEB ---
-if ($Mode -eq "All" -or $Mode -eq "Web") {
-    Write-Host "`n[2/3] Preparing Web..." -ForegroundColor Yellow
-    if (Test-Path $WebDir) {
-        if (-not (Test-Path "$WebDir\node_modules")) {
-            Write-Host "Installing Web modules..."
-            Push-Location $WebDir; npm install; Pop-Location
-        }
-        Start-ServiceWindow -Command "npm run dev" -Title "TRAVO-Web" -Dir $WebDir
+    # Give backend some time to start
+    Start-Sleep -Seconds 5
+
+    # Start Expo app
+    Write-ColorOutput "🌐 Starting Expo app in web mode..." "Yellow"
+    Write-ColorOutput "🔗 Expo DevTools will open in your default browser" "Cyan"
+    
+    # Start Expo in web mode by default
+    try {
+        npx expo start --web --clear
     }
-}
-
-# --- 5. MOBILE ---
-if ($Mode -eq "All" -or $Mode -eq "Mobile") {
-    Write-Host "`n[3/3] Preparing Mobile..." -ForegroundColor Yellow
-    if (Test-Path $MobileDir) {
-        if (-not (Test-Path "$MobileDir\node_modules")) {
-            Write-Host "Installing Mobile modules..."
-            Push-Location $MobileDir; npm install; Pop-Location
-        }
-        Start-ServiceWindow -Command "npx expo start -c" -Title "TRAVO-Mobile" -Dir $MobileDir
+    catch {
+        Write-ColorOutput "❌ Failed to start Expo web: $_" "Red"
+        Write-ColorOutput "📄 Try running manually with: cd trovaMobile && npx expo start --web" "Yellow"
+        exit 1
     }
-}
 
-Write-Host "`n[SUCCESS] Startup initiated!" -ForegroundColor Green
-if ($WTPath) {
-    Write-Host "Processes are running in Windows Terminal tabs."
+    Write-ColorOutput "✅ Setup completed successfully!" "Green"
+    Write-ColorOutput "🚀 Happy coding with TRAVO!" "Cyan"
+
 }
-else {
-    Write-Host "Processes are running in the BACKGROUND of this window."
-    Write-Host "To see logs: 'Get-Job | Receive-Job -Keep'"
-    Write-Host "To stop: 'Get-Job | Stop-Job'"
+catch {
+    Write-ColorOutput "❌ An error occurred: $_" "Red"
+    Write-ColorOutput "📄 Stack trace: $($_.ScriptStackTrace)" "Red"
+    exit 1
 }

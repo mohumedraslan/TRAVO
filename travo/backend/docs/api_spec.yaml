@@ -26,13 +26,48 @@ tags:
     description: Crowd prediction and analytics
   - name: assistant
     description: AI travel assistant
+  - name: user
+    description: User management and preferences
   - name: business
     description: Business listings and partnerships
 
 paths:
-  /login:
+  /users/register:
     post:
       tags:
+        - user
+        - authentication
+      summary: Register new user
+      description: Create a new user account
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid input or email already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Email already registered
+
+  /users/login:
+    post:
+      tags:
+        - user
         - authentication
       summary: User login
       description: Authenticate a user and return a JWT token
@@ -40,14 +75,14 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
-                - email
+                - username
                 - password
               properties:
-                email:
+                username:
                   type: string
                   format: email
                   example: user@example.com
@@ -61,20 +96,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  access_token:
-                    type: string
-                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-                  token_type:
-                    type: string
-                    example: bearer
-                  user_id:
-                    type: string
-                    example: user-123
-                  expires_in:
-                    type: integer
-                    example: 3600
+                $ref: '#/components/schemas/TokenResponse'
         '401':
           description: Invalid credentials
           content:
@@ -84,7 +106,222 @@ paths:
                 properties:
                   detail:
                     type: string
-                    example: Invalid email or password  /vision/identify:
+                    example: Invalid email or password
+
+  /users/me:
+    get:
+      tags:
+        - user
+      summary: Get current user
+      description: Get information about the currently authenticated user
+      operationId: getCurrentUser
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Not authenticated
+
+  /users/preferences:
+    get:
+      tags:
+        - user
+      summary: Get user preferences
+      description: Get the preferences for the currently authenticated user
+      operationId: getUserPreferences
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User preferences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferencesResponse'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Not authenticated
+        '404':
+          description: Preferences not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Preferences not found
+    put:
+      tags:
+        - user
+      summary: Update user preferences
+      description: Update the preferences for the currently authenticated user
+      operationId: updateUserPreferences
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferencesUpdate'
+      responses:
+        '200':
+          description: Preferences updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferencesResponse'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Not authenticated
+
+  /crowds/predict:
+    post:
+      tags:
+        - crowd
+      summary: Predict crowd level
+      description: Predict the crowd level for a monument at a specific time
+      operationId: predictCrowd
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrowdPredictionRequest'
+      responses:
+        '200':
+          description: Crowd prediction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrowdPredictionResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid monument ID or time format
+
+  /crowds/monuments:
+    get:
+      tags:
+        - crowd
+      summary: Get supported monuments
+      description: Get a list of monuments supported by the crowd prediction service
+      operationId: getSupportedMonuments
+      responses:
+        '200':
+          description: List of supported monuments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  monuments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "pyramid_giza"
+                        name:
+                          type: string
+                          example: "Great Pyramid of Giza"
+                        location:
+                          type: string
+                          example: "Giza, Egypt"
+
+  /crowds/historical:
+    get:
+      tags:
+        - crowd
+      summary: Get historical crowd data
+      description: Get historical crowd data for a monument
+      operationId: getHistoricalCrowdData
+      parameters:
+        - name: monument_id
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "pyramid_giza"
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2023-01-01"
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2023-01-31"
+      responses:
+        '200':
+          description: Historical crowd data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  monument_id:
+                    type: string
+                    example: "pyramid_giza"
+                  monument_name:
+                    type: string
+                    example: "Great Pyramid of Giza"
+                  data_points:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CrowdHistoricalDataPoint'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid monument ID or date format
+
+  /vision/identify:
     post:
       tags:
         - vision
@@ -208,26 +445,16 @@ paths:
                             properties:
                               name:
                                 type: string
-                                example: Pyramids of Giza
+                                example: Great Pyramid of Giza
+                              type:
+                                type: string
+                                example: monument
+                              duration_minutes:
+                                type: integer
+                                example: 120
                               description:
                                 type: string
-                                example: Ancient Egyptian pyramids built as tombs for the pharaohs
-                              duration_hours:
-                                type: number
-                                example: 3
-                        total_hours:
-                          type: number
-                          example: 7.5
-                  estimated_cost:
-                    type: number
-                    example: 350
-                  currency:
-                    type: string
-                    example: USD
-                  created_at:
-                    type: string
-                    format: date-time
-                    example: 2023-05-15T14:30:00Z
+                                example: The oldest and largest of the pyramids in the Giza pyramid complex.
         '400':
           description: Invalid input
           content:
@@ -237,160 +464,28 @@ paths:
                 properties:
                   detail:
                     type: string
-                    example: At least one interest must be provided  /crowd/predict:
-    post:
-      tags:
-        - crowd
-      summary: Predict crowd levels
-      description: Predict crowd levels at a specific location and time
-      operationId: predictCrowd
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - location_id
-                - date
-              properties:
-                location_id:
-                  type: string
-                  example: loc-123
-                date:
-                  type: string
-                  format: date
-                  example: 2023-06-15
-                time_slot:
-                  type: string
-                  enum: [morning, afternoon, evening]
-                  example: morning
-      responses:
-        '200':
-          description: Successful prediction
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  location_id:
-                    type: string
-                    example: loc-123
-                  location_name:
-                    type: string
-                    example: Pyramids of Giza
-                  date:
-                    type: string
-                    format: date
-                    example: 2023-06-15
-                  time_slot:
-                    type: string
-                    example: morning
-                  crowd_level:
-                    type: string
-                    enum: [low, moderate, high, very_high]
-                    example: high
-                  wait_time_minutes:
-                    type: integer
-                    example: 45
-                  confidence:
-                    type: number
-                    format: float
-                    minimum: 0
-                    maximum: 1
-                    example: 0.85
-                  recommendations:
-                    type: array
-                    items:
-                      type: string
-                    example: ["Visit early in the morning", "Use the east entrance"]
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  detail:
-                    type: string
-                    example: Invalid location ID
-        '404':
-          description: Location not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  detail:
-                    type: string
-                    example: Location not found
+                    example: Invalid interests or days parameter
 
   /assistant/ask:
     post:
       tags:
         - assistant
-      summary: Ask the AI travel assistant
-      description: Ask a question to the AI travel assistant
+      summary: Ask the AI assistant
+      description: Send a text query to get information about monuments, history, or visiting tips
       operationId: askAssistant
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - question
-              properties:
-                question:
-                  type: string
-                  example: What is the best time to visit the Pyramids?
-                context:
-                  type: object
-                  properties:
-                    location:
-                      type: string
-                      example: Egypt
-                    current_topic:
-                      type: string
-                      example: historical sites
-                    conversation_history:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          role:
-                            type: string
-                            enum: [user, assistant]
-                          content:
-                            type: string
+              $ref: '#/components/schemas/AssistantQuery'
       responses:
         '200':
-          description: Successful response
+          description: Assistant response
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  answer:
-                    type: string
-                    example: The best time to visit the Pyramids is early morning (before 8 AM) or late afternoon (after 4 PM) to avoid the midday heat and crowds. Winter months (November to February) offer the most comfortable temperatures.
-                  sources:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        title:
-                          type: string
-                          example: Egypt Tourism Guide
-                        url:
-                          type: string
-                          format: uri
-                          example: https://example.com/egypt-guide
-                  related_questions:
-                    type: array
-                    items:
-                      type: string
-                    example: ["What should I wear when visiting the Pyramids?", "How much time should I spend at the Pyramids?"]
+                $ref: '#/components/schemas/AssistantResponse'
         '400':
           description: Invalid input
           content:
@@ -400,51 +495,338 @@ paths:
                 properties:
                   detail:
                     type: string
-                    example: Question is requiredcomponents:
+                    example: Invalid query type or empty query
+
+  /assistant/voice_to_text:
+    post:
+      tags:
+        - assistant
+      summary: Convert voice to text
+      description: Convert voice audio (base64 encoded) to text
+      operationId: voiceToText
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoiceToTextRequest'
+      responses:
+        '200':
+          description: Voice to text conversion result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoiceToTextResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid audio format or empty audio data
+
+  /assistant/text_to_voice:
+    post:
+      tags:
+        - assistant
+      summary: Convert text to voice
+      description: Convert text to voice audio (base64 encoded)
+      operationId: textToVoice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextToVoiceRequest'
+      responses:
+        '200':
+          description: Text to voice conversion result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextToVoiceResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Empty text or invalid voice parameters
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
-    Error:
+    UserBase:
       type: object
       properties:
-        detail:
+        name:
           type: string
-          example: Error message details
-    
-    MonumentIdentificationResponse:
+          example: John Doe
+        email:
+          type: string
+          format: email
+          example: john.doe@example.com
+
+    UserCreate:
+      allOf:
+        - $ref: '#/components/schemas/UserBase'
+        - type: object
+          required:
+            - name
+            - email
+            - password
+          properties:
+            password:
+              type: string
+              format: password
+              minLength: 8
+              example: StrongP@ssw0rd
+
+    UserResponse:
+      allOf:
+        - $ref: '#/components/schemas/UserBase'
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            created_at:
+              type: string
+              format: date-time
+              example: 2023-01-01T00:00:00Z
+
+    TokenResponse:
       type: object
       properties:
-        identified_monument:
+        access_token:
           type: string
-          example: Temple of Luxor
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        token_type:
+          type: string
+          example: bearer
+        user:
+          $ref: '#/components/schemas/UserResponse'
+
+    InterestCategory:
+      type: string
+      enum: [historical, cultural, natural, adventure, culinary, religious, architectural]
+      example: historical
+
+    UserPreferencesBase:
+      type: object
+      properties:
+        interests:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestCategory'
+          example: [historical, cultural]
+        preferred_cities:
+          type: array
+          items:
+            type: string
+          example: ["Cairo", "Luxor"]
+        notification_settings:
+          type: object
+          properties:
+            email_notifications:
+              type: boolean
+              example: true
+            push_notifications:
+              type: boolean
+              example: false
+
+    UserPreferencesUpdate:
+      $ref: '#/components/schemas/UserPreferencesBase'
+
+    UserPreferencesResponse:
+      allOf:
+        - $ref: '#/components/schemas/UserPreferencesBase'
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              example: 1
+            saved_itineraries:
+              type: array
+              items:
+                type: string
+              example: ["itin-1234", "itin-5678"]
+            additional_settings:
+              type: object
+              additionalProperties: true
+              example: {"language": "en", "currency": "USD"}
+
+    CrowdLevel:
+      type: string
+      enum: [LOW, MODERATE, HIGH, VERY_HIGH]
+      example: MODERATE
+
+    CrowdPredictionRequest:
+      type: object
+      required:
+        - monument_id
+        - date
+        - time
+      properties:
+        monument_id:
+          type: string
+          example: "pyramid_giza"
+        date:
+          type: string
+          format: date
+          example: "2023-07-15"
+        time:
+          type: string
+          format: time
+          example: "14:30"
+
+    CrowdPredictionResponse:
+      type: object
+      properties:
+        monument_id:
+          type: string
+          example: "pyramid_giza"
+        monument_name:
+          type: string
+          example: "Great Pyramid of Giza"
+        date:
+          type: string
+          format: date
+          example: "2023-07-15"
+        time:
+          type: string
+          format: time
+          example: "14:30"
+        crowd_level:
+          $ref: '#/components/schemas/CrowdLevel'
+        wait_time_minutes:
+          type: integer
+          example: 45
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          example: 0.85
+
+    CrowdHistoricalDataPoint:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          example: "2023-01-15"
+        time:
+          type: string
+          format: time
+          example: "14:30"
+        crowd_level:
+          $ref: '#/components/schemas/CrowdLevel'
+        visitor_count:
+          type: integer
+          example: 250
+
+    QueryType:
+      type: string
+      enum: [MONUMENT_INFO, HISTORICAL_FACT, VISITING_TIP, GENERAL]
+      example: MONUMENT_INFO
+
+    AssistantQuery:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          example: "Tell me about the Sphinx"
+        query_type:
+          $ref: '#/components/schemas/QueryType'
+        monument_id:
+          type: string
+          example: "sphinx_giza"
+
+    AssistantResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          example: "The Great Sphinx of Giza is a limestone statue of a reclining sphinx, a mythical creature with the head of a human and the body of a lion. It stands on the Giza Plateau on the west bank of the Nile in Giza, Egypt. It is the oldest known monumental sculpture in Egypt and is commonly believed to have been built by ancient Egyptians of the Old Kingdom during the reign of the Pharaoh Khafre (c. 2558–2532 BC)."
+        query_type:
+          $ref: '#/components/schemas/QueryType'
+        source:
+          type: string
+          enum: [AI, RULE_BASED]
+          example: AI
+
+    VoiceToTextRequest:
+      type: object
+      required:
+        - audio_data
+      properties:
+        audio_data:
+          type: string
+          format: byte
+          description: Base64 encoded audio data
+        audio_format:
+          type: string
+          enum: [WAV, MP3, OGG]
+          default: WAV
+          example: WAV
+
+    VoiceToTextResponse:
+      type: object
+      properties:
+        text:
+          type: string
+          example: "Tell me about the Sphinx"
         confidence:
           type: number
           format: float
           minimum: 0
           maximum: 1
           example: 0.92
-    
-    RecommendationBody:
+
+    TextToVoiceRequest:
       type: object
       required:
-        - interests
+        - text
       properties:
-        interests:
-          type: array
-          items:
-            type: string
-            enum: [history, culture, nature, adventure, relaxation]
-          example: [history, culture]
-        days:
-          type: integer
-          minimum: 1
-          maximum: 14
-          default: 2
-          example: 2
+        text:
+          type: string
+          example: "The Great Sphinx of Giza is a limestone statue of a reclining sphinx."
+        voice_type:
+          type: string
+          enum: [MALE, FEMALE]
+          default: FEMALE
+          example: FEMALE
+        language_code:
+          type: string
+          default: en-US
+          example: en-US
 
-security:
-  - bearerAuth: []
-
-securitySchemes:
-  bearerAuth:
-    type: http
-    scheme: bearer
-    bearerFormat: JWT
+    TextToVoiceResponse:
+      type: object
+      properties:
+        audio_data:
+          type: string
+          format: byte
+          description: Base64 encoded audio data
+        audio_format:
+          type: string
+          enum: [WAV, MP3]
+          example: MP3
+        duration_seconds:
+          type: number
+          format: float
+          example: 5.2

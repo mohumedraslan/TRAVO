@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from 'react';
 import client from '@/api/client';
 import Card from '@/components/shared/Card';
@@ -19,19 +19,14 @@ export default function ExplorePage() {
       setLoading(true);
       try {
         const destRes = await client.get('/recommendations/destinations');
-        // Backend returns array directly, not {items: [...]}
-        const destArray = Array.isArray(destRes.data) ? destRes.data : [];
-        setDestinations(destArray);
-
-        // Get attractions for first destination if available
-        if (destArray.length > 0) {
-          const firstDestId = destArray[0].id;
-          const attrRes = await client.get(`/recommendations/destinations/${firstDestId}/attractions`);
-          const attrArray = Array.isArray(attrRes.data) ? attrRes.data : [];
-          setAttractions(attrArray);
-        }
+        const dests: Item[] = destRes.data || [];
+        setDestinations(dests);
+        const firstId = dests[0]?.id || 'paris';
+        const attrRes = await client.get(`/recommendations/destinations/${firstId}/attractions`);
+        const attrs: Item[] = attrRes.data || [];
+        setAttractions(attrs);
       } catch (err) {
-        console.error(err);
+        console.error('Explore data fetch failed:', err);
       } finally {
         setLoading(false);
       }

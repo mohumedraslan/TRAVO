@@ -47,3 +47,4 @@ class MonumentInfo(BaseModel):
 class MonumentIdentificationResponse(BaseModel):
     identified_monument: str
     confidence: confloat(ge=0.0, le=1.0) = Field(..., description="Confidence score between 0 and 1")
+    monument_id: str = Field(..., description="Unique identifier for the monument")

@@ -1,6 +1,6 @@
-# Welcome to your Expo app 👋
+# TRAVO - Discover Egypt AI 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is an [Expo](https://expo.dev) project for the TRAVO application.
 
 ## Get started
 
@@ -10,30 +10,60 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Configure your environment
+
+   Edit the `.env` file and set your local backend URL:
+   ```
+   API_URL=http://192.168.X.X:8000/api
+   ```
+   Replace X.X with your PC's local IP address (e.g., 192.168.1.100)
+
+3. Start the app for development
 
    ```bash
-   npx expo start
+   npx expo start -c
    ```
 
-In the output, you'll find options to open the app in a
+## Running with Native Projects
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Some features like VisionCamera cannot run in Expo Go. To use these features:
+
+1. Create native projects
+
+   ```bash
+   npx expo prebuild
+   ```
+
+2. Run on Android
+
+   ```bash
+   npx expo run:android
+   ```
+
+3. Run on iOS
+
+   ```bash
+   npx expo run:ios
+   ```
+
+> **Note:** The app includes web fallbacks for camera functionality when running in a web browser.
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+## Maintaining and Updating
 
-When you're ready, run:
+1. Check for outdated packages and update SDK
 
-```bash
-npm run reset-project
-```
+   ```bash
+   npx expo doctor
+   npx expo upgrade
+   ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Clean and rebuild the app
+
+   ```bash
+   npx expo start -c
+   ```
 
 ## Learn more
 

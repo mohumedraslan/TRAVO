@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Memora",
-  description: "Memora - AI-Powered Travel Companion",
+  title: "TrovaWeb",
+  description: "TRAVO Web Interface",
 };
 
 export default function RootLayout({
@@ -24,14 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body 
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
-      >
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-black/60">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-            <Link href="/" className="text-lg font-semibold">Memora</Link>
+            <Link href="/" className="text-lg font-semibold">TrovaWeb</Link>
             <nav className="flex items-center gap-4 text-sm">
               <Link href="/explore" className="hover:underline">Explore</Link>
               <Link href="/dashboard" className="hover:underline">Dashboard</Link>

@@ -1,32 +1,24 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from typing import List
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+from . import schemas, service_logic
+from .database import get_db
+from utils.auth import create_access_token, get_current_user
 
-# Import schemas and service logic
-from .schemas import UserCreate, UserResponse
-from .service_logic import get_user, create_user, get_all_users
-
-# Create router
 router = APIRouter()
 
-# Test route
-@router.get("/test")
-async def test_user_service():
-    return {"status": "ok", "service": "user_service"}
+@router.post("/register", response_model=schemas.UserResponse, status_code=201)
+def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    return service_logic.create_user(db=db, user=user)
 
-# Get all users
-@router.get("/", response_model=List[UserResponse])
-async def read_users():
-    return await get_all_users()
-
-# Get user by ID
-@router.get("/{user_id}", response_model=UserResponse)
-async def read_user(user_id: str):
-    user = await get_user(user_id)
+@router.post("/login", response_model=schemas.TokenResponse)
+def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
+    user = service_logic.authenticate_user(db, email=form_data.username, password=form_data.password)
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    return user
-
-# Create new user
-@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def create_new_user(user: UserCreate):
-    return await create_user(user)
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token = create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer", "user": user}

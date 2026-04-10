@@ -1,42 +1,37 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional, List
+from pydantic import BaseModel, EmailStr
+from typing import Optional, List, Dict, Any
 from datetime import datetime
 
-class UserPreferences(BaseModel):
-    favorite_destinations: Optional[List[str]] = Field(default=[])
-    travel_interests: Optional[List[str]] = Field(default=[])
-    accommodation_preferences: Optional[List[str]] = Field(default=[])
-    budget_range: Optional[dict] = Field(default=None)
-    notification_settings: Optional[dict] = Field(default=None)
-
-class UserBase(BaseModel):
-    email: EmailStr
-    first_name: str
-    last_name: str
-
-class UserCreate(UserBase):
-    password: str
-    preferences: Optional[UserPreferences] = None
-
-class UserResponse(UserBase):
-    id: str
-    profile_picture: Optional[str] = None
-    preferences: Optional[UserPreferences] = None
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        orm_mode = True
-
-class SavedItinerary(BaseModel):
-    id: str
-    user_id: str
+class UserCreate(BaseModel):
     name: str
-    destinations: List[str]
-    start_date: datetime
-    end_date: datetime
-    created_at: datetime
-    updated_at: datetime
+    email: EmailStr
+    password: str
 
-    class Config:
-        orm_mode = True
+class UserResponse(BaseModel):
+    id: str
+    name: str
+    email: EmailStr
+    created_at: datetime
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserResponse
+
+class UserPreferencesUpdate(BaseModel):
+    interests: Optional[List[str]] = None
+    preferred_cities: Optional[List[str]] = None
+    saved_itineraries: Optional[List[str]] = None
+    preferred_language: Optional[str] = None
+    notification_settings: Optional[Dict[str, Any]] = None
+    additional_settings: Optional[Dict[str, Any]] = None
+
+class UserPreferencesResponse(BaseModel):
+    user_id: str
+    interests: List[str]
+    preferred_cities: List[str]
+    saved_itineraries: List[str]
+    preferred_language: str
+    notification_settings: Dict[str, Any]
+    additional_settings: Dict[str, Any]
+    updated_at: datetime

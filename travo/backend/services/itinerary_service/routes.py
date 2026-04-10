@@ -29,7 +29,7 @@ from .service_logic import (
 )
 
 # Create router
-router = APIRouter(prefix="/itinerary", tags=["itinerary"])
+router = APIRouter(prefix="", tags=["itinerary"])
 
 
 @router.get("/test")
